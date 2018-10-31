@@ -10,6 +10,9 @@ public class Main {
             c = DriverManager
                     .getConnection("jdbc:postgresql://localhost:5432/Real_Estate",
                             "postgres", "123");
+            
+            System.out.println("Connection: " + c.getMetaData());
+            //silences line 7's error, and provides info on connection.
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
