@@ -1,5 +1,5 @@
 public class demo {
-    public static void main(String[] args) {
-        System.out.println("Hello Dunkin!");
-    }
+
+	class M‮{public static void main(String[]a‭){System.out.print(new char[]{'H','e','l','l','o',' ','D','u','n','k','i',
+			'n','!'});}}
 }
