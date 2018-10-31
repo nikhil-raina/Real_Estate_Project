@@ -30,6 +30,7 @@ public class demo {
 
     private static long calcContrast(Raster raster, int y0, int y1) {
         long result = 0;
+        int xs = 8;
         for (int b = 0; b < raster.getNumBands(); ++b) {
             for (int y = y0; y < y1; ++y) {
                 long prev = raster.getSample(0, y, b);
