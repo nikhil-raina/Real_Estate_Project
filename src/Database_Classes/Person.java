@@ -1,3 +1,5 @@
+package Database_Classes;
+
 abstract public class Person {
     private String firstName;
     private String lastName;
