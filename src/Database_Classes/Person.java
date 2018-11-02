@@ -4,8 +4,9 @@ abstract public class Person {
     private String firstName;
     private String lastName;
     private char[] taxID;
-    private char memberType;
+    private char memberType; // what kind of designation the person is.
     private String phoneNumber;
+//    private Object personType;
 
     public Person(String firstName, String lastName, char[] taxID, char memberType, String phoneNumber){
         this.firstName = firstName;
@@ -13,6 +14,22 @@ abstract public class Person {
         this.memberType = memberType;
         this.phoneNumber = phoneNumber;
         this.taxID = taxID;
+
+//        if(this.getMemberType() == 1){
+//
+//        }
+//
+//        else if(this.getMemberType() == 2){
+//
+//        }
+//
+//        else if(this.getMemberType() == 3){
+//
+//        }
+//
+//        else if(this.getMemberType() == 4){
+//
+//        }
 
     }
 
