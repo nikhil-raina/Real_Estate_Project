@@ -29,7 +29,7 @@ public class demoUI {
 		return null;
     }
     public int setOfferStatus(int PID) {
-		return new Integer();
+		return new Integer(7);
     	//input: property ID
     	//output: 0 for success, -1 for error.
     }
