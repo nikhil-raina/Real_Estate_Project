@@ -4,32 +4,25 @@ abstract public class Person {
     private String firstName;
     private String lastName;
     private char[] taxID;
-    private char memberType; // what kind of designation the person is.
     private String phoneNumber;
-//    private Object personType;
+    private char[] zipCode;
+    private String streetAddress;
+    private char[] state;
+    private char memberType; // what kind of designation the person is.
 
-    public Person(String firstName, String lastName, char[] taxID, char memberType, String phoneNumber){
+
+    public Person(String firstName, String lastName, char[] taxID, char memberType,
+                  String phoneNumber, char[] zipCode, String streetAddress, char[] state){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.memberType = memberType;
+        if(memberType == 1)
+            this.memberType = memberType;
+
         this.phoneNumber = phoneNumber;
         this.taxID = taxID;
-
-//        if(this.getMemberType() == 1){
-//
-//        }
-//
-//        else if(this.getMemberType() == 2){
-//
-//        }
-//
-//        else if(this.getMemberType() == 3){
-//
-//        }
-//
-//        else if(this.getMemberType() == 4){
-//
-//        }
+        this.state = state;
+        this.streetAddress = streetAddress;
+        this.zipCode = zipCode;
 
     }
 
@@ -53,6 +46,18 @@ abstract public class Person {
         return phoneNumber;
     }
 
+    public char[] getState() {
+        return state;
+    }
+
+    public char[] getZipCode() {
+        return zipCode;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -71,5 +76,17 @@ abstract public class Person {
 
     public void setTaxID(char[] taxID) {
         this.taxID = taxID;
+    }
+
+    public void setZipCode(char[] zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public void setState(char[] state) {
+        this.state = state;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 }
