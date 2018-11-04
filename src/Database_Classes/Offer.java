@@ -41,9 +41,8 @@ public class Offer {
         this.offerStatus = offerStatus;
     }
 
-    @Override
-    public void setPropertyID(Property propertyID) {
-        this.propertyID = propertyID;
+    public void setPropertyID(int propertyID) {
+        this.propertyID.setPropertyID(propertyID);
     }
 
 
