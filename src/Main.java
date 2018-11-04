@@ -13,6 +13,7 @@ public class Main {
             
             System.out.println("Connection: " + c.getMetaData());
             //silences line 7's error, and provides info on connection.
+            
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
