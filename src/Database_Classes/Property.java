@@ -1,6 +1,6 @@
 package Database_Classes;
 
-public class Property {
+public class Property extends Address {
 
     private int propertyID;
     private char[] agentTaxID;
@@ -9,8 +9,10 @@ public class Property {
     private String description;
     private int area;
 
-    public Property(int propertyID, char[] agentTaxID, char[] sellerTaxID,
-                    int listPrice, String description, int area){
+
+    public Property(char[] zipcode, String streetAddress, char[] state, int propertyID, char[] agentTaxID,
+                    char[] sellerTaxID, int listPrice, String description, int area) {
+        super(zipcode, streetAddress, state);
 
         this.propertyID = propertyID;
         this.agentTaxID = agentTaxID;
@@ -18,6 +20,7 @@ public class Property {
         this.area = area;
         this.listPrice = listPrice;
         this.description = description;
+
     }
 
     public void setPropertyID(int propertyID) {
