@@ -15,9 +15,7 @@ abstract public class Person {
                   String phoneNumber, char[] zipCode, String streetAddress, char[] state){
         this.firstName = firstName;
         this.lastName = lastName;
-        if(memberType == 1)
-            this.memberType = memberType;
-
+        this.memberType = memberType;
         this.phoneNumber = phoneNumber;
         this.taxID = taxID;
         this.state = state;
