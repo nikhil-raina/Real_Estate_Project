@@ -1,27 +1,20 @@
 package Database_Classes;
 
-abstract public class Person {
+public class Person extends Address{
     private String firstName;
     private String lastName;
     private char[] taxID;
     private String phoneNumber;
-    private char[] zipCode;
-    private String streetAddress;
-    private char[] state;
     private char memberType; // what kind of designation the person is.
 
-
-    public Person(String firstName, String lastName, char[] taxID, char memberType,
-                  String phoneNumber, char[] zipCode, String streetAddress, char[] state){
+    public Person(char[] zipcode, String streetAddress, char[] state, String firstName,
+                  String lastName, char[] taxID, char memberType, String phoneNumber) {
+        super(zipcode, streetAddress, state);
         this.firstName = firstName;
         this.lastName = lastName;
         this.memberType = memberType;
         this.phoneNumber = phoneNumber;
         this.taxID = taxID;
-        this.state = state;
-        this.streetAddress = streetAddress;
-        this.zipCode = zipCode;
-
     }
 
     public char getMemberType() {
@@ -44,18 +37,6 @@ abstract public class Person {
         return phoneNumber;
     }
 
-    public char[] getState() {
-        return state;
-    }
-
-    public char[] getZipCode() {
-        return zipCode;
-    }
-
-    public String getStreetAddress() {
-        return streetAddress;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -74,17 +55,5 @@ abstract public class Person {
 
     public void setTaxID(char[] taxID) {
         this.taxID = taxID;
-    }
-
-    public void setZipCode(char[] zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public void setState(char[] state) {
-        this.state = state;
-    }
-
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
     }
 }
