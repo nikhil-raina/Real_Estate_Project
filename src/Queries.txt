@@ -1,0 +1,42 @@
+//The test queries
+
+find_person_fname(String firstname){
+SELECT FirstName, LastName, PhoneNumber FROM Person WHERE firstname=FirstName;
+}
+
+find_person_lname(String lastname){
+SELECT FirstName, LastName, PhoneNumber FROM Person WHERE lastname=LastName;
+}
+
+find_person_fullname(String firstname, String lastname){
+SELECT FirstName, LastName, PhoneNumber FROM Person WHERE lastname=LastName AND firstname=FirstName;
+}
+
+search_property_all(String state, String zipcode, String StreetAddress){
+SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
+Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
+(Address.state='state' AND Address.zipcode='zipcode' AND Address.StreetAddress='StreetAddress'));
+}
+
+search_property_state(String state){
+SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
+Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
+Address.state='state');
+}
+
+search_property_zipcode(String zipcode){
+SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
+Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
+Address.zipcode='zipcode');
+}
+
+search_property_streetaddress(String StreetAddress){
+SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
+Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
+Address.StreetAddress='StreetAddress');
+}
+
+change_offer(String PropertyOfferId, String NewStatus){
+UPDATE Offer SET OfferStatus=’NewStatus’ WHERE Offer.OfferID='PropertyOfferID';
+}
+
