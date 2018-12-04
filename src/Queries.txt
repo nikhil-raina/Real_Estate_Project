@@ -1,42 +1,46 @@
 //The test queries
 
 find_person_fname(String firstname){
-SELECT FirstName, LastName, PhoneNumber FROM Person WHERE firstname=FirstName;
+SQLBase.executeQuery(con,"SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ,firstname,=FirstName");
 }
 
 find_person_lname(String lastname){
-SELECT FirstName, LastName, PhoneNumber FROM Person WHERE lastname=LastName;
+SQLBase.executeQuery(con,"SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ,lastname,=LastName");
 }
 
 find_person_fullname(String firstname, String lastname){
-SELECT FirstName, LastName, PhoneNumber FROM Person WHERE lastname=LastName AND firstname=FirstName;
+SQLBase.executeQuery(con,"SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ,lastname,=LastName AND ,firstname,=FirstName");
 }
 
 search_property_all(String state, String zipcode, String StreetAddress){
-SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
+SQLBase.executeQuery(con,"SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
 Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-(Address.state='state' AND Address.zipcode='zipcode' AND Address.StreetAddress='StreetAddress'));
+(Address.state=,state, AND Address.zipcode=,zipcode, AND Address.StreetAddress=,StreetAddress,))")";
 }
 
 search_property_state(String state){
-SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
+SQLBase.executeQuery(con,"SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
 Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-Address.state='state');
+Address.state=,state,)");
 }
 
 search_property_zipcode(String zipcode){
-SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
+SQLBase.executeQuery(con,"SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
 Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-Address.zipcode='zipcode');
+Address.zipcode=,zipcode,)")";
 }
 
 search_property_streetaddress(String StreetAddress){
-SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
+SQLBase.executeQuery(con,"SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
 Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-Address.StreetAddress='StreetAddress');
+Address.StreetAddress=,StreetAddress,)");
 }
 
 change_offer(String PropertyOfferId, String NewStatus){
-UPDATE Offer SET OfferStatus=’NewStatus’ WHERE Offer.OfferID='PropertyOfferID';
+SQLBase.executeQuery(con,"UPDATE Offer SET OfferStatus=’NewStatus’ WHERE Offer.OfferID=,PropertyOfferID,");
 }
 
+create_offer(String NPropertyID, String NClientTaxID, Int NOfferAmount){
+SQLBase.executeQuery(con, "INSERT INTO Offer(PropertyID, ClientTaxID, OfferAmount, Date)
+VALUES('NPropertyID', 'NClientTaxID', NOfferAmount, now())");
+}
