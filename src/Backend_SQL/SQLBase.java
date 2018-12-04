@@ -1,6 +1,8 @@
+package Backend_SQL;
+
 import java.sql.*;
 
-class SQLBase {
+public class SQLBase {
     public static Connection getConnection() throws SQLException {
         return getConnection(null);
     }
@@ -24,16 +26,4 @@ class SQLBase {
         return DriverManager.getConnection(url, username, password);
     }
 
-    public static ResultSet executeQuery(Connection con, String sql) throws SQLException {
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(sql);
-            stmt.closeOnCompletion();
-        } catch (SQLException e) {
-            System.err.println("Something went wrong.");
-        }
-        return rs;
-    }
 }
