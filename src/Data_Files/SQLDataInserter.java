@@ -1,5 +1,7 @@
 package Data_Files;
 
+import Backend_SQL.SQLConnection;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -13,7 +15,7 @@ class SQLDataInserter{
 		Connection con = null;
 		ResultSet rs = null;
 		try {
-			con = Backend_SQL.SQLBase.getConnection("real_estate");
+			con = SQLConnection.getConnection("real_estate");
 			
 			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(new File(SQLDataInserter.class.getResource("FAKE_ADDRESS.csv").getFile()));
