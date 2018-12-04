@@ -207,9 +207,9 @@ public class UserInterface_Command_Line {
                 if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
                     custMenu(con);
                 } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
-                    staffMenu(con);
-                } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
                     switchOFF();
+                } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
+                    staffMenu(con);
                 }
             }
         }
