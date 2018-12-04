@@ -1,22 +1,19 @@
-package UI;
+package Backend_SQL;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class SQLTest extends SQLBase {
+class SQLTest{
     public static void main(String args[]) {
-        Connection con = null;
+        Connection con;
         ResultSet rs = null;
         List<String> list;
-//        list.add("name");
-//        list.add("heelooo");
         try {
-            con = getConnection("real_estate");
-            rs = executeQuery(con, "SELECT * FROM address;");
+            con = SQLConnection.getConnection("real_estate");
+            rs = Query_Execution.executeQuery(con, "SELECT * FROM address;");
             while (rs.next()) {
+
                 // creating a list to add all the column values at that column.
                 list = new ArrayList<>();
                 list.add(rs.getString(1));
@@ -24,6 +21,7 @@ class SQLTest extends SQLBase {
                 list.add(rs.getString(3));
                 list.add(rs.getString(4));
                 list.add(rs.getString(5));
+
                 System.out.println(list);
             }
             con.close();
@@ -36,6 +34,5 @@ class SQLTest extends SQLBase {
                 System.err.println("Something went REALLY wrong.");
             }
         }
-//        System.out.println(list);
     }
 }
