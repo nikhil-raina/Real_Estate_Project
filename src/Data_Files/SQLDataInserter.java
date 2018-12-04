@@ -8,12 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-class SQLDataInserter extends SQLBase {
+class SQLDataInserter{
 	public static void main(String args[]) throws FileNotFoundException {
 		Connection con = null;
 		ResultSet rs = null;
 		try {
-			con = SQLBase.getConnection("real_estate");
+			con = Backend_SQL.SQLBase.getConnection("real_estate");
 			
 			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(new File(SQLDataInserter.class.getResource("FAKE_ADDRESS.csv").getFile()));
