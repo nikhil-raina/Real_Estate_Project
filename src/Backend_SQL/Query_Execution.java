@@ -14,7 +14,7 @@ public class Query_Execution {
      * @param sql The SELECT Command being executed.
      * @return ResultSet holding the entire table data.
      */
-    static ResultSet executeQuery(Connection con, String sql) {
+    public static ResultSet executeQuery(Connection con, String sql) {
         Statement stmt;
         ResultSet rs = null;
         try {
