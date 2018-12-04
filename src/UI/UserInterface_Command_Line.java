@@ -1,6 +1,12 @@
 package UI;
 
+import Backend_SQL.Query_Execution;
+import Backend_SQL.SQLConnection;
+
 import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -8,6 +14,10 @@ public class UserInterface_Command_Line {
 	static int accessLevel = -1;
 	static String input;
 	static String input2;
+    static Connection con = null;
+    static ResultSet rs = null;
+    final static String schema = "real_estate";
+
 	//-1 is no access
 
 //	String[] actions = {};
@@ -46,7 +56,12 @@ public class UserInterface_Command_Line {
 //                    System.out.println();
 
                     if(input.equalsIgnoreCase("y")){
-                        staffMenu();
+                        try {
+                            con = SQLConnection.getConnection(schema);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        staffMenu(con);
                     } else {
                         System.out.println();
                         System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
@@ -81,7 +96,12 @@ public class UserInterface_Command_Line {
                 youSure();
                 input2 = s.nextLine();
                 if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
-                    custMenu();
+                    try {
+                        con = SQLConnection.getConnection(schema);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    custMenu(con);
                 } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
                     switchOFF();
                 }
@@ -126,7 +146,7 @@ public class UserInterface_Command_Line {
         System.out.println("Please type 'y' for yes, or 'n' for no!");
     }
 
-	static void staffMenu() throws IOException, InterruptedException {
+	static void staffMenu(Connection con) throws IOException, InterruptedException {
 		String desiredAction;
         System.out.println();
 		System.out.println("Welcome to the staff menu!");
@@ -152,6 +172,7 @@ public class UserInterface_Command_Line {
             System.out.println("Where would you like to View the data from:");
             // View the different tables available in the database.
             // Have a function call viewData()
+            viewData(con);
         }
 
         else if(desiredAction.equalsIgnoreCase("2")){
@@ -184,9 +205,9 @@ public class UserInterface_Command_Line {
                 agreement();
                 input2 = s.nextLine();
                 if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
-                    custMenu();
+                    custMenu(con);
                 } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
-                    staffMenu();
+                    staffMenu(con);
                 } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
                     switchOFF();
                 }
@@ -197,7 +218,57 @@ public class UserInterface_Command_Line {
             switchOFF();
         }
     }
-	static void custMenu() throws IOException, InterruptedException {
+
+    static void viewData(Connection con){
+        int count = 0;
+        List<String> list = new ArrayList<>();
+	    try {
+            rs = Query_Execution.executeQuery(con, "SELECT * FROM pg_tables WHERE schemaname='"+schema+"'");
+            System.out.println("--- Tables Present ---");
+            while(rs.next()){
+                count++;
+                String val = rs.getString("tablename");
+                list.add(val);
+                System.out.println("\t("+ count +")\t"+val.toUpperCase());
+            }
+            System.out.println();
+            System.out.println("Enter the Table number that you wish to view:");
+            String table;
+            while(true){
+                input = s.nextLine();
+                int result = Integer.parseInt(input);
+                if (1 <= result && result <= count) {
+                    table = list.get(result-1);
+                    rs = Query_Execution.executeQuery(con, "SELECT * FROM " + table);
+                    break;
+                }
+                else
+                    System.out.println("Wrong Input.\nTry again\n");
+            }
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+
+            String columnCount[] = new String[columnsNumber+1];
+            String align = "";
+            for(int i = 1; i <=columnsNumber; i++){
+                columnCount[i-1] = rsmd.getColumnName(i).toUpperCase();
+                align = align + "%20s|";
+            }
+            System.out.format(align + "\n",columnCount);
+            System.out.println();
+            while(rs.next()){
+                for (int i = 1; i<=columnsNumber; i++){
+                    columnCount[i-1] = rs.getString(i);
+                }
+                System.out.format(align + "\n",columnCount);
+            }
+            System.exit(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+	static void custMenu(Connection con) throws IOException, InterruptedException {
 		String desiredAction = "";
 
 		System.out.println("Welcome to the customer menu!");
@@ -222,7 +293,7 @@ public class UserInterface_Command_Line {
 			System.out.println("Well, would you like to try again?");
 			System.out.println("Please type 'y' for yes, or 'n' for no!");
 			if(s.nextLine().equals("y")) {
-				custMenu(); //is this recursion?
+				custMenu(con); //is this recursion?
 			}
 			else {
 				System.out.println("\n\n We're happy to have been here to help you, if you need anything else, be " +
