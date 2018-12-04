@@ -15,10 +15,12 @@ class SQLTest{
             while (rs.next()) {
 
                 // creating a list to add all the column values at that column.
+                // string, column header names or column position number, starting from 1, can be used in order to
+                // get the required columns.
                 list = new ArrayList<>();
-                list.add(rs.getString(1));
-                list.add(rs.getString(2));
-                list.add(rs.getString(3));
+                list.add(rs.getString("streetaddress"));
+                list.add(rs.getString("city"));
+                list.add(rs.getString("state"));
                 list.add(rs.getString(4));
                 list.add(rs.getString(5));
 
