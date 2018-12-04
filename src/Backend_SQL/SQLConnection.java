@@ -2,7 +2,7 @@ package Backend_SQL;
 
 import java.sql.*;
 
-public class SQLBase {
+public class SQLConnection {
     public static Connection getConnection() throws SQLException {
         return getConnection(null);
     }
