@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class UserInterface_Command_Line {
 	static int accessLevel = -1;
 	static String input;
+	static String input2;
 	//-1 is no access
 
 //	String[] actions = {};
@@ -42,12 +43,12 @@ public class UserInterface_Command_Line {
                     System.out.println("Would you like to enter the staff menu?");
                     agreement();
                     input = s.nextLine();
-                    System.out.println();
+//                    System.out.println();
 
                     if(input.equalsIgnoreCase("y")){
                         staffMenu();
                     } else {
-//                        System.out.println();
+                        System.out.println();
                         System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
                         System.out.println("HAVE A WONDERFUL DAY!\n");
                         System.exit(0);
@@ -71,14 +72,20 @@ public class UserInterface_Command_Line {
 			System.out.println("Hello Customer! Welcome!");
 			System.out.println("We hope you're having a splendid day!");
 			System.out.println();
-			System.out.println();
+//			System.out.println();
 
-			customerTaunt();
-            if(s.nextLine().equalsIgnoreCase("1")){
-			    custMenu();
-            } else {
-                switchOFF();
-            }
+			while(true){
+                System.out.println();
+                enterCustomerTaunt();
+                input = s.nextLine();
+                youSure();
+                input2 = s.nextLine();
+                if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
+                    custMenu();
+                } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
+                    switchOFF();
+                }
+		    }
 		}
 
 	}
@@ -95,9 +102,9 @@ public class UserInterface_Command_Line {
         System.exit(0);
     }
 
-	static void customerTaunt(){
-        System.out.println("Would you like to enter the Customer Menu (1) in order to explore our bountiful selection,\n" +
-                "and get the information you might need or EXIT (2) ?");
+	static void enterCustomerTaunt(){
+        System.out.println("Would you like to enter the Customer Menu (1) to explore our " +
+                "bountiful selection, or EXIT (2) ?");
     }
 
 	static void youSure(){
@@ -110,6 +117,8 @@ public class UserInterface_Command_Line {
         System.out.println("(3) Update data");
         System.out.println("(4) Delete data");
         System.out.println("(5) Just looking around...");
+        System.out.println("(6) Exit");
+        System.out.println();
 
     }
 
@@ -119,7 +128,7 @@ public class UserInterface_Command_Line {
 
 	static void staffMenu() throws IOException, InterruptedException {
 		String desiredAction;
-
+        System.out.println();
 		System.out.println("Welcome to the staff menu!");
 		System.out.println("What would you like to do today:");
         printStaffMenu();
@@ -127,49 +136,67 @@ public class UserInterface_Command_Line {
 		youSure();
 		agreement();
 		input = s.nextLine();
+        System.out.println();
 
 		while(input.equalsIgnoreCase("n")) {
             System.out.println("Choose again:");
             printStaffMenu();
             desiredAction = s.nextLine();
+            youSure();
             agreement();
             input = s.nextLine();
-            if(input.equalsIgnoreCase("y")){
-                if (input.equalsIgnoreCase("5")) {
-                    System.out.println("\nWe're happy to have been here to help you do your job, " +
-                            "if you need anything else, be sure to use our tool again later!");
-                    while (true) {
-                        System.out.println();
-                        customerTaunt();
-                        input = s.nextLine();
-                        youSure();
-                        String input2 = s.nextLine();
-                        if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
-                            custMenu();
-                        } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
-                            switchOFF();
-                        }
-                    }
-                }
+            System.out.println();
+        }
 
-                else if(input.equalsIgnoreCase("1")){
+        if(desiredAction.equalsIgnoreCase("1")){
+            System.out.println("Where would you like to View the data from:");
+            // View the different tables available in the database.
+            // Have a function call viewData()
+        }
 
-                }
+        else if(desiredAction.equalsIgnoreCase("2")){
+            System.out.println("Where would you like to Insert the data:");
+            // View the different tables available in the database to INSERT data.
+            // Have a function call insertData()
+        }
 
-                else if(input.equalsIgnoreCase("2")){
+        else if(desiredAction.equalsIgnoreCase("3")){
+            System.out.println("Where would you like to Update the data:");
+            // View the different tables available in the database to UPDATE some data.
+            // Have a function call updateData()
+        }
 
-                }
+        else if(desiredAction.equalsIgnoreCase("4")){
+            System.out.println("Where would you like to Delete the data:");
+            // View the different tables available in the database to Delete data.
+            // Have a function call deleteData()
+        }
 
-                else if(input.equalsIgnoreCase("3")){
-
-                }
-
-                else if(input.equalsIgnoreCase("4")){
-
+        else if (desiredAction.equalsIgnoreCase("5")) {
+            System.out.println("We're happy to have been here to help you do your job, " +
+                    "if you need anything else, be sure to use our tool again later!");
+            while (true) {
+                System.out.println();
+                enterCustomerTaunt();
+                System.out.println("If you want, you can go back to the Staff Menu (3).");
+                input = s.nextLine();
+                youSure();
+                agreement();
+                input2 = s.nextLine();
+                if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
+                    custMenu();
+                } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
+                    staffMenu();
+                } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
+                    switchOFF();
                 }
             }
         }
-	}
+
+        else if(desiredAction.equalsIgnoreCase("6")){
+            switchOFF();
+        }
+    }
 	static void custMenu() throws IOException, InterruptedException {
 		String desiredAction = "";
 
@@ -206,6 +233,7 @@ public class UserInterface_Command_Line {
 
 		}
 	}
+
 	static void custCommandList() {
 		//todo: prints customer commands.
 	}
