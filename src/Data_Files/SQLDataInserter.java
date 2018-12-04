@@ -16,7 +16,7 @@ class SQLDataInserter{
 		ResultSet rs = null;
 		try {
 			con = SQLConnection.getConnection("real_estate");
-			
+			// Check statement
 			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(new File(SQLDataInserter.class.getResource("FAKE_ADDRESS.csv").getFile()));
 
