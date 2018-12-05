@@ -125,21 +125,21 @@ public class UserInterface_Command_Line {
 
 	}
 
-	static void switchOFF(){
+	private static void switchOFF(){
         System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
         System.exit(0);
     }
 
-	static void enterCustomerTaunt(){
+	private static void enterCustomerTaunt(){
         System.out.println("Would you like to enter the Customer Menu (1) to explore our " +
                 "bountiful selection, or EXIT (2) ?");
     }
 
-	static void youSure(){
+	private static void youSure(){
         System.out.println("Are you certain with your choice?");
     }
 
-	static void printStaffMenu(){
+	private static void printStaffMenu(){
         System.out.println("(1) View data");
         System.out.println("(2) Insert data");
         System.out.println("(3) Update data");
@@ -150,11 +150,11 @@ public class UserInterface_Command_Line {
 
     }
 
-    static void agreement(){
+    private static void agreement(){
         System.out.println("Please type 'y' for yes, or 'n' for no!");
     }
 
-	static void staffMenu(Connection con) throws IOException, InterruptedException {
+	private static void staffMenu(Connection con) throws IOException, InterruptedException {
 		String desiredAction;
         System.out.println();
 		System.out.println("Welcome to the staff menu!");
@@ -233,7 +233,7 @@ public class UserInterface_Command_Line {
 //        return 0;
 //    }
 
-    static void viewData_Specify(Connection con, List<String> list)throws IOException, InterruptedException{
+    private static void viewData_Specify(Connection con, List<String> list)throws IOException, InterruptedException{
 	    while(true){
             String result;
             System.out.println("--- Tables Present ---");
@@ -270,7 +270,7 @@ public class UserInterface_Command_Line {
         }
     }
 
-    static void viewData(Connection con)throws IOException, InterruptedException{
+    private static void viewData(Connection con)throws IOException, InterruptedException{
         int count = 0;
         List<String> list = new ArrayList<>();
         while(true) {
@@ -343,7 +343,7 @@ public class UserInterface_Command_Line {
         }
     }
 
-    static void dataAction(String str, Connection con) throws IOException, InterruptedException {
+    private static void dataAction(String str, Connection con) throws IOException, InterruptedException {
         while (true) {
             System.out.println("Do you want to continue "+ str +" the data?");
             agreement();
@@ -359,7 +359,7 @@ public class UserInterface_Command_Line {
         }
     }
 
-    static void staffContinueQuestion(Connection con) throws InterruptedException, IOException {
+    private static void staffContinueQuestion(Connection con) throws InterruptedException, IOException {
         while(true) {
             System.out.println("Do you want to return to the Staff Menu (y) or EXIT (n)?");
             agreement();
@@ -377,7 +377,7 @@ public class UserInterface_Command_Line {
         }
     }
 
-	static void custMenu(Connection con) throws IOException, InterruptedException {
+	private static void custMenu(Connection con) throws IOException, InterruptedException {
 		String desiredAction = "";
 
 		System.out.println("Welcome to the customer menu!");
