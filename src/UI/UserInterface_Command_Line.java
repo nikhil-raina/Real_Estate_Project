@@ -13,12 +13,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class UserInterface_Command_Line {
-	static int accessLevel = -1;
-	static String input;
-	static String input2;
-    static Connection con = null;
-    static ResultSet rs = null;
-    final static String schema = "real_estate";
+	private static int accessLevel = -1;
+	private static String input;
+	private static String input2;
+    private static Connection con = null;
+    private static ResultSet rs = null;
+    private final static String schema = "real_estate";
 
 	//-1 is no access
 
@@ -26,7 +26,13 @@ public class UserInterface_Command_Line {
 	static Scanner s = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
+        try {
+            con = SQLConnection.getConnection(schema);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        viewData(con);
+	/*	System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
 		System.out.println("Do you have administrator credentials?");
 		agreement();
 		input = s.nextLine();
@@ -109,7 +115,7 @@ public class UserInterface_Command_Line {
                 }
 		    }
 		}
-
+*/
 	}
 	//accessLevel
 	//staff/mgr/admin = 9001
@@ -160,7 +166,6 @@ public class UserInterface_Command_Line {
 		input = s.nextLine();
         System.out.println();
 
-//        if(1 <= Integer.parseInt(desiredAction) && Integer.parseInt(desiredAction) <= 6){
         while(input.equalsIgnoreCase("n") ||
                 !(1 <= Integer.parseInt(desiredAction)) ||
                 !(Integer.parseInt(desiredAction) <= 6)) {
@@ -214,52 +219,161 @@ public class UserInterface_Command_Line {
         }
 	}
 
-    static void viewData(Connection con){
+//	static int reasonYouSure(){
+//        agreement();
+//        input = s.nextLine();
+//        System.out.println();
+//        youSure();
+//        agreement();
+//        input2 = s.nextLine();
+//        if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y")) {
+//            return 1;
+//        } else if (input.equalsIgnoreCase("n") && input2.equalsIgnoreCase("n"))
+//            return -1;
+//        return 0;
+//    }
+
+    static void viewData_Specify(Connection con, List<String> list)throws IOException, InterruptedException{
+	    while(true){
+            String result;
+            System.out.println("--- Tables Present ---");
+	        for(int i = 1; i <= list.size(); i++){
+	            result = list.get(i - 1);
+                System.out.println("\t(" + i + ")\t" + result.toUpperCase());
+            }
+            System.out.println();
+            System.out.print("Choose the Table: ");
+            input = s.nextLine();
+            result = list.get(Integer.parseInt(input) - 1);
+            rs = Query_Execution.executeQuery(con, "SELECT * FROM " + result);
+            System.out.println();
+            System.out.println("Enter your specification, either as a list of numbers separated by commas or individually");
+            ResultSetMetaData rsmd = null;
+            try {
+                rsmd = rs.getMetaData();
+                int columnsNumber = rsmd.getColumnCount();
+                List<String> columnNames = new ArrayList<>();
+                String columnCount[] = new String[columnsNumber + 1];
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnNames.add(rsmd.getColumnName(i));
+                    System.out.println("\t(" + i + ")\t" + columnNames.get(i-1).toUpperCase());
+                }
+                System.out.print("Selection: ");
+                input = s.nextLine();
+                String selection[] = input.split(",\n");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+    static void viewData(Connection con)throws IOException, InterruptedException{
         int count = 0;
         List<String> list = new ArrayList<>();
-	    try {
-            rs = Query_Execution.executeQuery(con, "SELECT * FROM pg_tables WHERE schemaname='"+schema+"'");
-            System.out.println("--- Tables Present ---");
-            while(rs.next()){
-                count++;
-                String val = rs.getString("tablename");
-                list.add(val);
-                System.out.println("\t("+ count +")\t"+val.toUpperCase());
-            }
-            System.out.println();
-            System.out.println("Enter the Table number that you wish to view:");
-            String table;
-            while(true){
+        while(true) {
+            try {
+                rs = Query_Execution.executeQuery(con, "SELECT * FROM pg_tables WHERE schemaname='" + schema + "'");
+                System.out.println("--- Tables Present ---");
+                while (rs.next()) {
+                    count++;
+                    String val = rs.getString("tablename");
+                    list.add(val);
+                    System.out.println("\t(" + count + ")\t" + val.toUpperCase());
+                }
+                System.out.println();
+                System.out.println("Enter the Table number that you wish to view:");
+                String table;
+                while (true) {
+                    input = s.nextLine();
+                    int result = Integer.parseInt(input);
+                    if (1 <= result && result <= count) {
+                        table = list.get(result - 1);
+                        rs = Query_Execution.executeQuery(con, "SELECT * FROM " + table);
+                        break;
+                    } else
+                        System.out.println("Wrong Input.\nTry again\n");
+                }
+                System.out.println("How much data would you like to view? (Ex. 5, 10, 100, 782, all) and so on...");
                 input = s.nextLine();
-                int result = Integer.parseInt(input);
-                if (1 <= result && result <= count) {
-                    table = list.get(result-1);
-                    rs = Query_Execution.executeQuery(con, "SELECT * FROM " + table);
-                    break;
+                count = -1;
+                if (!input.equalsIgnoreCase("all")) {
+                    count = Integer.parseInt(input);
                 }
-                else
-                    System.out.println("Wrong Input.\nTry again\n");
-            }
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
+                ResultSetMetaData rsmd = rs.getMetaData();
+                int columnsNumber = rsmd.getColumnCount();
 
-            String columnCount[] = new String[columnsNumber+1];
-            String align = "";
-            for(int i = 1; i <=columnsNumber; i++){
-                columnCount[i-1] = rsmd.getColumnName(i).toUpperCase();
-                align = align + "%20s|";
-            }
-            System.out.format(align + "\n",columnCount);
-            System.out.println();
-            while(rs.next()){
-                for (int i = 1; i<=columnsNumber; i++){
-                    columnCount[i-1] = rs.getString(i);
+                String columnCount[] = new String[columnsNumber + 1];
+                String align = "";
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnCount[i - 1] = rsmd.getColumnName(i).toUpperCase();
+                    align = align + "%10s\t\t|\t\t";
                 }
-                System.out.format(align + "\n",columnCount);
+                System.out.format(align + "\n", (Object[]) columnCount);
+//                String columnHeaders[] = columnCount;
+                System.out.println();
+                int repeat = 0;
+                while (rs.next()) {
+                    if (repeat != count) {
+                        for (int i = 1; i <= columnsNumber; i++) {
+                            columnCount[i - 1] = rs.getString(i);
+                        }
+                        repeat++;
+                    } else
+                        break;
+                    // relays all the columns with all the data
+                    System.out.format(align + "\n", (Object[]) columnCount);
+                }
+
+                System.out.println("Do you have any specifications?");
+                agreement();
+                input = s.nextLine();
+                if(input.equalsIgnoreCase("y")){
+                    System.out.println();
+                    viewData_Specify(con, list);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            System.exit(0);
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            dataAction("VIEWING", con);
+        }
+    }
+
+    static void dataAction(String str, Connection con) throws IOException, InterruptedException {
+        while (true) {
+            System.out.println("Do you want to continue "+ str +" the data?");
+            agreement();
+            input = s.nextLine();
+            System.out.println();
+            youSure();
+            agreement();
+            input2 = s.nextLine();
+            if (input.equalsIgnoreCase("n") && input2.equalsIgnoreCase("y"))
+                staffContinueQuestion(con);
+            else if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y"))
+                break;
+        }
+    }
+
+    static void staffContinueQuestion(Connection con) throws InterruptedException, IOException {
+        while(true) {
+            System.out.println("Do you want to return to the Staff Menu (y) or EXIT (n)?");
+            agreement();
+            input = s.nextLine();
+            System.out.println();
+            youSure();
+            agreement();
+            input2 = s.nextLine();
+            if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y")) {
+                staffMenu(con);
+            } else if (input.equalsIgnoreCase("n") && input2.equalsIgnoreCase("n"))
+                System.exit(0);
+            else
+                return;
         }
     }
 
@@ -307,14 +421,14 @@ public class UserInterface_Command_Line {
 		return "TODO: SALE INFO";
 	}
 	public String getCustomerInfo(int taxID) {
-		return new String();
+		return "";
 		//if taxID is seller/buyer
 		//	return info
 		//else return null/error
 	}
 	public String getOfficeManager(int officeID) {
 		//return as formatted taxID
-		return new String();
+		return "";
 	}
 	public String getOfficeInfo(int officeID) {
 		return null;
