@@ -160,7 +160,10 @@ public class UserInterface_Command_Line {
 		input = s.nextLine();
         System.out.println();
 
-		while(input.equalsIgnoreCase("n")) {
+//        if(1 <= Integer.parseInt(desiredAction) && Integer.parseInt(desiredAction) <= 6){
+        while(input.equalsIgnoreCase("n") ||
+                !(1 <= Integer.parseInt(desiredAction)) ||
+                !(Integer.parseInt(desiredAction) <= 6)) {
             System.out.println("Choose again:");
             printStaffMenu();
             desiredAction = s.nextLine();
@@ -175,27 +178,19 @@ public class UserInterface_Command_Line {
             // View the different tables available in the database.
             // Have a function call viewData()
             viewData(con);
-        }
-
-        else if(desiredAction.equalsIgnoreCase("2")){
+        } else if(desiredAction.equalsIgnoreCase("2")){
             System.out.println("Where would you like to Insert the data:");
             // View the different tables available in the database to INSERT data.
             // Have a function call insertData()
-        }
-
-        else if(desiredAction.equalsIgnoreCase("3")){
+        } else if(desiredAction.equalsIgnoreCase("3")){
             System.out.println("Where would you like to Update the data:");
             // View the different tables available in the database to UPDATE some data.
             // Have a function call updateData()
-        }
-
-        else if(desiredAction.equalsIgnoreCase("4")){
+        } else if(desiredAction.equalsIgnoreCase("4")){
             System.out.println("Where would you like to Delete the data:");
             // View the different tables available in the database to Delete data.
             // Have a function call deleteData()
-        }
-
-        else if (desiredAction.equalsIgnoreCase("5")) {
+        } else if (desiredAction.equalsIgnoreCase("5")) {
             System.out.println("We're happy to have been here to help you do your job, " +
                     "if you need anything else, be sure to use our tool again later!");
             while (true) {
@@ -214,12 +209,10 @@ public class UserInterface_Command_Line {
                     staffMenu(con);
                 }
             }
-        }
-
-        else if(desiredAction.equalsIgnoreCase("6")){
+        } else if(desiredAction.equalsIgnoreCase("6")){
             switchOFF();
         }
-    }
+	}
 
     static void viewData(Connection con){
         int count = 0;
