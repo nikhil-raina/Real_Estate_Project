@@ -326,8 +326,12 @@ public class UserInterface_Command_Line {
 		//output: 0 for success, -1 for error.
 	}
 
+    static void insertData(Connection con) {
 
+    }
 }
+
+
 
 //package Data_Files;
 //
