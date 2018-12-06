@@ -32,7 +32,7 @@ public class UserInterface_Command_Line {
             e.printStackTrace();
         }
         viewData(con);
-	/*	System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
+		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
 		System.out.println("Do you have administrator credentials?");
 		agreement();
 		input = s.nextLine();
@@ -115,7 +115,7 @@ public class UserInterface_Command_Line {
                 }
 		    }
 		}
-*/
+
 	}
 	//accessLevel
 	//staff/mgr/admin = 9001
@@ -260,7 +260,7 @@ public class UserInterface_Command_Line {
                 }
                 System.out.print("Selection: ");
                 input = s.nextLine();
-                String selection[] = input.split(",\n");
+                String selection[] = input.split(",\n ");
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -268,6 +268,16 @@ public class UserInterface_Command_Line {
 
 
         }
+    }
+
+    private static int viewDataList(){
+        System.out.println("How much data would you like to view? (Ex. 5, 10, 100, 782, all) and so on...");
+        input = s.nextLine();
+        int count = -1;
+        if (!input.equalsIgnoreCase("all")) {
+            count = Integer.parseInt(input);
+        }
+        return count;
     }
 
     private static void viewData(Connection con)throws IOException, InterruptedException{
@@ -296,12 +306,7 @@ public class UserInterface_Command_Line {
                     } else
                         System.out.println("Wrong Input.\nTry again\n");
                 }
-                System.out.println("How much data would you like to view? (Ex. 5, 10, 100, 782, all) and so on...");
-                input = s.nextLine();
-                count = -1;
-                if (!input.equalsIgnoreCase("all")) {
-                    count = Integer.parseInt(input);
-                }
+                count = viewDataList();
                 ResultSetMetaData rsmd = rs.getMetaData();
                 int columnsNumber = rsmd.getColumnCount();
 
