@@ -3,6 +3,7 @@ package UI;
 import Backend_SQL.Query_Execution;
 import Backend_SQL.SQLConnection;
 
+import javax.management.Query;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -326,8 +327,48 @@ public class UserInterface_Command_Line {
 		//output: 0 for success, -1 for error.
 	}
 
-    static void insertData(Connection con) {
+	static int chooseInsertList() {
+	    boolean valid = false;
+	    int choice = 0;
 
+        System.out.println("(1) New Property");
+        System.out.println("(2) New Client");
+        System.out.println("(3) New Agent");
+        System.out.println("(4) New Manager");
+        System.out.println("(5) New Offer");
+        System.out.println("(6) New Office");
+        while(valid == false) {
+            choice = s.nextInt();
+            if(choice < 7 && choice > 0)
+                valid = true;
+            else {
+                System.out.println("Invalid value entered. Please enter again.");
+            }
+        }
+        return choice;
+    }
+
+    static void insertData(Connection con) {
+        ResultSet rs = null;
+        String sql = "";
+        System.out.println("What would you like to insert?");
+        int insertType = chooseInsertList();
+        switch(insertType) {
+            case 1:
+                //Insert new property
+            case 2:
+                //Insert new client
+            case 3:
+                //Insert new agent
+            case 4:
+                //Insert new manager
+            case 5:
+                //Insert new offer
+            case 6:
+                //Insert new office
+            default:
+                //something has gone wrong...
+        }
     }
 }
 
