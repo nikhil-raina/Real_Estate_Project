@@ -334,12 +334,13 @@ public class UserInterface_Command_Line {
         System.out.println("(1) New Property");
         System.out.println("(2) New Client");
         System.out.println("(3) New Agent");
-        System.out.println("(4) New Manager");
-        System.out.println("(5) New Offer");
-        System.out.println("(6) New Office");
+        // should be added at the same time as office to keep 1:1 rule
+        // System.out.println("(4) New Manager");
+        System.out.println("(4) New Offer");
+        System.out.println("(5) New Office");
         while(valid == false) {
             choice = s.nextInt();
-            if(choice < 7 && choice > 0)
+            if(choice < 6 && choice > 0)
                 valid = true;
             else {
                 System.out.println("Invalid value entered. Please enter again.");
@@ -349,7 +350,6 @@ public class UserInterface_Command_Line {
     }
 
     static void insertData(Connection con) {
-        ResultSet rs = null;
         String sql = "";
         System.out.println("What would you like to insert?");
         int insertType = chooseInsertList();
@@ -361,14 +361,73 @@ public class UserInterface_Command_Line {
             case 3:
                 //Insert new agent
             case 4:
-                //Insert new manager
-            case 5:
                 //Insert new offer
-            case 6:
+            case 5:
                 //Insert new office
             default:
                 //something has gone wrong...
         }
+    }
+
+    static void insertNewProp(Connection con) {
+        //get taxid of agent
+        //get taxid of seller
+        //get list price
+        //get description?
+        //get area (sq ft)
+        //get address details
+        //blank sell date for now
+        //can now insert property
+    }
+
+    static void insertNewClient(Connection con) {
+        //get first
+        //get last
+        //get taxid
+        //get phone num
+        //get address details
+        //get agent taxid
+        //can now insert client
+    }
+
+    static void insertNewAgent(Connection con) {
+        //get first
+        //get last
+        //get taxid
+        //get phone num
+        //get address details
+        //get salary
+        //get primary office id
+        //get commission percentage
+        //get taxid of manager
+        //can now insert agent
+    }
+
+    static void insertNewManager(Connection con) {
+        //get first
+        //get last
+        //get taxid
+        //get phone num
+        //get address details
+        //get salary
+        //should be called from office creation to get office id
+        //can now insert manager
+    }
+
+    static void insertNewOffer(Connection con) {
+        //property made on
+        //get current date value from the sql
+        //tax ID of client
+        //offer amount
+        //no need to put in status, default to waiting
+        //can now insert offer
+    }
+
+    static void insertNewOffice(Connection con) {
+	    //new manager?
+        //add their taxID
+        //get address details
+        //new office can be created
     }
 }
 
