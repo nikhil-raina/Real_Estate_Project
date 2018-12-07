@@ -32,7 +32,7 @@ public class UserInterface_Command_Line {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        viewData(con);
+//        viewData(con);
 		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
 		System.out.println("Do you have administrator credentials?");
 		agreement();
