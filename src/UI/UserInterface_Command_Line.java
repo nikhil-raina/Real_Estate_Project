@@ -27,12 +27,14 @@ public class UserInterface_Command_Line {
 	static Scanner s = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		System.out.println(" ________________________________________________________________");
-		System.out.println("|----------------------------------------------------------------|");
-		System.out.println("| Welcome to the Premium Real Estate Company database UI!        |");
-		System.out.println("|----------------------------------------------------------------|");
-
-		System.out.println("|    Do you have staff (admin/manager/agent) credentials?        |");
+        try {
+            con = SQLConnection.getConnection(schema);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        viewData(con);
+		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
+		System.out.println("Do you have administrator credentials?");
 		agreement();
 		input = s.nextLine();
         System.out.println();
