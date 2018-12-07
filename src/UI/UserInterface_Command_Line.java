@@ -127,12 +127,15 @@ public class UserInterface_Command_Line {
 	//accessLevel
 	//staff/mgr/admin = 9001
 	//customer (read only) = -1
-	public int getAccessLevel(String taxID){
+	public int getAccessLevel(){
 		return accessLevel;
-
 	}
 
-	private static void switchOFF(){
+    public static void setAccessLevel(int accessLevel) {
+        UserInterface_Command_Line.accessLevel = accessLevel;
+    }
+
+    private static void switchOFF(){
         System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
         System.exit(0);
     }
@@ -162,7 +165,13 @@ public class UserInterface_Command_Line {
     }
 
 	private static void staffMenu(Connection con) throws IOException, InterruptedException {
-		String desiredAction;
+		if(accessLevel == - 1){
+            System.out.println("Unauthorised Entry.");
+            System.out.println("Access Denied.");
+            System.out.println();
+		    return;
+        }
+	    String desiredAction;
         System.out.println();
 		System.out.println("Welcome to the staff menu!");
 		System.out.println("What would you like to do today:");
@@ -227,29 +236,19 @@ public class UserInterface_Command_Line {
         }
 	}
 
-//	static int reasonYouSure(){
-//        agreement();
-//        input = s.nextLine();
-//        System.out.println();
-//        youSure();
-//        agreement();
-//        input2 = s.nextLine();
-//        if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y")) {
-//            return 1;
-//        } else if (input.equalsIgnoreCase("n") && input2.equalsIgnoreCase("n"))
-//            return -1;
-//        return 0;
-//    }
-
-    private static void viewData_Specify(Connection con, List<String> list)throws IOException, InterruptedException{
+    private static void displayTable(List<String> list){
         String result;
-        int count=0;
-        System.out.println("--- Tables Present ---");
+	    System.out.println("--- Tables Present ---");
         for(int i = 1; i <= list.size(); i++){
             result = list.get(i - 1);
             System.out.println("\t(" + i + ")\t" + result.toUpperCase());
-            count = i;
         }
+    }
+
+    private static void viewData_Specify(Connection con, List<String> list)throws IOException, InterruptedException{
+        String result;
+        int count = list.size();
+        displayTable(list);
         count++;
         System.out.println("\t(" + count + ")\t" + "staff menu".toUpperCase());
         count++;
@@ -263,8 +262,6 @@ public class UserInterface_Command_Line {
             custMenu(con);
         }
         result = list.get(Integer.parseInt(input) - 1);
-//        rs = Query_Execution.executeQuery(con, "SELECT * FROM " + result);
-//        rs = tableSelection(result, con);
             while(true){
                 rs = Query_Execution.executeQuery(con, "SELECT * FROM " + result);
                 System.out.println();
@@ -274,7 +271,6 @@ public class UserInterface_Command_Line {
                     rsmd = rs.getMetaData();
                     int columnsNumber = rsmd.getColumnCount();
                     List<String> columnNames = new ArrayList<>();
-//                    String columnCount[] = new String[columnsNumber + 1];
                     for (int i = 1; i <= columnsNumber; i++) {
                         columnNames.add(rsmd.getColumnName(i));
                         System.out.println("\t(" + i + ")\t" + columnNames.get(i-1).toUpperCase());
@@ -321,11 +317,14 @@ public class UserInterface_Command_Line {
                             viewData_Specify(con, list);
                         } else if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
                             staffMenu(con);
+                        } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
+                            custMenu(con);
+                        } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
+                            completeFilter(con, list);
                         }
                         System.out.println("Wrong Formulation");
                         System.out.println();
                     }
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -409,6 +408,10 @@ public class UserInterface_Command_Line {
 
             dataAction("VIEWING", con);
         }
+    }
+
+    private static void completeFilter(Connection con, List<String> list){
+
     }
 
     private static void dataAction(String str, Connection con) throws IOException, InterruptedException {
