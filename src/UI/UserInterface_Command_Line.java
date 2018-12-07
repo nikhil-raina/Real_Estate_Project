@@ -183,6 +183,7 @@ public class UserInterface_Command_Line {
             System.out.println("Where would you like to Insert the data:");
             // View the different tables available in the database to INSERT data.
             // Have a function call insertData()
+            insertData(con);
         } else if(desiredAction.equalsIgnoreCase("3")){
             System.out.println("Where would you like to Update the data:");
             // View the different tables available in the database to UPDATE some data.
@@ -356,6 +357,7 @@ public class UserInterface_Command_Line {
         switch(insertType) {
             case 1:
                 //Insert new property
+                insertNewProp(con);
             case 2:
                 //Insert new client
             case 3:
@@ -370,6 +372,77 @@ public class UserInterface_Command_Line {
     }
 
     static void insertNewProp(Connection con) {
+	    s.nextLine();
+
+	    System.out.print("Enter the tax id of the new property's listed agent: ");
+	    String agentID = s.nextLine();
+
+	    System.out.print("Enter the tax id of the property's seller: ");
+	    String sellerID = s.nextLine();
+
+	    System.out.print("Enter the listing price: ");
+	    int listPrice = s.nextInt();
+
+	    s.nextLine();
+	    System.out.print("Enter the property's description: ");
+	    String desc = s.nextLine();
+
+	    System.out.print("Enter the property's area (in square feet): ");
+	    int area = s.nextInt();
+
+	    s.nextLine();
+	    System.out.print("Enter the property's address: ");
+	    String address = s.nextLine();
+
+	    System.out.print("Enter the property's city: ");
+	    String city = s.nextLine();
+
+	    System.out.print("Enter the property's state abbreviation: ");
+	    String state = s.nextLine();
+
+	    System.out.print("Enter the property's ZIP code: ");
+	    String zip = s.nextLine();
+
+	    try {
+	        int addressid = 0;
+
+	        rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
+	        if(rs.next())
+                addressid = rs.getInt("newID");
+
+            PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
+            addressPS.setString(1, address);
+            addressPS.setString(2, city);
+            addressPS.setString(3, state);
+            addressPS.setString(4, zip);
+            addressPS.setInt(5, addressid);
+            addressPS.execute();
+
+            int propertyid = 0;
+
+            rs = Query_Execution.executeQuery(con, "SELECT MAX(propertyid)+1 FROM property;");
+            if(rs.next()) {
+                propertyid = rs.getInt(1);
+            }
+
+            PreparedStatement propPS = con.prepareStatement("INSERT INTO property VALUES(?, ?, ?, ?, ?, ?, ?, ?);");
+            propPS.setInt(1, propertyid);
+            propPS.setString(2, agentID);
+            propPS.setString(3, sellerID);
+            propPS.setInt(4, listPrice);
+            propPS.setString(5, desc);
+            propPS.setInt(6, area);
+            propPS.setInt(7, addressid);
+            propPS.setDate(8, null);
+            propPS.execute();
+
+            System.out.println("Property " + propertyid + " inserted!");
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Could not insert new property.");
+            System.out.println("Error: " + e.getMessage());
+        }
         //get taxid of agent
         //get taxid of seller
         //get list price
@@ -379,6 +452,16 @@ public class UserInterface_Command_Line {
         //blank sell date for now
         //can now insert property
     }
+
+//    String create_client(String zipcode, String city, String streetaddress, String state, String FirstName, String LastName, String PhoneNumber, String TaxID, String AgentTaxID){
+//        return "INSERT INTO Address(State, Zipcode, City, Streetaddress, AddressID) " +
+//                "VALUES(" + state + ", " + zipcode + ", " + city + ", " + streetaddress +
+//                ", SELECT MAX(addressid)+1 FROM address);\n " +
+//                "INSERT INTO Person(TaxID, FirstName, LastName, PhoneNumber) " +
+//                "VALUES(" + TaxID + ", " + FirstName + ", " + LastName + ", " + PhoneNumber + ");\n" +
+//                "INSERT INTO CLIENT(taxid, agenttaxid) " +
+//                "VALUES(" + TaxID + ", " + AgentTaxID + ");";
+//    }
 
     static void insertNewClient(Connection con) {
         //get first
