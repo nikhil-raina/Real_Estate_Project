@@ -32,90 +32,96 @@ public class UserInterface_Command_Line {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        viewData(con);
-//		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
-//		System.out.println("Do you have administrator credentials?");
-//		agreement();
-//		input = s.nextLine();
-//        System.out.println();
-//
-//		// limit of tries for password entry
-//		int count = 3;
-//
-//		// generating the Staff ID. Maximum limit is 20000
-//		Random num = new Random();
-//        int staffID = num.nextInt(20000);
-//
-//        if(input.equalsIgnoreCase("y")){
-////            String password = "maximum_mior";
-//            String password = "123";
-//            while(count != 0) {
-//                System.out.println("Please enter your administration credentials!");
-//                String attemptedPassword = s.nextLine();
-//                if(attemptedPassword.equals(password)) {
-//                    accessLevel = 9001;
+//        viewData(con);
+		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
+		System.out.println("Do you have administrator credentials?");
+		agreement();
+		input = s.nextLine();
+        System.out.println();
+
+		// limit of tries for password entry
+		int count = 3;
+
+		// generating the Staff ID. Maximum limit is 20000
+		Random num = new Random();
+        int staffID = num.nextInt(20000);
+
+        if(input.equalsIgnoreCase("y")){
+//            String password = "maximum_mior";
+            String password = "123";
+            while(count != 0) {
+                System.out.println("Please enter your administration credentials!");
+                String attemptedPassword = s.nextLine();
+                if(attemptedPassword.equals(password)) {
+                    accessLevel = 9001;
+                    System.out.println();
+                    System.out.println("-------------- Access has been granted --------------");
+                    System.out.println("Welcome staff member: " + staffID);
+                    System.out.println("We hope you're having a profitable day!");
+                    System.out.println();
+                    System.out.println("Would you like to enter the staff menu?");
+                    agreement();
+                    input = s.nextLine();
 //                    System.out.println();
-//                    System.out.println("-------------- Access has been granted --------------");
-//                    System.out.println("Welcome staff member: " + staffID);
-//                    System.out.println("We hope you're having a profitable day!");
-//                    System.out.println();
-//                    System.out.println("Would you like to enter the staff menu?");
-//                    agreement();
-//                    input = s.nextLine();
-////                    System.out.println();
-//
-//                    if(input.equalsIgnoreCase("y")){
-//                        try {
-//                            con = SQLConnection.getConnection(schema);
-//                        } catch (SQLException e) {
-//                            e.printStackTrace();
-//                        }
-//                        staffMenu(con);
-//                    } else {
-//                        System.out.println();
-//                        System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
-//                        System.out.println("HAVE A WONDERFUL DAY!\n");
-//                        System.exit(0);
-//                    }
-//
-//                }
-//                count--;
-//                System.out.println("Incorrect Password.");
-//                System.out.println("Number of tries left: "+ count);
-//                System.out.println();
-//            }
-//
-//            System.out.println("Number of tries exceeded...!!");
-//            System.out.println("UNAUTHORIZED ENTRY, REPORTING TO FRAUD DEPARTMENT!");
-//            System.out.println("Staff ID ::: "+ staffID +" ::: has been reported.");
-//            System.out.println("System SHUT DOWN!");
-//            System.exit(0);
-//
-//		}
-//		else {
-//			System.out.println("Hello Customer! Welcome!");
-//			System.out.println("We hope you're having a splendid day!");
+
+                    if(input.equalsIgnoreCase("y")){
+                        try {
+                            con = SQLConnection.getConnection(schema);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        staffMenu(con);
+                    } else {
+                        System.out.println();
+                        System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
+                        System.out.println("HAVE A WONDERFUL DAY!\n");
+                        System.exit(0);
+                    }
+
+                }
+                count--;
+                System.out.println("Incorrect Password.");
+                System.out.println("Number of tries left: "+ count);
+                System.out.println();
+            }
+
+            System.out.println("Number of tries exceeded...!!");
+            System.out.println("UNAUTHORIZED ENTRY, REPORTING TO FRAUD DEPARTMENT!");
+            System.out.println("Staff ID ::: "+ staffID +" ::: has been reported.");
+            System.out.println("System SHUT DOWN!");
+            System.exit(0);
+
+		}
+		else {
+            try {
+                con = SQLConnection.getConnection(schema);
+                custMenu(con);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+			System.out.println("Hello Customer! Welcome!");
+			System.out.println("We hope you're having a splendid day!");
+			System.out.println();
 //			System.out.println();
-////			System.out.println();
-//
-//			while(true){
-//                System.out.println();
-//                enterCustomerTaunt();
-//                input = s.nextLine();
-//                youSure();
-//                input2 = s.nextLine();
-//                if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
-//                    try {
-//                        con = SQLConnection.getConnection(schema);
-//                    } catch (SQLException e) {
-//                        e.printStackTrace();
-//                    }
-//                    custMenu(con);
-//                } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
-//                    switchOFF();
-//                }
-//		    }
-//		}
+
+			while(true){
+                System.out.println();
+                enterCustomerTaunt();
+                input = s.nextLine();
+                youSure();
+                input2 = s.nextLine();
+                if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
+                    try {
+                        con = SQLConnection.getConnection(schema);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    custMenu(con);
+                } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
+                    switchOFF();
+                }
+		    }
+		}
 
 	}
 	//accessLevel
@@ -236,56 +242,94 @@ public class UserInterface_Command_Line {
 //    }
 
     private static void viewData_Specify(Connection con, List<String> list)throws IOException, InterruptedException{
-	    while(true){
-            String result;
-            System.out.println("--- Tables Present ---");
-	        for(int i = 1; i <= list.size(); i++){
-	            result = list.get(i - 1);
-                System.out.println("\t(" + i + ")\t" + result.toUpperCase());
-            }
-            System.out.println();
-            System.out.print("Choose the Table: ");
-            input = s.nextLine();
-            result = list.get(Integer.parseInt(input) - 1);
-            rs = Query_Execution.executeQuery(con, "SELECT * FROM " + result);
-            System.out.println();
-            System.out.println("Enter your specification, either as a list of numbers separated by commas or individually");
-            ResultSetMetaData rsmd = null;
-            try {
-                rsmd = rs.getMetaData();
-                int columnsNumber = rsmd.getColumnCount();
-                List<String> columnNames = new ArrayList<>();
-                String columnCount[] = new String[columnsNumber + 1];
-                for (int i = 1; i <= columnsNumber; i++) {
-                    columnNames.add(rsmd.getColumnName(i));
-                    System.out.println("\t(" + i + ")\t" + columnNames.get(i-1).toUpperCase());
-                }
-                System.out.print("Selection: ");
-                input = s.nextLine();
-                String selection[] = input.split(",\n ");
-                int count = viewDataList();
-                int repeat = 0;
-                String query = "";
-                for(int i = 0; i<selection.length; i++){
-                    query = query + " " + selection[i];
-                }
-                rs = Query_Execution.executeQuery(con, "SELECT " + query + " FROM " + result);
-                while (rs.next()) {
-                    if (repeat != count) {
-                        for (int i = 1; i <= columnsNumber; i++) {
-                            columnCount[i - 1] = rs.getString(i);
-                        }
-                        repeat++;
-                    } else
-                        break;
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-
+        String result;
+        int count=0;
+        System.out.println("--- Tables Present ---");
+        for(int i = 1; i <= list.size(); i++){
+            result = list.get(i - 1);
+            System.out.println("\t(" + i + ")\t" + result.toUpperCase());
+            count = i;
         }
+        count++;
+        System.out.println("\t(" + count + ")\t" + "staff menu".toUpperCase());
+        count++;
+        System.out.println("\t(" + count + ")\t" + "customer menu".toUpperCase());
+        System.out.println();
+        System.out.print("Choose the Table: ");
+        input = s.nextLine();
+        if(Integer.parseInt(input) == count - 1){
+            staffMenu(con);
+        } else if(Integer.parseInt(input) == count){
+            custMenu(con);
+        }
+        result = list.get(Integer.parseInt(input) - 1);
+//        rs = Query_Execution.executeQuery(con, "SELECT * FROM " + result);
+//        rs = tableSelection(result, con);
+            while(true){
+                rs = Query_Execution.executeQuery(con, "SELECT * FROM " + result);
+                System.out.println();
+                System.out.println("Enter your specification, either as a list of numbers separated by commas or individually");
+                ResultSetMetaData rsmd;
+                try {
+                    rsmd = rs.getMetaData();
+                    int columnsNumber = rsmd.getColumnCount();
+                    List<String> columnNames = new ArrayList<>();
+//                    String columnCount[] = new String[columnsNumber + 1];
+                    for (int i = 1; i <= columnsNumber; i++) {
+                        columnNames.add(rsmd.getColumnName(i));
+                        System.out.println("\t(" + i + ")\t" + columnNames.get(i-1).toUpperCase());
+                    }
+                    System.out.print("Selection: ");
+                    input = s.nextLine();
+                    String selection[] = input.split("[, ?.@\n]+");
+                    count = viewDataList();
+                    int repeat = 0;
+                    String query = columnNames.get(Integer.parseInt(selection[0])-1);
+                    for(int i = 2; i<=selection.length; i++){
+                        query = query + ", " + columnNames.get(Integer.parseInt(selection[i-1])-1);
+                    }
+                    query = "SELECT " + query + " FROM "+ result +";";
+                    rs = Query_Execution.executeQuery(con, query);
+                    String columnCount[] = new String[selection.length];
+                    while (rs.next()) {
+                        if (repeat != count) {
+                            for (int i = 1; i <= selection.length; i++) {
+                                columnCount[i - 1] = rs.getString(i);
+                            }
+                            System.out.print("|\t\t");
+                            for(String each : columnCount){
+                                System.out.print(each+"\t\t|\t\t");
+                            }
+                            System.out.println();
+                            repeat++;
+                        } else
+                            break;
+                    }
+                    while(true) {
+                        System.out.println("Continue with this table (y/n)\n" +
+                                            "(1) Staff Menu\n" +
+                                            "(2) Customer Menu" +
+                                            "(3) Enter filters for this table\n");
+                        agreement();
+                        input = s.nextLine();
+                        youSure();
+                        agreement();
+                        input2 = s.nextLine();
+                        if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y")) {
+                            break;
+                        } else if (input.equalsIgnoreCase("n") && input2.equalsIgnoreCase("y")) {
+                            viewData_Specify(con, list);
+                        } else if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
+                            staffMenu(con);
+                        }
+                        System.out.println("Wrong Formulation");
+                        System.out.println();
+                    }
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
     }
 
     private static int viewDataList(){
@@ -330,10 +374,10 @@ public class UserInterface_Command_Line {
                 int columnsNumber = rsmd.getColumnCount();
 
                 String columnCount[] = new String[columnsNumber + 1];
-                String align = "";
+                String align = "|";
                 for (int i = 1; i <= columnsNumber; i++) {
                     columnCount[i - 1] = rsmd.getColumnName(i).toUpperCase();
-                    align = align + "%10s\t\t|\t\t";
+                    align = align + "\t%10s\t\t|\t\t";
                 }
                 System.out.format(align + "\n", (Object[]) columnCount);
 //                String columnHeaders[] = columnCount;
@@ -351,7 +395,7 @@ public class UserInterface_Command_Line {
                     System.out.format(align + "\n", (Object[]) columnCount);
                 }
 
-                System.out.println("Do you have any specifications?");
+                System.out.println("Do you wish to apply and filters to the results?");
                 agreement();
                 input = s.nextLine();
                 if(input.equalsIgnoreCase("y")){
