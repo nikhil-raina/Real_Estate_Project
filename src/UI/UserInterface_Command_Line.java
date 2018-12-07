@@ -3,6 +3,7 @@ package UI;
 import Backend_SQL.Query_Execution;
 import Backend_SQL.SQLConnection;
 
+import javax.management.Query;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -182,6 +183,7 @@ public class UserInterface_Command_Line {
             System.out.println("Where would you like to Insert the data:");
             // View the different tables available in the database to INSERT data.
             // Have a function call insertData()
+            insertData(con);
         } else if(desiredAction.equalsIgnoreCase("3")){
             System.out.println("Where would you like to Update the data:");
             // View the different tables available in the database to UPDATE some data.
@@ -326,8 +328,193 @@ public class UserInterface_Command_Line {
 		//output: 0 for success, -1 for error.
 	}
 
+	static int chooseInsertList() {
+	    boolean valid = false;
+	    int choice = 0;
 
+        System.out.println("(1) New Property");
+        System.out.println("(2) New Client");
+        System.out.println("(3) New Agent");
+        // should be added at the same time as office to keep 1:1 rule
+        // System.out.println("(4) New Manager");
+        System.out.println("(4) New Offer");
+        System.out.println("(5) New Office");
+        while(valid == false) {
+            choice = s.nextInt();
+            if(choice < 6 && choice > 0)
+                valid = true;
+            else {
+                System.out.println("Invalid value entered. Please enter again.");
+            }
+        }
+        return choice;
+    }
+
+    static void insertData(Connection con) {
+        String sql = "";
+        System.out.println("What would you like to insert?");
+        int insertType = chooseInsertList();
+        switch(insertType) {
+            case 1:
+                //Insert new property
+                insertNewProp(con);
+            case 2:
+                //Insert new client
+            case 3:
+                //Insert new agent
+            case 4:
+                //Insert new offer
+            case 5:
+                //Insert new office
+            default:
+                //something has gone wrong...
+        }
+    }
+
+    static void insertNewProp(Connection con) {
+	    s.nextLine();
+
+	    System.out.print("Enter the tax id of the new property's listed agent: ");
+	    String agentID = s.nextLine();
+
+	    System.out.print("Enter the tax id of the property's seller: ");
+	    String sellerID = s.nextLine();
+
+	    System.out.print("Enter the listing price: ");
+	    int listPrice = s.nextInt();
+
+	    s.nextLine();
+	    System.out.print("Enter the property's description: ");
+	    String desc = s.nextLine();
+
+	    System.out.print("Enter the property's area (in square feet): ");
+	    int area = s.nextInt();
+
+	    s.nextLine();
+	    System.out.print("Enter the property's address: ");
+	    String address = s.nextLine();
+
+	    System.out.print("Enter the property's city: ");
+	    String city = s.nextLine();
+
+	    System.out.print("Enter the property's state abbreviation: ");
+	    String state = s.nextLine();
+
+	    System.out.print("Enter the property's ZIP code: ");
+	    String zip = s.nextLine();
+
+	    try {
+	        int addressid = 0;
+
+	        rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
+	        if(rs.next())
+                addressid = rs.getInt("newID");
+
+            PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
+            addressPS.setString(1, address);
+            addressPS.setString(2, city);
+            addressPS.setString(3, state);
+            addressPS.setString(4, zip);
+            addressPS.setInt(5, addressid);
+            addressPS.execute();
+
+            int propertyid = 0;
+
+            rs = Query_Execution.executeQuery(con, "SELECT MAX(propertyid)+1 FROM property;");
+            if(rs.next()) {
+                propertyid = rs.getInt(1);
+            }
+
+            PreparedStatement propPS = con.prepareStatement("INSERT INTO property VALUES(?, ?, ?, ?, ?, ?, ?, ?);");
+            propPS.setInt(1, propertyid);
+            propPS.setString(2, agentID);
+            propPS.setString(3, sellerID);
+            propPS.setInt(4, listPrice);
+            propPS.setString(5, desc);
+            propPS.setInt(6, area);
+            propPS.setInt(7, addressid);
+            propPS.setDate(8, null);
+            propPS.execute();
+
+            System.out.println("Property " + propertyid + " inserted!");
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Could not insert new property.");
+            System.out.println("Error: " + e.getMessage());
+        }
+        //get taxid of agent
+        //get taxid of seller
+        //get list price
+        //get description?
+        //get area (sq ft)
+        //get address details
+        //blank sell date for now
+        //can now insert property
+    }
+
+//    String create_client(String zipcode, String city, String streetaddress, String state, String FirstName, String LastName, String PhoneNumber, String TaxID, String AgentTaxID){
+//        return "INSERT INTO Address(State, Zipcode, City, Streetaddress, AddressID) " +
+//                "VALUES(" + state + ", " + zipcode + ", " + city + ", " + streetaddress +
+//                ", SELECT MAX(addressid)+1 FROM address);\n " +
+//                "INSERT INTO Person(TaxID, FirstName, LastName, PhoneNumber) " +
+//                "VALUES(" + TaxID + ", " + FirstName + ", " + LastName + ", " + PhoneNumber + ");\n" +
+//                "INSERT INTO CLIENT(taxid, agenttaxid) " +
+//                "VALUES(" + TaxID + ", " + AgentTaxID + ");";
+//    }
+
+    static void insertNewClient(Connection con) {
+        //get first
+        //get last
+        //get taxid
+        //get phone num
+        //get address details
+        //get agent taxid
+        //can now insert client
+    }
+
+    static void insertNewAgent(Connection con) {
+        //get first
+        //get last
+        //get taxid
+        //get phone num
+        //get address details
+        //get salary
+        //get primary office id
+        //get commission percentage
+        //get taxid of manager
+        //can now insert agent
+    }
+
+    static void insertNewManager(Connection con) {
+        //get first
+        //get last
+        //get taxid
+        //get phone num
+        //get address details
+        //get salary
+        //should be called from office creation to get office id
+        //can now insert manager
+    }
+
+    static void insertNewOffer(Connection con) {
+        //property made on
+        //get current date value from the sql
+        //tax ID of client
+        //offer amount
+        //no need to put in status, default to waiting
+        //can now insert offer
+    }
+
+    static void insertNewOffice(Connection con) {
+	    //new manager?
+        //add their taxID
+        //get address details
+        //new office can be created
+    }
 }
+
+
 
 //package Data_Files;
 //
