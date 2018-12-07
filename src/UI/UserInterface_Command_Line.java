@@ -261,6 +261,22 @@ public class UserInterface_Command_Line {
                 System.out.print("Selection: ");
                 input = s.nextLine();
                 String selection[] = input.split(",\n ");
+                int count = viewDataList();
+                int repeat = 0;
+                String query = "";
+                for(int i = 0; i<selection.length; i++){
+                    query = query + " " + selection[i];
+                }
+                rs = Query_Execution.executeQuery(con, "SELECT " + query + " FROM " + result);
+                while (rs.next()) {
+                    if (repeat != count) {
+                        for (int i = 1; i <= columnsNumber; i++) {
+                            columnCount[i - 1] = rs.getString(i);
+                        }
+                        repeat++;
+                    } else
+                        break;
+                }
 
             } catch (SQLException e) {
                 e.printStackTrace();
