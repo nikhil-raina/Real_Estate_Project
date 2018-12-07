@@ -32,90 +32,90 @@ public class UserInterface_Command_Line {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        viewData(con);
-		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
-		System.out.println("Do you have administrator credentials?");
-		agreement();
-		input = s.nextLine();
-        System.out.println();
-
-		// limit of tries for password entry
-		int count = 3;
-
-		// generating the Staff ID. Maximum limit is 20000
-		Random num = new Random();
-        int staffID = num.nextInt(20000);
-
-        if(input.equalsIgnoreCase("y")){
-//            String password = "maximum_mior";
-            String password = "123";
-            while(count != 0) {
-                System.out.println("Please enter your administration credentials!");
-                String attemptedPassword = s.nextLine();
-                if(attemptedPassword.equals(password)) {
-                    accessLevel = 9001;
-                    System.out.println();
-                    System.out.println("-------------- Access has been granted --------------");
-                    System.out.println("Welcome staff member: " + staffID);
-                    System.out.println("We hope you're having a profitable day!");
-                    System.out.println();
-                    System.out.println("Would you like to enter the staff menu?");
-                    agreement();
-                    input = s.nextLine();
+        viewData(con);
+//		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
+//		System.out.println("Do you have administrator credentials?");
+//		agreement();
+//		input = s.nextLine();
+//        System.out.println();
+//
+//		// limit of tries for password entry
+//		int count = 3;
+//
+//		// generating the Staff ID. Maximum limit is 20000
+//		Random num = new Random();
+//        int staffID = num.nextInt(20000);
+//
+//        if(input.equalsIgnoreCase("y")){
+////            String password = "maximum_mior";
+//            String password = "123";
+//            while(count != 0) {
+//                System.out.println("Please enter your administration credentials!");
+//                String attemptedPassword = s.nextLine();
+//                if(attemptedPassword.equals(password)) {
+//                    accessLevel = 9001;
 //                    System.out.println();
-
-                    if(input.equalsIgnoreCase("y")){
-                        try {
-                            con = SQLConnection.getConnection(schema);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                        staffMenu(con);
-                    } else {
-                        System.out.println();
-                        System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
-                        System.out.println("HAVE A WONDERFUL DAY!\n");
-                        System.exit(0);
-                    }
-
-                }
-                count--;
-                System.out.println("Incorrect Password.");
-                System.out.println("Number of tries left: "+ count);
-                System.out.println();
-            }
-
-            System.out.println("Number of tries exceeded...!!");
-            System.out.println("UNAUTHORIZED ENTRY, REPORTING TO FRAUD DEPARTMENT!");
-            System.out.println("Staff ID ::: "+ staffID +" ::: has been reported.");
-            System.out.println("System SHUT DOWN!");
-            System.exit(0);
-
-		}
-		else {
-			System.out.println("Hello Customer! Welcome!");
-			System.out.println("We hope you're having a splendid day!");
-			System.out.println();
+//                    System.out.println("-------------- Access has been granted --------------");
+//                    System.out.println("Welcome staff member: " + staffID);
+//                    System.out.println("We hope you're having a profitable day!");
+//                    System.out.println();
+//                    System.out.println("Would you like to enter the staff menu?");
+//                    agreement();
+//                    input = s.nextLine();
+////                    System.out.println();
+//
+//                    if(input.equalsIgnoreCase("y")){
+//                        try {
+//                            con = SQLConnection.getConnection(schema);
+//                        } catch (SQLException e) {
+//                            e.printStackTrace();
+//                        }
+//                        staffMenu(con);
+//                    } else {
+//                        System.out.println();
+//                        System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
+//                        System.out.println("HAVE A WONDERFUL DAY!\n");
+//                        System.exit(0);
+//                    }
+//
+//                }
+//                count--;
+//                System.out.println("Incorrect Password.");
+//                System.out.println("Number of tries left: "+ count);
+//                System.out.println();
+//            }
+//
+//            System.out.println("Number of tries exceeded...!!");
+//            System.out.println("UNAUTHORIZED ENTRY, REPORTING TO FRAUD DEPARTMENT!");
+//            System.out.println("Staff ID ::: "+ staffID +" ::: has been reported.");
+//            System.out.println("System SHUT DOWN!");
+//            System.exit(0);
+//
+//		}
+//		else {
+//			System.out.println("Hello Customer! Welcome!");
+//			System.out.println("We hope you're having a splendid day!");
 //			System.out.println();
-
-			while(true){
-                System.out.println();
-                enterCustomerTaunt();
-                input = s.nextLine();
-                youSure();
-                input2 = s.nextLine();
-                if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
-                    try {
-                        con = SQLConnection.getConnection(schema);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    custMenu(con);
-                } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
-                    switchOFF();
-                }
-		    }
-		}
+////			System.out.println();
+//
+//			while(true){
+//                System.out.println();
+//                enterCustomerTaunt();
+//                input = s.nextLine();
+//                youSure();
+//                input2 = s.nextLine();
+//                if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
+//                    try {
+//                        con = SQLConnection.getConnection(schema);
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
+//                    custMenu(con);
+//                } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
+//                    switchOFF();
+//                }
+//		    }
+//		}
 
 	}
 	//accessLevel
@@ -299,9 +299,10 @@ public class UserInterface_Command_Line {
     }
 
     private static void viewData(Connection con)throws IOException, InterruptedException{
-        int count = 0;
+        int count;
         List<String> list = new ArrayList<>();
         while(true) {
+            count = 0;
             try {
                 rs = Query_Execution.executeQuery(con, "SELECT * FROM pg_tables WHERE schemaname='" + schema + "'");
                 System.out.println("--- Tables Present ---");
@@ -367,7 +368,10 @@ public class UserInterface_Command_Line {
     }
 
     private static void dataAction(String str, Connection con) throws IOException, InterruptedException {
-        while (true) {
+        int count = 0;
+	    while (true) {
+	        count++;
+            System.out.println();
             System.out.println("Do you want to continue "+ str +" the data?");
             agreement();
             input = s.nextLine();
@@ -379,6 +383,17 @@ public class UserInterface_Command_Line {
                 staffContinueQuestion(con);
             else if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y"))
                 break;
+            else if(count == 3){
+                System.out.println("Make up your mind....");
+            }
+            else if(count == 5){
+                System.out.println("Now this is getting annoying.......");
+            }
+            else if(count > 5){
+                System.out.println("Ok, clearly you aren't well enough to make your own choices.");
+                System.out.println("So, FORCE SHUT DOWN!!!");
+                switchOFF();
+            }
         }
     }
 
