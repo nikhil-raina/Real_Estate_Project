@@ -113,10 +113,11 @@ public class UserInterface_Command_Line {
                 if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
                     try {
                         con = SQLConnection.getConnection(schema);
+                        custMenu(con);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    custMenu(con);
+//                    custMenu(con);
                 } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
                     switchOFF();
                 }
@@ -463,45 +464,35 @@ public class UserInterface_Command_Line {
     }
 
 	private static void custMenu(Connection con) throws IOException, InterruptedException {
-		String desiredAction = "";
+//		String desiredAction = "";
 
 		System.out.println("Welcome to the customer menu!");
-		System.out.println("What would you like to do today? \nJust enter a command: ");
-		custCommandList(); //will list out all available commands for customers.
+		System.out.println("What would you like to do today? ");
+        System.out.println();
+        while(true) {
+            System.out.println("(1) View Data");
+            System.out.println("(2) Staff Menu");
+            System.out.println("(3) EXIT");
+//            custCommandList(); //will list out all available commands for customers.
+            input = s.nextLine();
+            youSure();
+            agreement();
+            input2 = s.nextLine();
 
-		desiredAction = s.nextLine();
-		System.out.println();
-
-		System.out.println("If I understand correctly, you're trying to " + desiredAction + ".");
-		System.out.println("Do I understand your intentions correctly? \n");
-
-		System.out.println("Please type 'y' for yes, or 'n' for no!");
-		if(s.nextLine().equals("y")) {
-			System.out.println("Awesome! I will get that ready for you as soon as possible!");
-
-		}
-
-
-		else
-		{
-			System.out.println("Well, would you like to try again?");
-			System.out.println("Please type 'y' for yes, or 'n' for no!");
-			if(s.nextLine().equals("y")) {
-				custMenu(con); //is this recursion?
-			}
-			else {
-				System.out.println("\n\n We're happy to have been here to help you, if you need anything else, be " +
-                        "sure to use our tool again later!");
-			}
-
-
-
-		}
+            if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
+                viewData(con);
+            } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
+                staffMenu(con);
+            } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
+                switchOFF();
+            }
+            else{
+                System.out.println("Wrong Input.\nTry again...\n\n");
+            }
+        }
 	}
 
-	static void custCommandList() {
-		//todo: prints customer commands.
-	}
+
 	public String getSale(int PID ){
 		return "TODO: SALE INFO";
 	}
