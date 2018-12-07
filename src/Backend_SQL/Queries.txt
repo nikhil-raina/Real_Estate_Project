@@ -1,60 +1,76 @@
 //The test queries
 
 String find_person_fname(String firstname){
-return "SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ,firstname,=FirstName";
+return "SELECT FirstName, LastName, PhoneNumber FROM Person WHERE " ,firstname,"=FirstName";
 }
 
 String find_person_lname(String lastname){
-return "SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ,lastname,=LastName";
+return "SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ",lastname,"=LastName";
 }
 
 String find_person_fullname(String firstname, String lastname){
-return "SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ,lastname,=LastName AND ,firstname,=FirstName";
+return "SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ",lastname,"=LastName AND ",firstname,"=FirstName";
 }
 
 String search_property_all(String state, String zipcode, String StreetAddress){
+SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description, Property.Area,
+Property.SellDate From Property, Address WHERE
+Address.zipcode=",zipcode," AND Address.state=",state,"  Address.AddressID=Property.AddressID;
+
 return "SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
-Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-(Address.state=,state, AND Address.zipcode=,zipcode, AND Address.StreetAddress=,StreetAddress,))";
+return Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
+(Address.state=",state," AND Address.zipcode=",zipcode," AND Address.StreetAddress=",StreetAddress,"))";
 }
 
 String search_property_state(String state){
-return "SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
-Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-Address.state=,state,)";
+return SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description,
+Property.Area, Property.SellDate From Property, Address WHERE
+Address.state=",state," AND Address.AddressID=Property.AddressID;
 }
 
 String search_property_zipcode(String zipcode){
-return "SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
-Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-Address.zipcode=,zipcode,)";
+return "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description, Property.Area,
+Property.SellDate From Property, Address WHERE Address.zipcode=",zipcode," AND Address.AddressID=Property.AddressID";
 }
+
 
 String search_property_streetaddress(String StreetAddress){
-return "SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
-Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-Address.StreetAddress=,StreetAddress,)";
+return "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description, Property.Area,
+Property.SellDate From Property, Address WHERE Address.StreetAddress=",StreetAddress," AND Address.AddressID=Property.AddressID";
 }
+
+
+
+
 
 String change_offer(String PropertyOfferId, String NewStatus){
-return "UPDATE Offer SET OfferStatus=’NewStatus’ WHERE Offer.OfferID=,PropertyOfferID,";
+return "UPDATE Offer SET OfferStatus=’NewStatus’ WHERE Offer.OfferID=",PropertyOfferID;
 }
 
-String create_offer(String NPropertyID, String NClientTaxID, Int NOfferAmount){
+String create_create_offer_sql_query(String NPropertyID, String NClientTaxID, Int NOfferAmount){
 return "INSERT INTO Offer(PropertyID, ClientTaxID, OfferAmount, Date)
-VALUES('NPropertyID', 'NClientTaxID', NOfferAmount, now())";
+VALUES(",NPropertyID,", ",NClientTaxID,", ",NOfferAmount,", now())";
 }
 
 String get_all_agents(){ //gets all of the agents and their primary office
 return "SELECT Person.FirstName, Person.Lastname, Person.Phonenumber, Agent.PrimaryyOfficeID
-FROM Agents, People WHERE person.taxid=Agent.taxid"
+FROM Agents, People WHERE person.taxid=Agent.taxid";
+}
 
 String find_agent(Int propertyID){
-return "SELECT DISTINCT Person.Firstname, Person.LastName, Person.PhoneNumber FROM Agent, Person WHERE Property.AgentTaxID=Person.TaxID AND Property.PropertyID=1232"
+return "SELECT DISTINCT Person.Firstname, Person.LastName, Person.PhoneNumber FROM Agent, Person WHERE Property.AgentTaxID=Person.TaxID AND Property.PropertyID=",propertyid;
 }
 
-
-
-
+String create_client(String zipcode, String city, String streetaddress, String state, String FirstName, String LastName, String PhoneNumber, String TaxID, String AgentTaxID){
+return "INSERT INTO Address(State, Zipcode, City, Streetaddress, AddressID)
+VALUES(",state,", ",zipcode,", ",city,", ",streetaddress,", SELECT MAX(addressid)+1 FROM address);\n
+INSERT INTO Person(TaxID, FirstName, LastName, PhoneNumber)
+VALUES(",TaxID,", ",FirstName,", ",LastName,", ",PhoneNumber,");\n
+INSERT INTO CLIENT(taxid, agenttaxid)
+VALUES(",TaxID,", ",AgentTaxId,");"
 }
 
+String monthly_office(){ //Work in progress :\
+return "SELECT officeid FROM office, agent, property WHERE agent.taxid=office.officeid
+AND exists(SELECT agenttaxid FROM property WHERE selldate >  CURRENT_DATE - INTERVAL '1 month')"
+}
