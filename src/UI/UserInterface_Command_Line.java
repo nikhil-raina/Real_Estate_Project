@@ -305,8 +305,9 @@ public class UserInterface_Command_Line {
                         columnNames.add(rsmd.getColumnName(i));
                         System.out.println("\t(" + i + ")\t" + columnNames.get(i-1).toUpperCase());
                     }
-                    System.out.println(" ________________________________________________________________ ");
+//                    System.out.println(" ________________________________________________________________ ");
                     System.out.println("|   Selection:                                                   |");
+					System.out.print("     ");
                     input = s.nextLine();
                     String selection[] = input.split("[, ?.@\n]+");
                     count = viewDataList();
