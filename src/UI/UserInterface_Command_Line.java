@@ -464,6 +464,70 @@ public class UserInterface_Command_Line {
 //    }
 
     static void insertNewClient(Connection con) {
+        s.nextLine();
+
+        System.out.print("Enter the client's first name: ");
+        String first = s.nextLine();
+
+        System.out.print("Enter the client's last name: ");
+        String last = s.nextLine();
+
+        System.out.print("Enter the tax id of the new client: ");
+        String clientID = s.nextLine();
+
+        System.out.print("Enter the tax id of the client's agent: ");
+        String agentID = s.nextLine();
+
+        System.out.print("Enter the client's phone number: ");
+        String phone = s.nextLine();
+
+        System.out.print("Enter the client's address: ");
+        String address = s.nextLine();
+
+        System.out.print("Enter the client's city: ");
+        String city = s.nextLine();
+
+        System.out.print("Enter the client's state abbreviation: ");
+        String state = s.nextLine();
+
+        System.out.print("Enter the client's ZIP code: ");
+        String zip = s.nextLine();
+
+        try {
+            int addressid = 0;
+
+            rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
+            if(rs.next())
+                addressid = rs.getInt("newID");
+
+            PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
+            addressPS.setString(1, address);
+            addressPS.setString(2, city);
+            addressPS.setString(3, state);
+            addressPS.setString(4, zip);
+            addressPS.setInt(5, addressid);
+            addressPS.execute();
+
+            PreparedStatement personPS = con.prepareStatement("INSERT INTO person VALUES(?, ?, ?, ?, ?);");
+            personPS.setString(1, first);
+            personPS.setString(2, last);
+            personPS.setString(3, clientID);
+            personPS.setString(4, phone);
+            personPS.setInt(5, addressid);
+            personPS.execute();
+
+            PreparedStatement clientPS = con.prepareStatement("INSERT INTO client VALUES(?, ?)");
+            clientPS.setString(1, clientID);
+            clientPS.setString(2, agentID);
+            clientPS.execute();
+
+            System.out.println("Client " + first + " " + last + " inserted!");
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Could not insert new client.");
+            System.out.println("Error: " + e.getMessage());
+        }
         //get first
         //get last
         //get taxid
@@ -474,6 +538,84 @@ public class UserInterface_Command_Line {
     }
 
     static void insertNewAgent(Connection con) {
+        s.nextLine();
+
+        System.out.print("Enter the agent's first name: ");
+        String first = s.nextLine();
+
+        System.out.print("Enter the agent's last name: ");
+        String last = s.nextLine();
+
+        System.out.print("Enter the tax id of the new agent: ");
+        String agentID = s.nextLine();
+
+        System.out.print("Enter the tax id of the agent's manager: ");
+        String managerID = s.nextLine();
+
+        System.out.print("Enter the salary of the agent: ");
+        int salary = s.nextInt();
+
+        System.out.print("Enter the id of the agent's primary office: ");
+        int officeID = s.nextInt();
+
+        s.nextLine();
+        System.out.print("Enter the commission percentage for this agent. (e.g. 14.20): ");
+        float comm = s.nextFloat();
+
+        s.nextLine();
+        System.out.print("Enter the agent's phone number: ");
+        String phone = s.nextLine();
+
+        System.out.print("Enter the agent's address: ");
+        String address = s.nextLine();
+
+        System.out.print("Enter the agent's city: ");
+        String city = s.nextLine();
+
+        System.out.print("Enter the agent's state abbreviation: ");
+        String state = s.nextLine();
+
+        System.out.print("Enter the agent's ZIP code: ");
+        String zip = s.nextLine();
+
+        try {
+            int addressid = 0;
+
+            rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
+            if(rs.next())
+                addressid = rs.getInt("newID");
+
+            PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
+            addressPS.setString(1, address);
+            addressPS.setString(2, city);
+            addressPS.setString(3, state);
+            addressPS.setString(4, zip);
+            addressPS.setInt(5, addressid);
+            addressPS.execute();
+
+            PreparedStatement personPS = con.prepareStatement("INSERT INTO person VALUES(?, ?, ?, ?, ?);");
+            personPS.setString(1, first);
+            personPS.setString(2, last);
+            personPS.setString(3, agentID);
+            personPS.setString(4, phone);
+            personPS.setInt(5, addressid);
+            personPS.execute();
+
+            PreparedStatement clientPS = con.prepareStatement("INSERT INTO agent VALUES(?, ?, ?, ?, ?)");
+            clientPS.setString(1, agentID);
+            clientPS.setInt(2, salary);
+            clientPS.setInt(3, officeID);
+            clientPS.setFloat(4, comm);
+            clientPS.setString(5, managerID);
+            clientPS.execute();
+
+            System.out.println("Agent " + first + " " + last + " inserted!");
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Could not insert new agent.");
+            System.out.println("Error: " + e.getMessage());
+        }
         //get first
         //get last
         //get taxid
@@ -487,6 +629,74 @@ public class UserInterface_Command_Line {
     }
 
     static void insertNewManager(Connection con) {
+        s.nextLine();
+
+        System.out.print("Enter the manager's first name: ");
+        String first = s.nextLine();
+
+        System.out.print("Enter the manager's last name: ");
+        String last = s.nextLine();
+
+        System.out.print("Enter the tax id of the new manager: ");
+        String managerID = s.nextLine();
+
+        System.out.print("Enter the salary of the new manager: ");
+        int salary = s.nextInt();
+
+        System.out.print("Enter the id of the manager's office: ");
+        int officeID = s.nextInt();
+
+        s.nextLine();
+        System.out.print("Enter the manager's phone number: ");
+        String phone = s.nextLine();
+
+        System.out.print("Enter the manager's address: ");
+        String address = s.nextLine();
+
+        System.out.print("Enter the manager's city: ");
+        String city = s.nextLine();
+
+        System.out.print("Enter the manager's state abbreviation: ");
+        String state = s.nextLine();
+
+        System.out.print("Enter the manager's ZIP code: ");
+        String zip = s.nextLine();
+
+        try {
+            int addressid = 0;
+
+            rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
+            if(rs.next())
+                addressid = rs.getInt("newID");
+
+            PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
+            addressPS.setString(1, address);
+            addressPS.setString(2, city);
+            addressPS.setString(3, state);
+            addressPS.setString(4, zip);
+            addressPS.setInt(5, addressid);
+            addressPS.execute();
+
+            PreparedStatement personPS = con.prepareStatement("INSERT INTO person VALUES(?, ?, ?, ?, ?);");
+            personPS.setString(1, first);
+            personPS.setString(2, last);
+            personPS.setString(3, managerID);
+            personPS.setString(4, phone);
+            personPS.setInt(5, addressid);
+            personPS.execute();
+
+            PreparedStatement managerPS = con.prepareStatement("INSERT INTO manager VALUES(?, ?, ?);");
+            managerPS.setString(1, managerID);
+            managerPS.setInt(2, salary);
+            managerPS.setInt(3, officeID);
+
+            System.out.println("Manager " + first + " " + last + " inserted!");
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Could not insert new manager.");
+            System.out.println("Error: " + e.getMessage());
+        }
         //get first
         //get last
         //get taxid
