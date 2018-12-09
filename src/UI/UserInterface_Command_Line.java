@@ -3,9 +3,6 @@ package UI;
 import Backend_SQL.Query_Execution;
 import Backend_SQL.SQLConnection;
 
-import javax.management.Query;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,17 +24,22 @@ public class UserInterface_Command_Line {
 	static Scanner s = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-        try {
-            con = SQLConnection.getConnection(schema);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            con = SQLConnection.getConnection(schema);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 //        viewData(con);
-		System.out.println("Welcome to the Mior Mega Real Estate Company database access user interface!");
-		System.out.println("Do you have administrator credentials?");
-		agreement();
+
+        System.out.println(" ________________________________________________________________");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("|    Welcome to the Premium Real Estate Company database UI!     |");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("|     Do you have staff (admin/manager/agent) credentials?       |");
+//        youSure();
+        agreement();
 		input = s.nextLine();
-        System.out.println();
+//        System.out.println();
 
 		// limit of tries for password entry
 		int count = 3;
@@ -50,16 +52,24 @@ public class UserInterface_Command_Line {
 //            String password = "maximum_mior";
             String password = "123";
             while(count != 0) {
-                System.out.println("Please enter your administration credentials!");
+                System.out.println("|----------------------------------------------------------------|");
+                System.out.println("|     Please enter your staff credentials.                       |");
+                System.out.println("|----------------------------------------------------------------|");
+                System.out.print("      ");
+
+//                System.out.println("Please enter your administration credentials!");
                 String attemptedPassword = s.nextLine();
                 if(attemptedPassword.equals(password)) {
                     accessLevel = 9001;
-                    System.out.println();
-                    System.out.println("-------------- Access has been granted --------------");
-                    System.out.println("Welcome staff member: " + staffID);
-                    System.out.println("We hope you're having a profitable day!");
-                    System.out.println();
-                    System.out.println("Would you like to enter the staff menu?");
+                    System.out.println("|                                                                |");
+                    System.out.println("|-------------- Access has been granted -------------------------|");
+                    System.out.println("|     Welcome staff member: " + staffID + "                                |");
+                    System.out.println("|     Access Level: Agent                                        |");
+                    System.out.println("|                                                                |");
+                    System.out.println("|                                                                |");
+                    System.out.println("|----------------------------------------------------------------|");
+                    System.out.println("|      We hope you're having a profitable day!                   |");
+                    System.out.println("|      Would you like to enter the staff menu?                   |");
                     agreement();
                     input = s.nextLine();
 //                    System.out.println();
@@ -67,28 +77,33 @@ public class UserInterface_Command_Line {
                     if(input.equalsIgnoreCase("y")){
                         try {
                             con = SQLConnection.getConnection(schema);
+                            staffMenu(con);
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                        staffMenu(con);
+//                        staffMenu(con);
                     } else {
-                        System.out.println();
-                        System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
-                        System.out.println("HAVE A WONDERFUL DAY!\n");
+//                        System.out.println();
+//                        System.out.println(" ________________________________________________________________");
+                        System.out.println("|  Thanks for using the Premium Real Estate Company database UI. |");
+                        System.out.println("|  Have a great day.                                             |");
+                        System.out.println("|----------------------------------------------------------------|");
+                        System.out.println(" ________________________________________________________________ ");
                         System.exit(0);
                     }
 
                 }
                 count--;
-                System.out.println("Incorrect Password.");
-                System.out.println("Number of tries left: "+ count);
-                System.out.println();
+//                System.out.println(" ---------------------------------------------------------------- ");
+                System.out.println("|     Incorrect Password.                                        |");
+                System.out.println("|     Number of tries left: "+ count+"                                    |");
+                System.out.println("|                                                                |");
             }
-
-            System.out.println("Number of tries exceeded...!!");
-            System.out.println("UNAUTHORIZED ENTRY, REPORTING TO FRAUD DEPARTMENT!");
-            System.out.println("Staff ID ::: "+ staffID +" ::: has been reported.");
-            System.out.println("System SHUT DOWN!");
+//            System.out.println(" ---------------------------------------------------------------- ");
+            System.out.println("|     Number of tries exceeded...!!                              |");
+            System.out.println("|     UNAUTHORIZED ENTRY, REPORTING TO FRAUD DEPARTMENT!         |");
+            System.out.println("|     Staff ID ::: "+ staffID +" ::: has been reported.     |");
+            System.out.println("|                     System SHUT DOWN!                          |");
             System.exit(0);
 
 		}
@@ -99,13 +114,14 @@ public class UserInterface_Command_Line {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-			System.out.println("Hello Customer! Welcome!");
-			System.out.println("We hope you're having a splendid day!");
-			System.out.println();
-//			System.out.println();
+            System.out.println("|----------------------------------------------------------------|");
+            System.out.println("|      Access Level:      Customer                               |");
+            System.out.println("|      Hello and Welcome!                                        |");
+            System.out.println("|      Thanks for choosing Premium Real Estate!                  |");
+//            System.out.println();
 
 			while(true){
-                System.out.println();
+                System.out.println("");
                 enterCustomerTaunt();
                 input = s.nextLine();
                 youSure();
@@ -113,10 +129,11 @@ public class UserInterface_Command_Line {
                 if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
                     try {
                         con = SQLConnection.getConnection(schema);
+                        custMenu(con);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    custMenu(con);
+//                    custMenu(con);
                 } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
                     switchOFF();
                 }
@@ -124,124 +141,136 @@ public class UserInterface_Command_Line {
 		}
 
 	}
-	//accessLevel
-	//staff/mgr/admin = 9001
-	//customer (read only) = -1
-	public int getAccessLevel(){
-		return accessLevel;
-	}
-
-    public static void setAccessLevel(int accessLevel) {
-        UserInterface_Command_Line.accessLevel = accessLevel;
-    }
 
     private static void switchOFF(){
-        System.out.println("Thank you for using Mior Mega Real Estate Company database!!!");
+//        System.out.println(" ________________________________________________________________");
+        System.out.println("|                                                                |");
+        System.out.println("|     Thanks for using Premium Real Estate UI!                   |");
+        System.out.println(" ________________________________________________________________ ");
         System.exit(0);
     }
 
 	private static void enterCustomerTaunt(){
-        System.out.println("Would you like to enter the Customer Menu (1) to explore our " +
-                "bountiful selection, or EXIT (2) ?");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("|     Input Selection:                                           |");
+        System.out.println("|     (1) Customer Menu.                                         |");
+        System.out.println("|     (2) Exit.                                                  |");
+        System.out.println("|----------------------------------------------------------------|");
     }
 
 	private static void youSure(){
-        System.out.println("Are you certain with your choice?");
+        System.out.println("|     Please confirm your input.                                 |");
+//        System.out.println("Please confirm your input.");
+        agreement();
     }
 
 	private static void printStaffMenu(){
-        System.out.println("(1) View data");
-        System.out.println("(2) Insert data");
-        System.out.println("(3) Update data");
-        System.out.println("(4) Delete data");
-        System.out.println("(5) Just looking around...");
-        System.out.println("(6) Exit");
-        System.out.println();
+//        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("|     (1) View data.                                             |");
+        System.out.println("|     (2) Insert data.                                           |");
+        System.out.println("|     (3) Update data.                                           |");
+        System.out.println("|     (4) Delete data.                                           |");
+        System.out.println("|     (5) Exit.                                                  |");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.print("      ");
 
+//        System.out.println();
     }
 
     private static void agreement(){
-        System.out.println("Please type 'y' for yes, or 'n' for no!");
+//        System.out.println(" ________________________________________________________________ ");
+//        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("|     Type 'y' for yes, or 'n' for no, then press enter.         |");
+        System.out.print("      ");
+//        System.out.println("|----------------------------------------------------------------|");
     }
 
 	private static void staffMenu(Connection con) throws IOException, InterruptedException {
 		if(accessLevel == - 1){
-            System.out.println("Unauthorised Entry.");
-            System.out.println("Access Denied.");
-            System.out.println();
-		    return;
+//            System.out.println(" ________________________________________________________________ ");
+            System.out.println("                 Unauthorised Entry.");
+            System.out.println("                 Access Denied.");
+            switchOFF();
+//            System.out.println(" ________________________________________________________________ ");
+//            System.out.println();
         }
 	    String desiredAction;
         System.out.println();
-		System.out.println("Welcome to the staff menu!");
-		System.out.println("What would you like to do today:");
+//        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("|                   Welcome to the staff menu!                   |");
+		System.out.println("|                What would you like to do today:                |");
+//        System.out.println(" ---------------------------------------------------------------- ");
+//        System.out.println("|________________________________________________________________|");
+
         printStaffMenu();
 		desiredAction = s.nextLine();
 		youSure();
-		agreement();
+//		agreement();
 		input = s.nextLine();
         System.out.println();
 
-        while(input.equalsIgnoreCase("n") ||
-                !(1 <= Integer.parseInt(desiredAction)) ||
+        while(input.equalsIgnoreCase("n") || !(1 <= Integer.parseInt(desiredAction)) ||
                 !(Integer.parseInt(desiredAction) <= 6)) {
-            System.out.println("Choose again:");
+            System.out.println("|     Choose again:                                              |");
             printStaffMenu();
             desiredAction = s.nextLine();
             youSure();
-            agreement();
+//            agreement();
             input = s.nextLine();
-            System.out.println();
+//            System.out.println();
         }
 
         if(desiredAction.equalsIgnoreCase("1")){
-            System.out.println("Where would you like to View the data from:");
-            // View the different tables available in the database.
-            // Have a function call viewData()
+//            System.out.println(" ________________________________________________________________ ");
+            System.out.println("|----------------------------------------------------------------|");
+            System.out.println("|     Where would you like to View the data from:                |");
             viewData(con);
+
         } else if(desiredAction.equalsIgnoreCase("2")){
-            System.out.println("Where would you like to Insert the data:");
-            // View the different tables available in the database to INSERT data.
-            // Have a function call insertData()
+//            System.out.println(" ________________________________________________________________ ");
+            System.out.println("|----------------------------------------------------------------|");
+            System.out.println("|     Where would you like to Insert the data:                   |");
             insertData(con);
+
         } else if(desiredAction.equalsIgnoreCase("3")){
-            System.out.println("Where would you like to Update the data:");
+//            System.out.println(" ________________________________________________________________ ");
+            System.out.println("|----------------------------------------------------------------|");
+            System.out.println("|     Where would you like to Update the data:                   |");
             // View the different tables available in the database to UPDATE some data.
             // Have a function call updateData()
+
         } else if(desiredAction.equalsIgnoreCase("4")){
-            System.out.println("Where would you like to Delete the data:");
+//            System.out.println(" ________________________________________________________________ ");
+            System.out.println("|----------------------------------------------------------------|");
+            System.out.println("|     Where would you like to Delete the data:                   |");
             // View the different tables available in the database to Delete data.
             // Have a function call deleteData()
+
         } else if (desiredAction.equalsIgnoreCase("5")) {
-            System.out.println("We're happy to have been here to help you do your job, " +
-                    "if you need anything else, be sure to use our tool again later!");
-            while (true) {
-                System.out.println();
-                enterCustomerTaunt();
-                System.out.println("If you want, you can go back to the Staff Menu (3).");
-                input = s.nextLine();
-                youSure();
-                agreement();
-                input2 = s.nextLine();
-                if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
-                    custMenu(con);
-                } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
-                    switchOFF();
-                } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
-                    staffMenu(con);
-                }
-            }
-        } else if(desiredAction.equalsIgnoreCase("6")){
-            switchOFF();
+//            youSure();
+            System.out.println("|     Are you absolutely certain that you would like to leave?   |");
+//            System.out.println("|     We're happy to have been here to help you do your job!     |");
+//            System.out.println("| If you need anything else, be sure to use our tool again later!|");
+//            System.out.println("|     Are you absolutely certain that you would like to leave?   |");
+            input = s.nextLine();
+            if (input.equalsIgnoreCase("n")) {
+                System.out.println("|     Redirecting to Staff Menu                                  |");
+                staffMenu(con);
+            } else
+                System.out.println("|     We're happy to have been here to help you do your job!     |");
+                System.out.println("| If you need anything else, be sure to use our tool again later!|");
+                switchOFF();
         }
 	}
 
     private static void displayTable(List<String> list){
         String result;
-	    System.out.println("--- Tables Present ---");
+        System.out.println("|         --- Tables Present ---                                 |");
         for(int i = 1; i <= list.size(); i++){
             result = list.get(i - 1);
-            System.out.println("\t(" + i + ")\t" + result.toUpperCase());
+            System.out.println("\t  (" + i + ")\t" + result.toUpperCase());
         }
     }
 
@@ -254,7 +283,8 @@ public class UserInterface_Command_Line {
         count++;
         System.out.println("\t(" + count + ")\t" + "customer menu".toUpperCase());
         System.out.println();
-        System.out.print("Choose the Table: ");
+//        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|   Choose the Table:                                            |");
         input = s.nextLine();
         if(Integer.parseInt(input) == count - 1){
             staffMenu(con);
@@ -275,7 +305,8 @@ public class UserInterface_Command_Line {
                         columnNames.add(rsmd.getColumnName(i));
                         System.out.println("\t(" + i + ")\t" + columnNames.get(i-1).toUpperCase());
                     }
-                    System.out.print("Selection: ");
+                    System.out.println(" ________________________________________________________________ ");
+                    System.out.println("|   Selection:                                                   |");
                     input = s.nextLine();
                     String selection[] = input.split("[, ?.@\n]+");
                     count = viewDataList();
@@ -331,6 +362,10 @@ public class UserInterface_Command_Line {
             }
     }
 
+    private static void completeFilter(Connection con, List<String> list){
+
+    }
+
     private static int viewDataList(){
         System.out.println("How much data would you like to view? (Ex. 5, 10, 100, 782, all) and so on...");
         input = s.nextLine();
@@ -348,7 +383,7 @@ public class UserInterface_Command_Line {
             count = 0;
             try {
                 rs = Query_Execution.executeQuery(con, "SELECT * FROM pg_tables WHERE schemaname='" + schema + "'");
-                System.out.println("--- Tables Present ---");
+                System.out.println("|         --- Tables Present ---                             |");
                 while (rs.next()) {
                     count++;
                     String val = rs.getString("tablename");
@@ -356,7 +391,7 @@ public class UserInterface_Command_Line {
                     System.out.println("\t(" + count + ")\t" + val.toUpperCase());
                 }
                 System.out.println();
-                System.out.println("Enter the Table number that you wish to view:");
+                System.out.println("|    Enter the table number to view:                         |");
                 String table;
                 while (true) {
                     input = s.nextLine();
@@ -405,13 +440,8 @@ public class UserInterface_Command_Line {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
             dataAction("VIEWING", con);
         }
-    }
-
-    private static void completeFilter(Connection con, List<String> list){
-
     }
 
     private static void dataAction(String str, Connection con) throws IOException, InterruptedException {
@@ -424,7 +454,7 @@ public class UserInterface_Command_Line {
             input = s.nextLine();
             System.out.println();
             youSure();
-            agreement();
+//            agreement();
             input2 = s.nextLine();
             if (input.equalsIgnoreCase("n") && input2.equalsIgnoreCase("y"))
                 staffContinueQuestion(con);
@@ -446,7 +476,8 @@ public class UserInterface_Command_Line {
 
     private static void staffContinueQuestion(Connection con) throws InterruptedException, IOException {
         while(true) {
-            System.out.println("Do you want to return to the Staff Menu (y) or EXIT (n)?");
+//            System.out.println("|         --- Tables Present ---                             |");
+            System.out.println("|  Do you want to return to the Staff Menu (y) or EXIT (n)?  |");
             agreement();
             input = s.nextLine();
             System.out.println();
@@ -462,149 +493,139 @@ public class UserInterface_Command_Line {
         }
     }
 
-	private static void custMenu(Connection con) throws IOException, InterruptedException {
-		String desiredAction = "";
+    private static void custMenu(Connection con) throws IOException, InterruptedException {
+        String desiredAction = "";
 
-		System.out.println("Welcome to the customer menu!");
-		System.out.println("What would you like to do today? \nJust enter a command: ");
-		custCommandList(); //will list out all available commands for customers.
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("| Welcome to the customer menu!                                  |");
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("| Just enter a command, or input some data to search:            |");
+        System.out.println("|________________________________________________________________|");
+        custCommandList(); // will list out all available commands for customers.
 
-		desiredAction = s.nextLine();
-		System.out.println();
+        desiredAction = s.nextLine();
+        System.out.println();
 
-		System.out.println("If I understand correctly, you're trying to " + desiredAction + ".");
-		System.out.println("Do I understand your intentions correctly? \n");
+        System.out.println("You're trying to " + desiredAction + ".");
+        System.out.println("Is this correct?");
+        agreement();
+        if (s.nextLine().equals("y")) {
+            System.out.println("\nAwesome! \nI will get that ready for you as soon as possible!");
 
-		System.out.println("Please type 'y' for yes, or 'n' for no!");
-		if(s.nextLine().equals("y")) {
-			System.out.println("Awesome! I will get that ready for you as soon as possible!");
+        }
 
-		}
+        else {
+            System.out.println("Well, would you like to try again?");
+            agreement();
+            if (s.nextLine().equals("y")) {
+                custMenu(con); // is this recursion?
+            } else {
+                System.out.println("\n\n We're always happy to help you!\nIf you need anything else, be "
+                        + "sure to use our tool again later!");
+            }
 
+        }
+    }
 
-		else
-		{
-			System.out.println("Well, would you like to try again?");
-			System.out.println("Please type 'y' for yes, or 'n' for no!");
-			if(s.nextLine().equals("y")) {
-				custMenu(con); //is this recursion?
-			}
-			else {
-				System.out.println("\n\n We're happy to have been here to help you, if you need anything else, be " +
-                        "sure to use our tool again later!");
-			}
+    private static void custCommandList() {
+        boolean this_will_look_awful_on_the_powerpoint = true;
+        //TODO, make this_will_look_awful_on_the_powerpoint = false.
 
+        while(!this_will_look_awful_on_the_powerpoint) {
+            System.out.println(" ________________________________________________________________ ");
+            System.out.println("|----------------------------------------------------------------|");
+            System.out.println("| (1) View data.                                                 |");
+            System.out.println("|                                                                |");
+            System.out.println("|                                                                |");
+            System.out.println("|----------------------------------------------------------------|");
+        }
 
+    }
 
-		}
-	}
-
-	static void custCommandList() {
-		//todo: prints customer commands.
-	}
-	public String getSale(int PID ){
-		return "TODO: SALE INFO";
-	}
-	public String getCustomerInfo(int taxID) {
-		return "";
-		//if taxID is seller/buyer
-		//	return info
-		//else return null/error
-	}
-	public String getOfficeManager(int officeID) {
-		//return as formatted taxID
-		return "";
-	}
-	public String getOfficeInfo(int officeID) {
-		return null;
-	}
-	public int setOfferStatus(int PID) {
-//		return new Integer(7);
-        return 0;
-		//input: property ID
-		//output: 0 for success, -1 for error.
-	}
-
-	static int chooseInsertList() {
-	    boolean valid = false;
-	    int choice = 0;
-
-        System.out.println("(1) New Property");
-        System.out.println("(2) New Client");
-        System.out.println("(3) New Agent");
+    private static int chooseInsertList() {
+        boolean valid = false;
+        int choice = 0;
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("| (1) New Property.                                              |");
+        System.out.println("| (2) New Client.                                                |");
+        System.out.println("| (3) New Agent.                                                 |");
+        System.out.println("| (4) New Offer.                                                 |");
+        System.out.println("| (5) New Office.                                                |");
+        System.out.println("|----------------------------------------------------------------|");
         // should be added at the same time as office to keep 1:1 rule
         // System.out.println("(4) New Manager");
-        System.out.println("(4) New Offer");
-        System.out.println("(5) New Office");
-        while(valid == false) {
+
+        while (valid == false) {
             choice = s.nextInt();
-            if(choice < 6 && choice > 0)
+            if (choice < 6 && choice > 0)
                 valid = true;
             else {
-                System.out.println("Invalid value entered. Please enter again.");
+                System.out.println("| Invalid value entered. Please enter again.                      |");
             }
         }
         return choice;
     }
 
-    static void insertData(Connection con) {
+    private static void insertData(Connection con) {
         String sql = "";
         System.out.println("What would you like to insert?");
         int insertType = chooseInsertList();
-        switch(insertType) {
+        switch (insertType) {
             case 1:
-                //Insert new property
+                // Insert new property
                 insertNewProp(con);
             case 2:
-                //Insert new client
+                // Insert new client
             case 3:
-                //Insert new agent
+                // Insert new agent
             case 4:
-                //Insert new offer
+                // Insert new offer
             case 5:
-                //Insert new office
+                // Insert new office
             default:
-                //something has gone wrong...
+                // something has gone wrong...
         }
     }
 
-    static void insertNewProp(Connection con) {
-	    s.nextLine();
+    private static void insertNewProp(Connection con) {
+        s.nextLine();
 
-	    System.out.print("Enter the tax id of the new property's listed agent: ");
-	    String agentID = s.nextLine();
+        System.out.print("Enter the tax id of the new property's listed agent: ");
+        String agentID = s.nextLine();
 
-	    System.out.print("Enter the tax id of the property's seller: ");
-	    String sellerID = s.nextLine();
+        System.out.print("Enter the tax id of the property's seller: ");
+        String sellerID = s.nextLine();
 
-	    System.out.print("Enter the listing price: ");
-	    int listPrice = s.nextInt();
+        System.out.print("Enter the listing price: ");
+        int listPrice = s.nextInt();
 
-	    s.nextLine();
-	    System.out.print("Enter the property's description: ");
-	    String desc = s.nextLine();
+        s.nextLine();
+        System.out.print("Enter the property's description: ");
+        String desc = s.nextLine();
 
-	    System.out.print("Enter the property's area (in square feet): ");
-	    int area = s.nextInt();
+        System.out.print("Enter the property's area (in square feet): ");
+        int area = s.nextInt();
 
-	    s.nextLine();
-	    System.out.print("Enter the property's address: ");
-	    String address = s.nextLine();
+        s.nextLine();
+        System.out.print("Enter the property's address: ");
+        String address = s.nextLine();
 
-	    System.out.print("Enter the property's city: ");
-	    String city = s.nextLine();
+        System.out.print("Enter the property's city: ");
+        String city = s.nextLine();
 
-	    System.out.print("Enter the property's state abbreviation: ");
-	    String state = s.nextLine();
+        System.out.print("Enter the property's state abbreviation: ");
+        String state = s.nextLine();
 
-	    System.out.print("Enter the property's ZIP code: ");
-	    String zip = s.nextLine();
+        System.out.print("Enter the property's ZIP code: ");
+        String zip = s.nextLine();
 
-	    try {
-	        int addressid = 0;
+        try {
+            int addressid = 0;
 
-	        rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
-	        if(rs.next())
+            rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
+            if (rs.next())
                 addressid = rs.getInt("newID");
 
             PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
@@ -618,11 +639,12 @@ public class UserInterface_Command_Line {
             int propertyid = 0;
 
             rs = Query_Execution.executeQuery(con, "SELECT MAX(propertyid)+1 FROM property;");
-            if(rs.next()) {
+            if (rs.next()) {
                 propertyid = rs.getInt(1);
             }
 
             PreparedStatement propPS = con.prepareStatement("INSERT INTO property VALUES(?, ?, ?, ?, ?, ?, ?, ?);");
+
             propPS.setInt(1, propertyid);
             propPS.setString(2, agentID);
             propPS.setString(3, sellerID);
@@ -634,79 +656,9 @@ public class UserInterface_Command_Line {
             propPS.execute();
 
             System.out.println("Property " + propertyid + " inserted!");
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             System.err.println("Could not insert new property.");
             System.out.println("Error: " + e.getMessage());
         }
-        //get taxid of agent
-        //get taxid of seller
-        //get list price
-        //get description?
-        //get area (sq ft)
-        //get address details
-        //blank sell date for now
-        //can now insert property
-    }
-
-//    String create_client(String zipcode, String city, String streetaddress, String state, String FirstName, String LastName, String PhoneNumber, String TaxID, String AgentTaxID){
-//        return "INSERT INTO Address(State, Zipcode, City, Streetaddress, AddressID) " +
-//                "VALUES(" + state + ", " + zipcode + ", " + city + ", " + streetaddress +
-//                ", SELECT MAX(addressid)+1 FROM address);\n " +
-//                "INSERT INTO Person(TaxID, FirstName, LastName, PhoneNumber) " +
-//                "VALUES(" + TaxID + ", " + FirstName + ", " + LastName + ", " + PhoneNumber + ");\n" +
-//                "INSERT INTO CLIENT(taxid, agenttaxid) " +
-//                "VALUES(" + TaxID + ", " + AgentTaxID + ");";
-//    }
-
-    static void insertNewClient(Connection con) {
-        //get first
-        //get last
-        //get taxid
-        //get phone num
-        //get address details
-        //get agent taxid
-        //can now insert client
-    }
-
-    static void insertNewAgent(Connection con) {
-        //get first
-        //get last
-        //get taxid
-        //get phone num
-        //get address details
-        //get salary
-        //get primary office id
-        //get commission percentage
-        //get taxid of manager
-        //can now insert agent
-    }
-
-    static void insertNewManager(Connection con) {
-        //get first
-        //get last
-        //get taxid
-        //get phone num
-        //get address details
-        //get salary
-        //should be called from office creation to get office id
-        //can now insert manager
-    }
-
-    static void insertNewOffer(Connection con) {
-        //property made on
-        //get current date value from the sql
-        //tax ID of client
-        //offer amount
-        //no need to put in status, default to waiting
-        //can now insert offer
-    }
-
-    static void insertNewOffice(Connection con) {
-	    //new manager?
-        //add their taxID
-        //get address details
-        //new office can be created
     }
 }
