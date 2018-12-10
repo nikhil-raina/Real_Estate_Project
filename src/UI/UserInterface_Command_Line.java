@@ -21,26 +21,21 @@ public class UserInterface_Command_Line {
     //-1 is no access
 
     //	String[] actions = {};
-    static Scanner s = new Scanner(System.in);
+    private static Scanner s = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException, InterruptedException {
-//        try {
-//            con = SQLConnection.getConnection(schema);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        viewData(con);
-
         System.out.println(" ________________________________________________________________");
         System.out.println("|----------------------------------------------------------------|");
         System.out.println("|    Welcome to the Premium Real Estate Company database UI!     |");
         System.out.println("|----------------------------------------------------------------|");
         System.out.println("|     Do you have staff (admin/manager/agent) credentials?       |");
-//        youSure();
         agreement();
+        try {
+            con = SQLConnection.getConnection(schema);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         input = s.nextLine();
-//        System.out.println();
-
         // limit of tries for password entry
         int count = 3;
 
@@ -49,15 +44,12 @@ public class UserInterface_Command_Line {
         int staffID = num.nextInt(20000);
 
         if(input.equalsIgnoreCase("y")){
-//            String password = "maximum_mior";
             String password = "123";
             while(count != 0) {
                 System.out.println("|----------------------------------------------------------------|");
                 System.out.println("|     Please enter your staff credentials.                       |");
                 System.out.println("|----------------------------------------------------------------|");
                 System.out.print("      ");
-
-//                System.out.println("Please enter your administration credentials!");
                 String attemptedPassword = s.nextLine();
                 if(attemptedPassword.equals(password)) {
                     accessLevel = 9001;
@@ -72,34 +64,22 @@ public class UserInterface_Command_Line {
                     System.out.println("|      Would you like to enter the staff menu?                   |");
                     agreement();
                     input = s.nextLine();
-//                    System.out.println();
 
                     if(input.equalsIgnoreCase("y")){
-                        try {
-                            con = SQLConnection.getConnection(schema);
-                            staffMenu(con);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-//                        staffMenu(con);
+                        staffMenu(con);
                     } else {
-//                        System.out.println();
-//                        System.out.println(" ________________________________________________________________");
                         System.out.println("|  Thanks for using the Premium Real Estate Company database UI. |");
                         System.out.println("|  Have a great day.                                             |");
                         System.out.println("|----------------------------------------------------------------|");
                         System.out.println(" ________________________________________________________________ ");
                         System.exit(0);
                     }
-
                 }
                 count--;
-//                System.out.println(" ---------------------------------------------------------------- ");
                 System.out.println("|     Incorrect Password.                                        |");
                 System.out.println("|     Number of tries left: "+ count+"                                    |");
                 System.out.println("|                                                                |");
             }
-//            System.out.println(" ---------------------------------------------------------------- ");
             System.out.println("|     Number of tries exceeded...!!                              |");
             System.out.println("|     UNAUTHORIZED ENTRY, REPORTING TO FRAUD DEPARTMENT!         |");
             System.out.println("|     Staff ID ::: "+ staffID +" ::: has been reported.     |");
@@ -107,39 +87,8 @@ public class UserInterface_Command_Line {
             System.exit(0);
 
         }
-        else {
-            try {
-                con = SQLConnection.getConnection(schema);
-                custMenu(con);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            System.out.println("|----------------------------------------------------------------|");
-            System.out.println("|      Access Level:      Customer                               |");
-            System.out.println("|      Hello and Welcome!                                        |");
-            System.out.println("|      Thanks for choosing Premium Real Estate!                  |");
-//            System.out.println();
-
-            while(true){
-                System.out.println("");
-                enterCustomerTaunt();
-                input = s.nextLine();
-                youSure();
-                input2 = s.nextLine();
-                if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
-                    try {
-                        con = SQLConnection.getConnection(schema);
-                        custMenu(con);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-//                    custMenu(con);
-                } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
-                    switchOFF();
-                }
-            }
-        }
-
+        else
+            custMenu(con);
     }
 
     private static void switchOFF(){
@@ -151,11 +100,12 @@ public class UserInterface_Command_Line {
     }
 
     private static void enterCustomerTaunt(){
-        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("|                                                                |");
         System.out.println("|     Input Selection:                                           |");
-        System.out.println("|     (1) Customer Menu.                                         |");
+        System.out.println("|     (1) View Data                                              |");
         System.out.println("|     (2) Exit.                                                  |");
         System.out.println("|----------------------------------------------------------------|");
+        System.out.print("      ");
     }
 
     private static void youSure(){
@@ -188,26 +138,19 @@ public class UserInterface_Command_Line {
 
     private static void staffMenu(Connection con) throws IOException, InterruptedException {
         if(accessLevel == - 1){
-//            System.out.println(" ________________________________________________________________ ");
             System.out.println("                 Unauthorised Entry.");
             System.out.println("                 Access Denied.");
             switchOFF();
-//            System.out.println(" ________________________________________________________________ ");
-//            System.out.println();
         }
         String desiredAction;
         System.out.println();
-//        System.out.println(" ________________________________________________________________ ");
         System.out.println("|----------------------------------------------------------------|");
         System.out.println("|                   Welcome to the staff menu!                   |");
         System.out.println("|                What would you like to do today:                |");
-//        System.out.println(" ---------------------------------------------------------------- ");
-//        System.out.println("|________________________________________________________________|");
 
         printStaffMenu();
         desiredAction = s.nextLine();
         youSure();
-//		agreement();
         input = s.nextLine();
         System.out.println();
 
@@ -217,43 +160,33 @@ public class UserInterface_Command_Line {
             printStaffMenu();
             desiredAction = s.nextLine();
             youSure();
-//            agreement();
             input = s.nextLine();
-//            System.out.println();
         }
 
         if(desiredAction.equalsIgnoreCase("1")){
-//            System.out.println(" ________________________________________________________________ ");
             System.out.println("|----------------------------------------------------------------|");
             System.out.println("|     Where would you like to View the data from:                |");
             viewData(con);
 
         } else if(desiredAction.equalsIgnoreCase("2")){
-//            System.out.println(" ________________________________________________________________ ");
             System.out.println("|----------------------------------------------------------------|");
             System.out.println("|     Where would you like to Insert the data:                   |");
             insertData(con);
 
         } else if(desiredAction.equalsIgnoreCase("3")){
-//            System.out.println(" ________________________________________________________________ ");
             System.out.println("|----------------------------------------------------------------|");
             System.out.println("|     Where would you like to Update the data:                   |");
             // View the different tables available in the database to UPDATE some data.
             // Have a function call updateData()
 
         } else if(desiredAction.equalsIgnoreCase("4")){
-//            System.out.println(" ________________________________________________________________ ");
             System.out.println("|----------------------------------------------------------------|");
             System.out.println("|     Where would you like to Delete the data:                   |");
             // View the different tables available in the database to Delete data.
             // Have a function call deleteData()
 
         } else if (desiredAction.equalsIgnoreCase("5")) {
-//            youSure();
             System.out.println("|     Are you absolutely certain that you would like to leave?   |");
-//            System.out.println("|     We're happy to have been here to help you do your job!     |");
-//            System.out.println("| If you need anything else, be sure to use our tool again later!|");
-//            System.out.println("|     Are you absolutely certain that you would like to leave?   |");
             input = s.nextLine();
             if (input.equalsIgnoreCase("n")) {
                 System.out.println("|     Redirecting to Staff Menu                                  |");
@@ -377,22 +310,32 @@ public class UserInterface_Command_Line {
         return count;
     }
 
+    private static List<String> viewAvailableTable(Connection con){
+        List<String> list = new ArrayList<>();
+        int count = 0;
+        try {
+            rs = Query_Execution.executeQuery(con, "SELECT * FROM pg_tables WHERE schemaname='" + schema + "'");
+            System.out.println("|         --- Tables Present ---                                 |");
+            while (rs.next()) {
+                count++;
+                String val = rs.getString("tablename");
+                list.add(val);
+                System.out.println("|     (" + count + ")\t" + val.toUpperCase());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("|                                                                |");
+        System.out.println("|    Enter the table number to view:                             |");
+        return list;
+    }
+
     private static void viewData(Connection con)throws IOException, InterruptedException{
         int count;
-        List<String> list = new ArrayList<>();
+        List<String> list = viewAvailableTable(con);
         while(true) {
             count = 0;
             try {
-                rs = Query_Execution.executeQuery(con, "SELECT * FROM pg_tables WHERE schemaname='" + schema + "'");
-                System.out.println("|         --- Tables Present ---                             |");
-                while (rs.next()) {
-                    count++;
-                    String val = rs.getString("tablename");
-                    list.add(val);
-                    System.out.println("\t(" + count + ")\t" + val.toUpperCase());
-                }
-                System.out.println();
-                System.out.println("|    Enter the table number to view:                         |");
                 String table;
                 while (true) {
                     input = s.nextLine();
@@ -415,7 +358,6 @@ public class UserInterface_Command_Line {
                     align = align + "\t%10s\t\t|\t\t";
                 }
                 System.out.format(align + "\n", (Object[]) columnCount);
-//                String columnHeaders[] = columnCount;
                 System.out.println();
                 int repeat = 0;
                 while (rs.next()) {
@@ -426,6 +368,7 @@ public class UserInterface_Command_Line {
                         repeat++;
                     } else
                         break;
+
                     // relays all the columns with all the data
                     System.out.format(align + "\n", (Object[]) columnCount);
                 }
@@ -495,53 +438,26 @@ public class UserInterface_Command_Line {
     }
 
     private static void custMenu(Connection con) throws IOException, InterruptedException {
-        String desiredAction = "";
-
-        System.out.println(" ________________________________________________________________ ");
         System.out.println("|----------------------------------------------------------------|");
-        System.out.println("| Welcome to the customer menu!                                  |");
-        System.out.println(" ________________________________________________________________ ");
-        System.out.println("| Just enter a command, or input some data to search:            |");
-        System.out.println("|________________________________________________________________|");
-        custCommandList(); // will list out all available commands for customers.
-
-        desiredAction = s.nextLine();
-        System.out.println();
-
-        System.out.println("You're trying to " + desiredAction + ".");
-        System.out.println("Is this correct?");
-        agreement();
-        if (s.nextLine().equals("y")) {
-            System.out.println("\nAwesome! \nI will get that ready for you as soon as possible!");
-
-        }
-
-        else {
-            System.out.println("Well, would you like to try again?");
-            agreement();
-            if (s.nextLine().equals("y")) {
-                custMenu(con); // is this recursion?
-            } else {
-                System.out.println("\n\n We're always happy to help you!\nIf you need anything else, be "
-                        + "sure to use our tool again later!");
+        System.out.println("|      Access Level:      Customer                               |");
+        System.out.println("|      Hello and Welcome!                                        |");
+        System.out.println("|      Thanks for choosing Premium Real Estate!                  |");
+        while(true){
+            System.out.println("|                                                                |");
+            enterCustomerTaunt();
+            input = s.nextLine();
+            youSure();
+            input2 = s.nextLine();
+            if(input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")){
+                viewData(con);
+            } else if(input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")){
+                switchOFF();
             }
-
-        }
-    }
-
-    private static void custCommandList() {
-        boolean this_will_look_awful_on_the_powerpoint = true;
-        //TODO, make this_will_look_awful_on_the_powerpoint = false.
-
-        while(!this_will_look_awful_on_the_powerpoint) {
-            System.out.println(" ________________________________________________________________ ");
             System.out.println("|----------------------------------------------------------------|");
-            System.out.println("| (1) View data.                                                 |");
-            System.out.println("|                                                                |");
-            System.out.println("|                                                                |");
+            System.out.println("|     Series of inputs did not make sense.                       |");
+            System.out.println("|     Please Enter Again                                         |");
             System.out.println("|----------------------------------------------------------------|");
         }
-
     }
 
     private static int chooseInsertList() {
@@ -665,6 +581,7 @@ public class UserInterface_Command_Line {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
     static void insertNewClient(Connection con) {
         s.nextLine();
 
