@@ -741,103 +741,595 @@ public class UserInterface_Command_Line {
         switch(updateType) {
             case 1:
                 updateSubType = chooseUpdatePropList();
+                System.out.print("Enter the Property ID to be updated: ");
+                int propID = s.nextInt();
                 switch(updateSubType) {
-                    case 1:
+                    case 1: {
                         //update Agent
-                    case 2:
+                        s.nextLine();
+                        System.out.print("Enter the new Agent ID: ");
+                        String agent = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE property SET agenttaxid = '?' WHERE propertyid = ?;");
+                            update.setString(1, agent);
+                            update.setInt(2, propID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update agent ID.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 2: {
                         //update List Price
-                    case 3:
+                        System.out.print("Enter the new List Price: ");
+                        int price = s.nextInt();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE property SET listprice = ? WHERE propertyid = ?;");
+                            update.setInt(1, price);
+                            update.setInt(2, propID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update list price.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 3: {
                         //update Description
-                    case 4:
+                        s.nextLine();
+                        System.out.print("Enter the new description: ");
+                        String desc = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE property SET descripition = '?' WHERE propertyid = ?;");
+                            update.setString(1, desc);
+                            update.setInt(2, propID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update description.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 4: {
                         //update Area
-                    case 5:
+                        System.out.print("Enter the new area in sq. ft.: ");
+                        int area = s.nextInt();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE property SET area = ? WHERE propertyid = ?;");
+                            update.setInt(1, area);
+                            update.setInt(2, propID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update area.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 5: {
                         //update Address
-                    case 6:
+                        s.nextLine();
+                        System.out.print("Enter the new address: ");
+                        String address = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET streetaddress = '?' WHERE addressid = (SELECT addressid FROM property WHERE propertyid = ?);");
+                            update.setString(1, address);
+                            update.setInt(2, propID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update address.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 6: {
                         //update City
-                    case 7:
+                        s.nextLine();
+                        System.out.print("Enter the new city: ");
+                        String city = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET city = '?' WHERE addressid = (SELECT addressid FROM property WHERE propertyid = ?);");
+                            update.setString(1, city);
+                            update.setInt(2, propID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update city.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 7: {
                         //update State
-                    case 8:
+                        s.nextLine();
+                        System.out.print("Enter the new state: ");
+                        String state = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET state = '?' WHERE addressid = (SELECT addressid FROM property WHERE propertyid = ?);");
+                            update.setString(1, state);
+                            update.setInt(2, propID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update state.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 8: {
                         //update ZIP
+                        s.nextLine();
+                        System.out.print("Enter the new ZIP: ");
+                        String zip = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET zipcode = '?' WHERE addressid = (SELECT addressid FROM property WHERE propertyid = ?);");
+                            update.setString(1, zip);
+                            update.setInt(2, propID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update ZIP.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
                     default:
                         //something's gone wrong...
                 }
             case 2:
                 updateSubType = chooseUpdateClientList();
+                System.out.print("Enter the tax id of the client to be updated: ");
+                String clientTaxid = s.nextLine();
                 switch(updateSubType) {
-                    case 1:
+                    case 1: {
                         //update first
-                    case 2:
+                        System.out.print("Enter the new first name: ");
+                        String first = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE person SET firstname = '?' WHERE taxid = '?';");
+                            update.setString(1, first);
+                            update.setString(2, clientTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update first name.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 2: {
                         //update last
-                    case 3:
+                        System.out.print("Enter the new last name: ");
+                        String last = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE person SET lastname = '?' WHERE taxid = '?';");
+                            update.setString(1, last);
+                            update.setString(2, clientTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update last name.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 3: {
                         //update phone
-                    case 4:
+                        System.out.print("Enter the new phone number: ");
+                        String phone = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE person SET phonenumber = '?' WHERE taxid = '?';");
+                            update.setString(1, phone);
+                            update.setString(2, clientTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update phone number.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 4: {
                         //update agent
-                    case 5:
+                        System.out.print("Enter the tax ID of the customer's new agent: ");
+                        String agent = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE client SET agenttaxid = '?' WHERE taxid = '?';");
+                            update.setString(1, agent);
+                            update.setString(2, clientTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update the client's agent.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 5: {
                         //update address
-                    case 6:
+                        System.out.print("Enter the client's new address: ");
+                        String address = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET streetaddress = '?' WHERE addressid = (SELECT addressid FROM person WHERE taxid = '?');");
+                            update.setString(1, address);
+                            update.setString(2, clientTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update address.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 6: {
                         //update city
-                    case 7:
+                        System.out.print("Enter the client's new city: ");
+                        String city = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET city = '?' WHERE addressid = (SELECT addressid FROM person WHERE taxid = '?');");
+                            update.setString(1, city);
+                            update.setString(2, clientTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update city.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 7: {
                         //update state
-                    case 8:
+                        System.out.print("Enter the client's new state: ");
+                        String state = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET state = '?' WHERE addressid = (SELECT addressid FROM person WHERE taxid = '?');");
+                            update.setString(1, state);
+                            update.setString(2, clientTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update state.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 8: {
                         //update ZIP
+                        System.out.print("Enter the client's new ZIP: ");
+                        String zip = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET zipcode = '?' WHERE addressid = (SELECT addressid FROM person WHERE taxid = '?');");
+                            update.setString(1, zip);
+                            update.setString(2, clientTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update zip code.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
                     default:
                         //something's gone wrong...
                 }
             case 3:
                 updateSubType = chooseUpdateAgentList();
+                System.out.print("Enter the tax id of the agent to be updated: ");
+                String agentTaxid = s.nextLine();
                 switch(updateSubType) {
-                    case 1:
+                    case 1: {
                         //first
-                    case 2:
+                        System.out.print("Enter the new first name: ");
+                        String first = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE person SET firstname = '?' WHERE taxid = '?';");
+                            update.setString(1, first);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update first name.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 2: {
                         //last
-                    case 3:
+                        System.out.print("Enter the new last name: ");
+                        String last = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE person SET lastname = '?' WHERE taxid = '?';");
+                            update.setString(1, last);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update last name.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 3: {
                         //phone
-                    case 4:
+                        System.out.print("Enter the new phone number: ");
+                        String phone = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE person SET phonenumber = '?' WHERE taxid = '?';");
+                            update.setString(1, phone);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update phone number.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 4: {
                         //manager
-                    case 5:
+                        System.out.print("Enter the tax ID of the agent's new manager: ");
+                        String manager = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE agent SET managertaxid = '?' WHERE taxid = '?';");
+                            update.setString(1, manager);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update the agent's manager.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 5: {
                         //office
-                    case 6:
+                        System.out.print("Enter the new primary office ID: ");
+                        int office = s.nextInt();
+                        s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE agent SET primaryofficeid = ? WHERE taxid = '?';");
+                            update.setInt(1, office);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update the primary office.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 6: {
                         //commission
-                    case 7:
+                        System.out.print("Enter the agent's new commission value (e.g 0.14): ");
+                        float comm = s.nextFloat();
+                        s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE agent SET commissionpercentage = ? WHERE taxid = '?';");
+                            update.setFloat(1, comm);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update the commission value.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 7: {
                         //salary
-                    case 8:
+                        System.out.print("Enter the agent's new salary: ");
+                        int salary = s.nextInt();
+                        s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE agent SET salary = ? WHERE taxid = '?';");
+                            update.setInt(1, salary);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update the agent's salary.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 8: {
                         //address
-                    case 9:
+                        System.out.print("Enter the agent's new address: ");
+                        String address = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET streetaddress = '?' WHERE addressid = (SELECT addressid FROM person WHERE taxid = '?');");
+                            update.setString(1, address);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update address.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 9: {
                         //city
-                    case 10:
+                        System.out.print("Enter the agent's new city: ");
+                        String city = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET city = '?' WHERE addressid = (SELECT addressid FROM person WHERE taxid = '?');");
+                            update.setString(1, city);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update city.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 10: {
                         //state
-                    case 11:
+                        System.out.print("Enter the agent's new state: ");
+                        String state = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET state = '?' WHERE addressid = (SELECT addressid FROM person WHERE taxid = '?');");
+                            update.setString(1, state);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update state.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 11: {
                         //ZIP
+                        System.out.print("Enter the agent's new ZIP: ");
+                        String zip = s.nextLine();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET zipcode = '?' WHERE addressid = (SELECT addressid FROM person WHERE taxid = '?');");
+                            update.setString(1, zip);
+                            update.setString(2, agentTaxid);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update zip code.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
                     default:
                         //something's gone wrong...
                 }
             case 4:
                 updateSubType = chooseUpdateOfferList();
+                System.out.print("Enter the offer id of the offer to be updated: ");
+                int offerID = s.nextInt();
                 switch(updateSubType) {
-                    case 1:
+                    case 1: {
                         //propertyID
-                    case 2:
+                        System.out.print("Enter the new property ID: ");
+                        int offerPropID = s.nextInt();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE offer SET propertyid = ? WHERE offerid = ?;");
+                            update.setInt(1, offerPropID);
+                            update.setInt(2, offerID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update property ID.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 2: {
                         //Amount
-                    case 3:
+                        System.out.print("Enter the new offered amount: ");
+                        int amount = s.nextInt();
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE offer SET offeramount = ? WHERE offerid = ?;");
+                            update.setInt(1, amount);
+                            update.setInt(2, offerID);
+                            update.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not update amount.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 3: {
                         //accept
-                    case 4:
+                        try {
+                            PreparedStatement accept = con.prepareStatement("UPDATE offer SET offerstatus = 'a' WHERE offerid = ?;");
+                            accept.setInt(1, offerID);
+                            accept.execute();
+
+                            PreparedStatement dateUpdate = con.prepareStatement("UPDATE property SET selldate = GETDATE() WHERE propertyid = (SELECT propertyid FROM offer WHERE offerid = ?);");
+                            dateUpdate.setInt(1, offerID);
+                            dateUpdate.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not accept offer.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                        System.out.println("Offer " + offerID + " accepted!");
+                    }
+                    case 4: {
                         //decline
+                        try {
+                            PreparedStatement decline = con.prepareStatement("UPDATE offer SET offerstatus = 'd' WHERE offerid = ?;");
+                            decline.setInt(1, offerID);
+                            decline.execute();
+                        } catch (SQLException e) {
+                            System.out.println("Could not decline offer.");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                        System.out.println("Offer " + offerID + " declined.");
+                    }
                     default:
                         //something's gone wrong...
                 }
             case 5:
                 updateSubType = chooseUpdateOfficeList();
+                System.out.print("Enter the office ID to be updated: ");
+                int officeID = s.nextInt();
                 switch(updateSubType) {
-                    case 1:
+                    case 1: {
                         //managerID
-                    case 2:
+                        s.nextLine();
+                        System.out.print("Enter the new manager's ID: ");
+                        String manager = s.nextLine();
+
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE office SET managertaxid = '?' WHERE officeid = ?;");
+                            update.setString(1, manager);
+                            update.setInt(2, officeID);
+                        } catch (SQLException e) {
+                            System.out.println("Could not update manager. ");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 2: {
                         //address
-                    case 3:
+                        s.nextLine();
+                        System.out.print("Enter the new address: ");
+                        String address = s.nextLine();
+
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET streetaddress = '?' WHERE addressid = (SELECT addressid FROM office WHERE officeid = ?);");
+                            update.setString(1, address);
+                            update.setInt(2, officeID);
+                        } catch (SQLException e) {
+                            System.out.println("Could not update address. ");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 3: {
                         //city
-                    case 4:
+                        s.nextLine();
+                        System.out.print("Enter the new city: ");
+                        String city = s.nextLine();
+
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET city = '?' WHERE addressid = (SELECT addressid FROM office WHERE officeid = ?);");
+                            update.setString(1, city);
+                            update.setInt(2, officeID);
+                        } catch (SQLException e) {
+                            System.out.println("Could not update city. ");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 4: {
                         //state
-                    case 5:
+                        s.nextLine();
+                        System.out.print("Enter the new state: ");
+                        String state = s.nextLine();
+
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET state = '?' WHERE addressid = (SELECT addressid FROM office WHERE officeid = ?);");
+                            update.setString(1, state);
+                            update.setInt(2, officeID);
+                        } catch (SQLException e) {
+                            System.out.println("Could not update state. ");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    case 5: {
                         //ZIP
+                        s.nextLine();
+                        System.out.print("Enter the new ZIP: ");
+                        String zip = s.nextLine();
+
+                        try {
+                            PreparedStatement update = con.prepareStatement("UPDATE address SET zipcode = '?' WHERE addressid = (SELECT addressid FROM office WHERE officeid = ?);");
+                            update.setString(1, zip);
+                            update.setInt(2, officeID);
+                        } catch (SQLException e) {
+                            System.out.println("Could not update zip code. ");
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
                     default:
                         //something's gone wrong
                 }
