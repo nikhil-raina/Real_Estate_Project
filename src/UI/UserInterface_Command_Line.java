@@ -291,7 +291,7 @@ public class UserInterface_Command_Line {
 				System.out.println("\t(" + count + ")\t" + val.toUpperCase());
 			}
 
-			System.out.println("");
+			System.out.println("|                                                                           |");
 
 			while (table_select_prompt == -1) {
 				System.out.println(
@@ -306,36 +306,37 @@ public class UserInterface_Command_Line {
 			String primary_key_for_deletion = "";
 			
 			if(table_selected_as_string.equalsIgnoreCase("manager")) {
-			System.out.println("| Warning, before removing this manager, you should ensure the manager's office is redelegated to a different manager.|");
-			System.out.println("| Using the update function will help you complete this.                    |");
+			    System.out.println("| Warning, before removing this manager, you should ensure the manager's    |\n" +
+                                   "| office is delegated to a different manager.                               |");
+			    System.out.println("| Using the update function will help you complete this.                    |");
+                System.out.println("|                                                                           |");
+			    System.out.println("| What is the tax id of the manager you'd like to remove?                   |");
+			    System.out.println("| NOTE: If the tax id has a leading zero, do not include it in your input.  |");
 			
-			System.out.println("| What is the tax id of the manager you'd like to remove?                   |");
-			System.out.println("| NOTE: If the tax id has a leading zero, do not include it in your input.  |");
+			    primary_key_for_deletion = s.nextLine();
 			
-			primary_key_for_deletion = s.nextLine();
-			
-			while(primary_key_for_deletion.length()>9 || primary_key_for_deletion.length()<8) {
-				System.out.println("Invalid tax ID format, try again.");
-				primary_key_for_deletion = s.nextLine();
+			    while(primary_key_for_deletion.length()>9 || primary_key_for_deletion.length()<8) {
+				    System.out.println("Invalid tax ID format, try again.");
+				    primary_key_for_deletion = s.nextLine();
 
-			}
-			System.out.println("Are you absolutely sure you want to delete the " + table_selected_as_string + " with the primary key " + primary_key_for_deletion + "?");
-			System.out.println("Please be aware, failing to indicate a new manager to control the office will result in the office having no manager.");
+			    }
+			    System.out.println("Are you absolutely sure you want to delete the " + table_selected_as_string + " with the primary key " + primary_key_for_deletion + "?");
+			    System.out.println("Please be aware, failing to indicate a new manager to control the office will result in the office having no manager.");
 			
-			String temp_choice = s.nextLine();
-			while(!temp_choice.equalsIgnoreCase("y")){
+                String temp_choice = s.nextLine();
+                while(!temp_choice.equalsIgnoreCase("y")){
+
+                    if(temp_choice.equalsIgnoreCase("n")){
+                        staffMenu(con); //behavior only needs to be defined for staff menu as per the fact customers can never get here.
+                        return;
+                    }
+
+				    System.out.println("Invalid input; type 'y' for yes, or 'n' for no (to go back to the action-menu.");
 				
-				if(temp_choice.equalsIgnoreCase("n")){
-				staffMenu(con); //behavior only needs to be defined for staff menu as per the fact customers can never get here.
-				return;
-				}
-				
-				System.out.println("Invalid input; type 'y' for yes, or 'n' for no (to go back to the action-menu.");
-				
-			}
+			    }
 			
-			rs = Query_Execution.executeQuery(con, "DELETE from manager where taxid =' " + primary_key_for_deletion + "'");
-			rs = Query_Execution.executeQuery(con, "DELETE from person where taxid =' " + primary_key_for_deletion + "'");
+			    rs = Query_Execution.executeQuery(con, "DELETE from manager where taxid =' " + primary_key_for_deletion + "'");
+			    rs = Query_Execution.executeQuery(con, "DELETE from person where taxid =' " + primary_key_for_deletion + "'");
 
 			}
 			if(table_selected_as_string.equalsIgnoreCase("agent")) {
