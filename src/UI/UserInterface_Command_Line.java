@@ -240,6 +240,7 @@ public class UserInterface_Command_Line {
             System.out.println("|     Where would you like to Update the data:                   |");
             // View the different tables available in the database to UPDATE some data.
             // Have a function call updateData()
+            updateData(con);
 
         } else if(desiredAction.equalsIgnoreCase("4")){
 //            System.out.println(" ________________________________________________________________ ");
@@ -567,6 +568,282 @@ public class UserInterface_Command_Line {
             }
         }
         return choice;
+    }
+
+    private static int chooseUpdateList() {
+        boolean valid = false;
+        int choice = 0;
+
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("| (1) Update Property.                                           |");
+        System.out.println("| (2) Update Client.                                             |");
+        System.out.println("| (3) Update Agent.                                              |");
+        System.out.println("| (4) Update Offer.                                              |");
+        System.out.println("| (5) Update Office.                                             |");
+        System.out.println("|----------------------------------------------------------------|");
+
+        while (valid == false) {
+            choice = s.nextInt();
+            if (choice < 6 && choice > 0)
+                valid = true;
+            else {
+                System.out.println("| Invalid value entered. Please enter again.                      |");
+            }
+        }
+
+        return choice;
+    }
+
+    private static int chooseUpdatePropList() {
+        boolean valid = false;
+        int choice = 0;
+
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("| (1) Update Agent.                                              |");
+        System.out.println("| (2) Update List Price.                                         |");
+        System.out.println("| (3) Update Description.                                        |");
+        System.out.println("| (4) Update Area.                                               |");
+        System.out.println("| (5) Update Address.                                            |");
+        System.out.println("| (6) Update City.                                               |");
+        System.out.println("| (7) Update State.                                              |");
+        System.out.println("| (8) Update ZIP.                                                |");
+        System.out.println("|----------------------------------------------------------------|");
+
+        while (valid == false) {
+            choice = s.nextInt();
+            if (choice < 9 && choice > 0)
+                valid = true;
+            else {
+                System.out.println("| Invalid value entered. Please enter again.                      |");
+            }
+        }
+
+        return choice;
+    }
+
+    private static int chooseUpdateClientList() {
+        boolean valid = false;
+        int choice = 0;
+
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("| (1) Update First Name.                                         |");
+        System.out.println("| (2) Update Last Name.                                          |");
+        System.out.println("| (3) Update Phone Number.                                       |");
+        System.out.println("| (4) Update Agent ID.                                           |");
+        System.out.println("| (5) Update Address.                                            |");
+        System.out.println("| (6) Update City.                                               |");
+        System.out.println("| (7) Update State.                                              |");
+        System.out.println("| (8) Update ZIP.                                                |");
+        System.out.println("|----------------------------------------------------------------|");
+
+        while (valid == false) {
+            choice = s.nextInt();
+            if (choice < 9 && choice > 0)
+                valid = true;
+            else {
+                System.out.println("| Invalid value entered. Please enter again.                      |");
+            }
+        }
+
+        return choice;
+    }
+
+    private static int chooseUpdateAgentList() {
+        boolean valid = false;
+        int choice = 0;
+
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("| (1) Update First Name.                                         |");
+        System.out.println("| (2) Update Last Name.                                          |");
+        System.out.println("| (3) Update Phone Number.                                       |");
+        System.out.println("| (4) Update Manager ID.                                         |");
+        System.out.println("| (5) Update Primary Office ID.                                  |");
+        //should I really give agents the ability to change these? probably not.
+        System.out.println("| (6) Update Commission.                                         |");
+        System.out.println("| (7) Update Salary.                                             |");
+        //
+        System.out.println("| (8) Update Address.                                            |");
+        System.out.println("| (9) Update City.                                               |");
+        System.out.println("| (10) Update State.                                             |");
+        System.out.println("| (11) Update ZIP.                                               |");
+        System.out.println("|----------------------------------------------------------------|");
+
+        while (valid == false) {
+            choice = s.nextInt();
+            if (choice < 12 && choice > 0)
+                valid = true;
+            else {
+                System.out.println("| Invalid value entered. Please enter again.                      |");
+            }
+        }
+
+        return choice;
+    }
+
+    private static int chooseUpdateOfferList() {
+        boolean valid = false;
+        int choice = 0;
+
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("| (1) Update the Property ID.                                    |");
+        System.out.println("| (2) Update Amount Offered.                                     |");
+        System.out.println("| (3) Accept an offer.                                           |");
+        System.out.println("| (4) Decline an offer.                                          |");
+        System.out.println("|----------------------------------------------------------------|");
+
+        while (valid == false) {
+            choice = s.nextInt();
+            if (choice < 12 && choice > 0)
+                valid = true;
+            else {
+                System.out.println("| Invalid value entered. Please enter again.                      |");
+            }
+        }
+
+        return choice;
+    }
+
+    private static int chooseUpdateOfficeList() {
+        boolean valid = false;
+        int choice = 0;
+
+        System.out.println(" ________________________________________________________________ ");
+        System.out.println("|----------------------------------------------------------------|");
+        System.out.println("| (1) Update the Manager ID.                                     |");
+        System.out.println("| (2) Update Address.                                            |");
+        System.out.println("| (3) Update City.                                               |");
+        System.out.println("| (4) Update State.                                              |");
+        System.out.println("| (5) Update ZIP.                                                |");
+        System.out.println("|----------------------------------------------------------------|");
+
+        while (valid == false) {
+            choice = s.nextInt();
+            if (choice < 12 && choice > 0)
+                valid = true;
+            else {
+                System.out.println("| Invalid value entered. Please enter again.                      |");
+            }
+        }
+
+        return choice;
+    }
+
+    private static void updateData(Connection con) {
+        String sql = "";
+        System.out.print("What would you like to update?");
+        int updateType = chooseUpdateList();
+        int updateSubType = 0;
+        switch(updateType) {
+            case 1:
+                updateSubType = chooseUpdatePropList();
+                switch(updateSubType) {
+                    case 1:
+                        //update Agent
+                    case 2:
+                        //update List Price
+                    case 3:
+                        //update Description
+                    case 4:
+                        //update Area
+                    case 5:
+                        //update Address
+                    case 6:
+                        //update City
+                    case 7:
+                        //update State
+                    case 8:
+                        //update ZIP
+                    default:
+                        //something's gone wrong...
+                }
+            case 2:
+                updateSubType = chooseUpdateClientList();
+                switch(updateSubType) {
+                    case 1:
+                        //update first
+                    case 2:
+                        //update last
+                    case 3:
+                        //update phone
+                    case 4:
+                        //update agent
+                    case 5:
+                        //update address
+                    case 6:
+                        //update city
+                    case 7:
+                        //update state
+                    case 8:
+                        //update ZIP
+                    default:
+                        //something's gone wrong...
+                }
+            case 3:
+                updateSubType = chooseUpdateAgentList();
+                switch(updateSubType) {
+                    case 1:
+                        //first
+                    case 2:
+                        //last
+                    case 3:
+                        //phone
+                    case 4:
+                        //manager
+                    case 5:
+                        //office
+                    case 6:
+                        //commission
+                    case 7:
+                        //salary
+                    case 8:
+                        //address
+                    case 9:
+                        //city
+                    case 10:
+                        //state
+                    case 11:
+                        //ZIP
+                    default:
+                        //something's gone wrong...
+                }
+            case 4:
+                updateSubType = chooseUpdateOfferList();
+                switch(updateSubType) {
+                    case 1:
+                        //propertyID
+                    case 2:
+                        //Amount
+                    case 3:
+                        //accept
+                    case 4:
+                        //decline
+                    default:
+                        //something's gone wrong...
+                }
+            case 5:
+                updateSubType = chooseUpdateOfficeList();
+                switch(updateSubType) {
+                    case 1:
+                        //managerID
+                    case 2:
+                        //address
+                    case 3:
+                        //city
+                    case 4:
+                        //state
+                    case 5:
+                        //ZIP
+                    default:
+                        //something's gone wrong
+                }
+            default:
+                //something's gone wrong...
+        }
     }
 
     private static void insertData(Connection con) {
