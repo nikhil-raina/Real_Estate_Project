@@ -3,9 +3,6 @@ package UI;
 import Backend_SQL.Query_Execution;
 import Backend_SQL.SQLConnection;
 
-import javax.management.Query;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,17 +11,17 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class UserInterface_Command_Line {
-	static int accessLevel = -1;
-	static String input;
-	static String input2;
-    static Connection con = null;
-    static ResultSet rs = null;
-    final static String schema = "real_estate";
+    private static int accessLevel = -1;
+    private static String input;
+    private static String input2;
+    private static Connection con = null;
+    private static ResultSet rs = null;
+    private final static String schema = "real_estate";
 
-	//-1 is no access
+    //-1 is no access
 
-//	String[] actions = {};
-	static Scanner s = new Scanner(System.in);
+    //	String[] actions = {};
+    static Scanner s = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException, InterruptedException {
 //        try {
@@ -532,7 +529,7 @@ public class UserInterface_Command_Line {
         }
     }
 
-	private static void custCommandList() {
+    private static void custCommandList() {
         boolean this_will_look_awful_on_the_powerpoint = true;
         //TODO, make this_will_look_awful_on_the_powerpoint = false.
 
@@ -547,7 +544,7 @@ public class UserInterface_Command_Line {
 
     }
 
-	static int chooseInsertList() {
+    private static int chooseInsertList() {
         boolean valid = false;
         int choice = 0;
         System.out.println(" ________________________________________________________________ ");
@@ -572,68 +569,64 @@ public class UserInterface_Command_Line {
         return choice;
     }
 
-    static void insertData(Connection con) {
+    private static void insertData(Connection con) {
         String sql = "";
         System.out.println("What would you like to insert?");
         int insertType = chooseInsertList();
-        switch(insertType) {
+        switch (insertType) {
             case 1:
-                //Insert new property
+                // Insert new property
                 insertNewProp(con);
             case 2:
-                //Insert new client
-                insertNewClient(con);
+                // Insert new client
             case 3:
-                //Insert new agent
-                insertNewAgent(con);
+                // Insert new agent
             case 4:
-                //Insert new offer
-                insertNewOffer(con);
+                // Insert new offer
             case 5:
-                //Insert new office
-                insertNewOffice(con);
+                // Insert new office
             default:
-                //something has gone wrong...
+                // something has gone wrong...
         }
     }
 
-    static void insertNewProp(Connection con) {
-	    s.nextLine();
+    private static void insertNewProp(Connection con) {
+        s.nextLine();
 
-	    System.out.print("Enter the tax id of the new property's listed agent: ");
-	    String agentID = s.nextLine();
+        System.out.print("Enter the tax id of the new property's listed agent: ");
+        String agentID = s.nextLine();
 
-	    System.out.print("Enter the tax id of the property's seller: ");
-	    String sellerID = s.nextLine();
+        System.out.print("Enter the tax id of the property's seller: ");
+        String sellerID = s.nextLine();
 
-	    System.out.print("Enter the listing price: ");
-	    int listPrice = s.nextInt();
+        System.out.print("Enter the listing price: ");
+        int listPrice = s.nextInt();
 
-	    s.nextLine();
-	    System.out.print("Enter the property's description: ");
-	    String desc = s.nextLine();
+        s.nextLine();
+        System.out.print("Enter the property's description: ");
+        String desc = s.nextLine();
 
-	    System.out.print("Enter the property's area (in square feet): ");
-	    int area = s.nextInt();
+        System.out.print("Enter the property's area (in square feet): ");
+        int area = s.nextInt();
 
-	    s.nextLine();
-	    System.out.print("Enter the property's address: ");
-	    String address = s.nextLine();
+        s.nextLine();
+        System.out.print("Enter the property's address: ");
+        String address = s.nextLine();
 
-	    System.out.print("Enter the property's city: ");
-	    String city = s.nextLine();
+        System.out.print("Enter the property's city: ");
+        String city = s.nextLine();
 
-	    System.out.print("Enter the property's state abbreviation: ");
-	    String state = s.nextLine();
+        System.out.print("Enter the property's state abbreviation: ");
+        String state = s.nextLine();
 
-	    System.out.print("Enter the property's ZIP code: ");
-	    String zip = s.nextLine();
+        System.out.print("Enter the property's ZIP code: ");
+        String zip = s.nextLine();
 
-	    try {
-	        int addressid = 0;
+        try {
+            int addressid = 0;
 
-	        rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
-	        if(rs.next())
+            rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
+            if (rs.next())
                 addressid = rs.getInt("newID");
 
             PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
@@ -647,7 +640,7 @@ public class UserInterface_Command_Line {
             int propertyid = 0;
 
             rs = Query_Execution.executeQuery(con, "SELECT MAX(propertyid)+1 FROM property;");
-            if(rs.next()) {
+            if (rs.next()) {
                 propertyid = rs.getInt(1);
             }
 
@@ -663,275 +656,9 @@ public class UserInterface_Command_Line {
             propPS.execute();
 
             System.out.println("Property " + propertyid + " inserted!");
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             System.err.println("Could not insert new property.");
             System.out.println("Error: " + e.getMessage());
         }
-    }
-
-    static void insertNewClient(Connection con) {
-        s.nextLine();
-
-        System.out.print("Enter the client's first name: ");
-        String first = s.nextLine();
-
-        System.out.print("Enter the client's last name: ");
-        String last = s.nextLine();
-
-        System.out.print("Enter the tax id of the new client: ");
-        String clientID = s.nextLine();
-
-        System.out.print("Enter the tax id of the client's agent: ");
-        String agentID = s.nextLine();
-
-        System.out.print("Enter the client's phone number: ");
-        String phone = s.nextLine();
-
-        System.out.print("Enter the client's address: ");
-        String address = s.nextLine();
-
-        System.out.print("Enter the client's city: ");
-        String city = s.nextLine();
-
-        System.out.print("Enter the client's state abbreviation: ");
-        String state = s.nextLine();
-
-        System.out.print("Enter the client's ZIP code: ");
-        String zip = s.nextLine();
-
-        try {
-            int addressid = 0;
-
-            rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
-            if(rs.next())
-                addressid = rs.getInt("newID");
-
-            PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
-            addressPS.setString(1, address);
-            addressPS.setString(2, city);
-            addressPS.setString(3, state);
-            addressPS.setString(4, zip);
-            addressPS.setInt(5, addressid);
-            addressPS.execute();
-
-            PreparedStatement personPS = con.prepareStatement("INSERT INTO person VALUES(?, ?, ?, ?, ?);");
-            personPS.setString(1, first);
-            personPS.setString(2, last);
-            personPS.setString(3, clientID);
-            personPS.setString(4, phone);
-            personPS.setInt(5, addressid);
-            personPS.execute();
-
-            PreparedStatement clientPS = con.prepareStatement("INSERT INTO client VALUES(?, ?)");
-            clientPS.setString(1, clientID);
-            clientPS.setString(2, agentID);
-            clientPS.execute();
-
-            System.out.println("Client " + first + " " + last + " inserted!");
-        }
-        catch (SQLException e)
-        {
-            System.err.println("Could not insert new client.");
-            System.out.println("Error: " + e.getMessage());
-        }
-        //get first
-        //get last
-        //get taxid
-        //get phone num
-        //get address details
-        //get agent taxid
-        //can now insert client
-    }
-
-    static void insertNewAgent(Connection con) {
-        s.nextLine();
-
-        System.out.print("Enter the agent's first name: ");
-        String first = s.nextLine();
-
-        System.out.print("Enter the agent's last name: ");
-        String last = s.nextLine();
-
-        System.out.print("Enter the tax id of the new agent: ");
-        String agentID = s.nextLine();
-
-        System.out.print("Enter the tax id of the agent's manager: ");
-        String managerID = s.nextLine();
-
-        System.out.print("Enter the salary of the agent: ");
-        int salary = s.nextInt();
-
-        System.out.print("Enter the id of the agent's primary office: ");
-        int officeID = s.nextInt();
-
-        s.nextLine();
-        System.out.print("Enter the commission percentage for this agent. (e.g. 14.20): ");
-        float comm = s.nextFloat();
-
-        s.nextLine();
-        System.out.print("Enter the agent's phone number: ");
-        String phone = s.nextLine();
-
-        System.out.print("Enter the agent's address: ");
-        String address = s.nextLine();
-
-        System.out.print("Enter the agent's city: ");
-        String city = s.nextLine();
-
-        System.out.print("Enter the agent's state abbreviation: ");
-        String state = s.nextLine();
-
-        System.out.print("Enter the agent's ZIP code: ");
-        String zip = s.nextLine();
-
-        try {
-            int addressid = 0;
-
-            rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
-            if(rs.next())
-                addressid = rs.getInt("newID");
-
-            PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES(?, ?, ?, ?, ?);");
-            addressPS.setString(1, address);
-            addressPS.setString(2, city);
-            addressPS.setString(3, state);
-            addressPS.setString(4, zip);
-            addressPS.setInt(5, addressid);
-            addressPS.execute();
-
-            PreparedStatement personPS = con.prepareStatement("INSERT INTO person VALUES(?, ?, ?, ?, ?);");
-            personPS.setString(1, first);
-            personPS.setString(2, last);
-            personPS.setString(3, agentID);
-            personPS.setString(4, phone);
-            personPS.setInt(5, addressid);
-            personPS.execute();
-
-            PreparedStatement clientPS = con.prepareStatement("INSERT INTO agent VALUES(?, ?, ?, ?, ?)");
-            clientPS.setString(1, agentID);
-            clientPS.setInt(2, salary);
-            clientPS.setInt(3, officeID);
-            clientPS.setFloat(4, comm);
-            clientPS.setString(5, managerID);
-            clientPS.execute();
-
-            System.out.println("Agent " + first + " " + last + " inserted!");
-        }
-        catch (SQLException e)
-        {
-            System.err.println("Could not insert new agent.");
-            System.out.println("Error: " + e.getMessage());
-        }
-        //get first
-        //get last
-        //get taxid
-        //get phone num
-        //get address details
-        //get salary
-        //get primary office id
-        //get commission percentage
-        //get taxid of manager
-        //can now insert agent
-    }
-
-    static void insertNewOffer(Connection con) {
-        s.nextLine();
-
-        System.out.print("Enter the id of the property this offer is being made on: ");
-        int propID = s.nextInt();
-
-        s.nextLine();
-        System.out.print("Enter the tax id of the buyer: ");
-        String buyerID = s.nextLine();
-
-        System.out.print("Enter the offer amount in dollars: $");
-        int offer = s.nextInt();
-
-        try {
-            int offerID = 0;
-
-            rs = Query_Execution.executeQuery(con, "SELECT MAX(offerid)+1 AS newID FROM offer;");
-            if(rs.next())
-                offerID = rs.getInt("newID");
-
-            PreparedStatement offerPS = con.prepareStatement("INSERT INTO offer VALUES (?, ?, GETDATE(), ?, ?, 'p');");
-            offerPS.setInt(1, offerID);
-            offerPS.setInt(2, propID);
-            offerPS.setString(3, buyerID);
-            offerPS.setInt(4, offer);
-
-            System.out.println("Offer #" + offerID + " added!");
-        }
-        catch (SQLException e)
-        {
-            System.err.println("Could not make the offer.");
-            System.out.println("Error: " + e.getMessage());
-        }
-        //property made on
-        //get current date value from the sql
-        //tax ID of client
-        //offer amount
-        //no need to put in status, default to waiting
-        //can now insert offer
-    }
-
-    static void insertNewOffice(Connection con) {
-        s.nextLine();
-
-        System.out.print("Enter the tax id of the office's manager: ");
-        String managerID = s.nextLine();
-
-        System.out.print("Enter the office's address: ");
-        String address = s.nextLine();
-
-        System.out.print("Enter the office's city: ");
-        String city = s.nextLine();
-
-        System.out.print("Enter the office's state abbreviation: ");
-        String state = s.nextLine();
-
-        System.out.print("Enter the office's ZIP code: ");
-        String zip = s.nextLine();
-
-        try {
-            int officeID = 0;
-
-            rs = Query_Execution.executeQuery(con, "SELECT MAX(officeid)+1 AS newID FROM office;");
-            if(rs.next())
-                officeID = rs.getInt("newID");
-
-            int addressID = 0;
-
-            rs = Query_Execution.executeQuery(con, "SELECT MAX(addressid)+1 AS newID FROM address;");
-            if(rs.next())
-                addressID = rs.getInt("newID");
-
-            PreparedStatement addressPS = con.prepareStatement("INSERT INTO address VALUES (?, ?, ?, ?, ?);");
-            addressPS.setString(1, address);
-            addressPS.setString(2, city);
-            addressPS.setString(3, state);
-            addressPS.setString(4, zip);
-            addressPS.setInt(5, addressID);
-            addressPS.execute();
-
-            PreparedStatement officePS = con.prepareStatement("INSERT INTO office VALUES (?, ?, ?);");
-            officePS.setInt(1, officeID);
-            officePS.setString(2, managerID);
-            officePS.setInt(3, addressID);
-            officePS.execute();
-
-            System.out.println("Office #" + officeID + " added!");
-        }
-        catch (SQLException e)
-        {
-            System.err.println("Could not make the offer.");
-            System.out.println("Error: " + e.getMessage());
-        }
-	    //new manager?
-        //add their taxID
-        //get address details
-        //new office can be created
     }
 }
