@@ -20,7 +20,6 @@ public class UserInterface_Command_Line {
 
     //-1 is no access
 
-    //	String[] actions = {};
     private static Scanner s = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -92,7 +91,6 @@ public class UserInterface_Command_Line {
     }
 
     private static void switchOFF(){
-//        System.out.println(" ________________________________________________________________");
         System.out.println("|                                                                |");
         System.out.println("|     Thanks for using Premium Real Estate UI!                   |");
         System.out.println(" ________________________________________________________________ ");
@@ -110,12 +108,10 @@ public class UserInterface_Command_Line {
 
     private static void youSure(){
         System.out.println("|     Please confirm your input.                                 |");
-//        System.out.println("Please confirm your input.");
         agreement();
     }
 
     private static void printStaffMenu(){
-//        System.out.println(" ________________________________________________________________ ");
         System.out.println("|----------------------------------------------------------------|");
         System.out.println("|     (1) View data.                                             |");
         System.out.println("|     (2) Insert data.                                           |");
@@ -125,15 +121,11 @@ public class UserInterface_Command_Line {
         System.out.println("|----------------------------------------------------------------|");
         System.out.print("      ");
 
-//        System.out.println();
     }
 
     private static void agreement(){
-//        System.out.println(" ________________________________________________________________ ");
-//        System.out.println("|----------------------------------------------------------------|");
         System.out.println("|     Type 'y' for yes, or 'n' for no, then press enter.         |");
         System.out.print("      ");
-//        System.out.println("|----------------------------------------------------------------|");
     }
 
     private static void staffMenu(Connection con) throws IOException, InterruptedException {
@@ -271,7 +263,7 @@ public class UserInterface_Command_Line {
                         break;
                 }
                 while(true) {
-//                    System.out.println("|                                                                |");
+                    System.out.println("|                                                                |");
                     System.out.println("|     Continue with this table (y/n)                             |\n" +
                                        "|     (1) Staff Menu                                             |\n" +
                                        "|     (2) Customer Menu                                          |\n" +
@@ -293,8 +285,10 @@ public class UserInterface_Command_Line {
                     } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
                         completeFilter(con, list);
                     }
-                    System.out.println("Wrong Formulation");
-                    System.out.println();
+                    System.out.println("|                                                                |");
+                    System.out.println("|     Wrong Formulation                                          |");
+//                    System.out.println("WrongFormulation");
+//                    System.out.println();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -302,8 +296,316 @@ public class UserInterface_Command_Line {
         }
     }
 
-    private static void completeFilter(Connection con, List<String> list){
+    private static boolean isOfficeID(){
+        System.out.println("|                                                                |");
+        System.out.println("|     Do you wish to enter a specific office ID?                 |");
+        agreement();
+        input = s.nextLine();
+        youSure();
+        input2 = s.nextLine();
+        if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y")) {
+            return true;
+        }else if(input.equalsIgnoreCase("n") && input2.equalsIgnoreCase("n")){
+            return false;
+        }else{
+            System.out.println("|     Please Enter a correct formulated responses            |");
+        }
+        return isOfficeID();
+    }
 
+    private static void resultItOut(ResultSet rs, int count) throws SQLException {
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+
+        String columnCount[] = new String[columnsNumber + 1];
+        String align = "|";
+        for (int i = 1; i <= columnsNumber; i++) {
+            columnCount[i - 1] = rsmd.getColumnName(i).toUpperCase();
+            align = align + "\t%10s\t\t|\t\t";
+        }
+        System.out.format(align + "\n", (Object[]) columnCount);
+        System.out.println();
+        int repeat = 0;
+        while (rs.next()) {
+            if (repeat != count) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    columnCount[i - 1] = rs.getString(i);
+                }
+                repeat++;
+            } else
+                break;
+
+            // relays all the columns with all the data
+            System.out.format(align + "\n", (Object[]) columnCount);
+        }
+    }
+
+    private static void statData(Connection con, List<String> list) throws IOException, InterruptedException, SQLException {
+        while(true) {
+            System.out.println("|                                                                |");
+            System.out.println("|      (1) Monthly Sales by each Office                          |");
+            System.out.println("|      (2) Quaterly Sales by each Office                         |");
+            System.out.println("|      (3) Half-Yearly Sales by each Office                      |");
+            System.out.println("|      (4) Annual Sales by each Office                           |");
+            System.out.println("|      (5) Who sold the most Properties?                         |");
+            System.out.println("|      (6) Top most Expensive Properties                         |");
+            System.out.println("|      (7) Top most Cheap Properties                             |");
+            System.out.println("|      (8) Go back to the previous options                       |");
+            System.out.println("|      (9) Exit                                                  |");
+            System.out.print("     ");
+
+            agreement();
+            input = s.nextLine();
+            youSure();
+            input2 = s.nextLine();
+            String ID;
+            if (0 < Integer.parseInt(input) && Integer.parseInt(input) <= 4
+                    && input2.equalsIgnoreCase("y")) {
+                if(isOfficeID()){
+                    System.out.println("|                                                                |");
+                    System.out.println("|     Enter the ID                                               |");
+                    System.out.print("     ");
+                    ID = s.nextLine();
+                    rs = Query_Execution.executeQuery(con,"SELECT DISTINCT office.officeid, COUNT(DISTINCT property)" +
+                            " AS total_sales FROM office,agent,property WHERE office.officeid=agent.primaryofficeid " +
+                            "AND agent.taxid=property.agenttaxid "+ ID +" AND property.selldate IS NOT NULL GROUP BY " +
+                            "office.officeid ORDER BY COUNT(DISTINCT property) DESC;");
+                }
+                else {
+                    rs = Query_Execution.executeQuery(con, "SELECT DISTINCT office.officeid, COUNT(DISTINCT property)" +
+                            " AS monthly FROM office,agent,property WHERE " +
+                            "(office.officeid=agent.primaryofficeid AND " +
+                            "agent.taxid=property.agenttaxid) AND " +
+                            "(selldate>CURRENT_DATE - INTERVAL '" + Integer.parseInt(input) + " month') " +
+                            "GROUP BY office.officeid ORDER BY COUNT(DISTINCT property) DESC;");
+                }
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("5") && input2.equalsIgnoreCase("y")) {
+                rs = Query_Execution.executeQuery(con,"SELECT COUNT(selldate) AS Properties_Sold_This_Year, " +
+                        "person.firstname, person.lastname From person,agent,property" +
+                        "Where agent.taxid=Person.taxid AND property.agenttaxid=agent.taxid" +
+                        "AND extract('year' from property.selldate)=date_part('year',CURRENT_DATE)" +
+                        "GROUP BY firstname, lastname ORDER BY Count(selldate) DESC;");
+
+                resultItOut(rs, -1);
+            } else if (input.equalsIgnoreCase("6") && input2.equalsIgnoreCase("y")) {
+                rs = Query_Execution.executeQuery(con, "Select propertyid, Description, Area, SellDate, " +
+                        "sellprice, Address.Zipcode,Address.StreetAddress,Address.State,Address.City,Address.AddressID" +
+                        "  From Property,Address WHERE address.addressid=property.addressid AND" +
+                        "  property.listprice=(Select max(listprice) from Property)");
+                resultItOut(rs,-1);
+            } else if (input.equalsIgnoreCase("7") && input2.equalsIgnoreCase("y")) {
+                rs = Query_Execution.executeQuery(con, "Select propertyid, Description, Area, SellDate, sellprice, " +
+                        "Address.Zipcode,Address.StreetAddress,Address.State,Address.City,Address.AddressID" +
+                        "  From Property,Address WHERE address.addressid=property.addressid AND" +
+                        "  property.listprice=(Select min(listprice) from Property)");
+                resultItOut(rs, -1);
+            } else if (input.equalsIgnoreCase("8") && input2.equalsIgnoreCase("y")) {
+                completeFilter(con, list);
+            } else if (input.equalsIgnoreCase("9") && input2.equalsIgnoreCase("y")) {
+                agreement();
+                input = s.nextLine();
+                youSure();
+                input2 = s.nextLine();
+                if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y"))
+                    switchOFF();
+                else{
+                    System.out.println("|                                                                |");
+                    System.out.println("|     Wrong Formulation                                          |");
+                }
+            }
+            else {
+                System.out.println("|                                                                |");
+                System.out.println("|     Wrong Formulation                                          |");
+            }
+        }
+    }
+
+    private static void currSaleData(Connection con, List<String> list) throws SQLException, IOException, InterruptedException {
+//        "generate the current properties on sale at a particualr area.";
+        while(true) {
+            System.out.println("|                                                                |");
+            System.out.println("|      (1) Properties that are Currently available               |");
+            System.out.println("|      (2) Properties that are Currently available               |" +
+                    "|           at a specified state                                 |");
+            System.out.println("|      (3) Properties that are Currently available               |" +
+                    "|           at a specified Zipcode                               |");
+            System.out.println("|      (4) Properties that are Currently available               |" +
+                    "|           at a specified Street Address                        |");
+            System.out.println("|      (5) Properties that are Currently available               |" +
+                    "|           at a specified State, Zipcode and Street Address     |");
+            System.out.println("|      (6) Properties that are Currently available above         |" +
+                    "|           a specified price                                    |");
+            System.out.println("|      (7) Properties that are Currently available below         |" +
+                    "|           a specified price                                    |");
+            System.out.println("|      (8) Properties that are Currently available above         |" +
+                    "|           a specified price and at a specified Zipcode         |");
+            System.out.println("|      (9) Properties that are Currently available below         |" +
+                    "|           a specified price and at a specified Zipcode         |");
+            System.out.println("|      (10) Go back to the previous options                       |");
+            System.out.println("|      (11) Exit                                                  |");
+            agreement();
+            input = s.nextLine();
+            youSure();
+            input2 = s.nextLine();
+
+            if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From " +
+                        "Property WHERE Property.Selldate IS NULL;");
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the State abbreviation                               |");
+                System.out.print("     ");
+                input = s.nextLine();
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE" +
+                        "Address.state=" + input + " AND Address.AddressID=Property.AddressID AND Property.Selldate IS NULL;");
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Zipcode                                          |");
+                System.out.print("     ");
+                input = s.nextLine();
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID, Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE " +
+                        "Address.zipcode=" + input + " AND Address.AddressID=Property.AddressID IS NULL;");
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("4") && input2.equalsIgnoreCase("y")) {
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Street Address                                   |");
+                System.out.print("     ");
+                input = s.nextLine();
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID, Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE" +
+                        " Address.StreetAddress=" + input + " AND Address.AddressID=Property.AddressID IS NULL;");
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("5") && input2.equalsIgnoreCase("y")) {
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the State abbreviation                               |");
+                System.out.print("     ");
+                input = s.nextLine();
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Zipcode                                          |");
+                System.out.print("     ");
+                input2 = s.nextLine();
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Street Address                                   |");
+                System.out.print("     ");
+                String input3 = s.nextLine();
+
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID, Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE" +
+                        "Address.zipcode=" + input2 + " AND Address.state=" + input3 + " AND Address.StreetAddress=" + input + " " +
+                        "AND Address.AddressID=Property.AddressID AND Property.Selldate is NULL;");
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("6") && input2.equalsIgnoreCase("y")) {
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Specific Price                                   |");
+                System.out.print("     ");
+                input = s.nextLine();
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From Property WHERE Property.Selldate " +
+                        "IS NULL AND Property.listprice>=" + input + ";");
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("7") && input2.equalsIgnoreCase("y")) {
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Specific Price                                   |");
+                System.out.print("     ");
+                input = s.nextLine();
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From Property WHERE Property.Selldate " +
+                        "IS NULL AND Property.listprice<=" + input + ";");
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("8") && input2.equalsIgnoreCase("y")) {
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Zip Code                                         |");
+                System.out.print("     ");
+                input = s.nextLine();
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Specific Price                                   |");
+                System.out.print("     ");
+                input2 = s.nextLine();
+
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE " +
+                        "Address.zipcode=" + input + " AND Address.AddressID=Property.AddressID IS NULL AND " +
+                        "Property.listprice>=" + input2 + ";");
+                resultItOut(rs, -1);
+            } else if (input.equalsIgnoreCase("9") && input2.equalsIgnoreCase("y")) {
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Zip Code                                         |");
+                System.out.print("     ");
+                input = s.nextLine();
+                System.out.println("|                                                                |");
+                System.out.println("|     Enter the Specific Price                                   |");
+                System.out.print("     ");
+                input2 = s.nextLine();
+
+                rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, " +
+                        "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE " +
+                        "Address.zipcode=" + input + " AND Address.AddressID=Property.AddressID IS NULL AND " +
+                        "Property.listprice<=" + input2 + ";");
+                resultItOut(rs, -1);
+
+            } else if (input.equalsIgnoreCase("10") && input2.equalsIgnoreCase("y")) {
+                completeFilter(con, list);
+
+            } else if (input.equalsIgnoreCase("11") && input2.equalsIgnoreCase("y")) {
+                agreement();
+                input = s.nextLine();
+                youSure();
+                input2 = s.nextLine();
+                if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y"))
+                    switchOFF();
+                else {
+                    System.out.println("|                                                                |");
+                    System.out.println("|     Wrong Formulation                                          |");
+                }
+            } else {
+                System.out.println("|                                                                |");
+                System.out.println("|     Wrong Formulation                                          |");
+            }
+        }
+
+    }
+
+    private static void completeFilter(Connection con, List<String> list) throws IOException, InterruptedException, SQLException {
+        while(true) {
+            System.out.println("|                                                                |");
+            System.out.println("|     (1) Statistical Data                                       |");
+            System.out.println("|     (2) Current Sales                                          |");
+            System.out.println("|     (3) Staff Menu                                             |");
+            System.out.println("|     (4) Customer Menu                                          |");
+            System.out.println("|     (5) Exit                                                   |");
+            System.out.print("     ");
+            agreement();
+            input = s.nextLine();
+            youSure();
+            input2 = s.nextLine();
+            if (input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
+                statData(con, list);
+            } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
+                currSaleData(con, list);
+            } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
+                staffMenu(con);
+            } else if (input.equalsIgnoreCase("4") && input2.equalsIgnoreCase("y")) {
+                custMenu(con);
+            } else if (input.equalsIgnoreCase("5") && input2.equalsIgnoreCase("y")) {
+                switchOFF();
+            }
+            System.out.println("|                                                                |");
+            System.out.println("|     Wrong Formulation                                          |");
+        }
     }
 
     private static int viewDataList(){
@@ -336,6 +638,7 @@ public class UserInterface_Command_Line {
         }
         System.out.println("|                                                                |");
         System.out.println("|    Enter the table number to view:                             |");
+        System.out.print("     ");
         return list;
     }
 
@@ -343,7 +646,7 @@ public class UserInterface_Command_Line {
         int count;
         List<String> list = viewAvailableTable(con);
         while(true) {
-            count = 0;
+            count = list.size();
             try {
                 String table;
                 while (true) {
@@ -361,30 +664,7 @@ public class UserInterface_Command_Line {
                     }
                 }
                 count = viewDataList();
-                ResultSetMetaData rsmd = rs.getMetaData();
-                int columnsNumber = rsmd.getColumnCount();
-
-                String columnCount[] = new String[columnsNumber + 1];
-                String align = "|";
-                for (int i = 1; i <= columnsNumber; i++) {
-                    columnCount[i - 1] = rsmd.getColumnName(i).toUpperCase();
-                    align = align + "\t%10s\t\t|\t\t";
-                }
-                System.out.format(align + "\n", (Object[]) columnCount);
-                System.out.println();
-                int repeat = 0;
-                while (rs.next()) {
-                    if (repeat != count) {
-                        for (int i = 1; i <= columnsNumber; i++) {
-                            columnCount[i - 1] = rs.getString(i);
-                        }
-                        repeat++;
-                    } else
-                        break;
-
-                    // relays all the columns with all the data
-                    System.out.format(align + "\n", (Object[]) columnCount);
-                }
+                resultItOut(rs, count);
                 System.out.println("|                                                                |");
                 System.out.println("|     Do you wish to apply and filters to the results?           |");
                 agreement();
