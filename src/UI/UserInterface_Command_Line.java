@@ -734,8 +734,8 @@ public class UserInterface_Command_Line {
     }
 
     private static void updateData(Connection con) {
-        String sql = "";
-        System.out.print("What would you like to update?");
+        //System.out.println("|----------------------------------------------------------------|");
+        System.out.println("|     What would you like to update?                             |");
         int updateType = chooseUpdateList();
         int updateSubType = 0;
         switch(updateType) {
