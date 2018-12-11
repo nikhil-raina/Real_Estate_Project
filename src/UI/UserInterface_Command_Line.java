@@ -243,6 +243,7 @@ public class UserInterface_Command_Line {
                     System.out.print(a+"\t\t|\t\t");
                     query = query + ", " + columnNames.get(Integer.parseInt(selection[i-1])-1);
                 }
+                System.out.println();
                 query = "SELECT " + query + " FROM "+ result +";";
                 rs = Query_Execution.executeQuery(con, query);
                 String columnCount[] = new String[selection.length];
