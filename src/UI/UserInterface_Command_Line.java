@@ -20,7 +20,6 @@ public class UserInterface_Command_Line {
 
     //-1 is no access
 
-    //	String[] actions = {};
     private static Scanner s = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -92,7 +91,6 @@ public class UserInterface_Command_Line {
     }
 
     private static void switchOFF(){
-//        System.out.println(" ________________________________________________________________");
         System.out.println("|                                                                |");
         System.out.println("|     Thanks for using Premium Real Estate UI!                   |");
         System.out.println(" ________________________________________________________________ ");
@@ -110,12 +108,10 @@ public class UserInterface_Command_Line {
 
     private static void youSure(){
         System.out.println("|     Please confirm your input.                                 |");
-//        System.out.println("Please confirm your input.");
         agreement();
     }
 
     private static void printStaffMenu(){
-//        System.out.println(" ________________________________________________________________ ");
         System.out.println("|----------------------------------------------------------------|");
         System.out.println("|     (1) View data.                                             |");
         System.out.println("|     (2) Insert data.                                           |");
@@ -125,15 +121,11 @@ public class UserInterface_Command_Line {
         System.out.println("|----------------------------------------------------------------|");
         System.out.print("      ");
 
-//        System.out.println();
     }
 
     private static void agreement(){
-//        System.out.println(" ________________________________________________________________ ");
-//        System.out.println("|----------------------------------------------------------------|");
         System.out.println("|     Type 'y' for yes, or 'n' for no, then press enter.         |");
         System.out.print("      ");
-//        System.out.println("|----------------------------------------------------------------|");
     }
 
     private static void staffMenu(Connection con) throws IOException, InterruptedException {
