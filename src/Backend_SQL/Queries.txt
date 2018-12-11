@@ -15,22 +15,18 @@ return "SELECT FirstName, LastName, PhoneNumber FROM Person WHERE ",lastname,"=L
 String search_property_all(String state, String zipcode, String StreetAddress){
 SELECT DISTINCT Property.PropertyID, Property.ListPrice, Property.Description, Property.Area,
 Property.SellDate From Property, Address WHERE
-Address.zipcode=",zipcode," AND Address.state=",state,"  Address.AddressID=Property.AddressID;
-
-return "SELECT DISTINCT Property.PropertyID, Property.AgentTaxID, Property.SellerTaxID, Property.ListPrice, Property.Description, Property.Area,
-return Property.SellDate FROM Property, Address WHERE Property.AddressID=(SELECT Address.AddressID FROM Address WHERE
-(Address.state=",state," AND Address.zipcode=",zipcode," AND Address.StreetAddress=",StreetAddress,"))";
+Address.zipcode="+zipcode+" AND Address.state="+state+" AND Address.StreetAddress="+StreetAddress+" Address.AddressID=Property.AddressID";
 }
 
 String search_property_state(String state){
 return SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description,
 Property.Area, Property.SellDate From Property, Address WHERE
-Address.state=",state," AND Address.AddressID=Property.AddressID;
+Address.state="+state+" AND Address.AddressID=Property.AddressID;
 }
 
 String search_property_zipcode(String zipcode){
 return "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description, Property.Area,
-Property.SellDate From Property, Address WHERE Address.zipcode=",zipcode," AND Address.AddressID=Property.AddressID";
+Property.SellDate From Property, Address WHERE Address.zipcode="+zipcode+" AND Address.AddressID=Property.AddressID";
 }
 
 
@@ -68,10 +64,11 @@ INSERT INTO CLIENT(taxid, agenttaxid)
 VALUES(",TaxID,", ",AgentTaxId,");"
 }
 
-String update_offer(Int PropertyID, String new_status, Int SellPrice){
+String update_offer(Int OfferID, String new_status, Int sellprice){
 return "UPDATE Offer
         SET status="+newstatus+",
-        WHERE EXISTS(
+        SET SellPrice="+sellprice+",
+        WHERE OfferID="+OfferID+"
 }
 
 String accepted_offer(Int PropertyID, Int SellPrice){ //Updates the property such that it has a selldate and a final listprice
@@ -79,15 +76,36 @@ return "UPDATE Property
         SET selldate=now(),
             listprice"+SellPrice+",
         WHERE propertyid="+PropertyID+"
+}
 
+String Most_Expensive_Property(){
+return "Select propertyid, Description, Area, SellDate, sellprice, Address.Zipcode,Address.StreetAddress,Address.State,Address.City,Address.AddressID
+   From Property,Address
+   WHERE address.addressid=property.addressid AND
+   property.listprice=(Select max(listprice) from Property)"
+}
 
+String Agent_most_sales_year(){ //Makes a list of agents and the amount they sold this year, most on top.
+Return "SELECT COUNT(selldate) AS Properties_Sold_This_Year, person.firstname, person.lastname
+From person,agent,property
+Where agent.taxid=Person.taxid AND property.agenttaxid=agent.taxid
+AND extract('year' from property.selldate)=date_part('year',CURRENT_DATE)
+GROUP BY firstname, lastname
+ORDER BY Count(selldate) DESC";
+}
+
+String most_sales_office(){
+return "SELECT DISTINCT office.officeid, COUNT(DISTINCT property) AS total_sales FROM office,agent,property
+WHERE (office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid) OR (office.managertaxid=property.agenttaxid)
+ AND property.selldate IS NOT NULL
+ GROUP BY office.officeid ORDER BY COUNT(DISTINCT property) DESC";
 }
 
 
 
-String monthly_office(){ //Work in progress :\
-return "SELECT DISTINCT officeid, SUM(property.listprice) AS monthly_total FROM office,agent,property GROUP BY
-agent.primaryofficeid, office.officeid HAVING agent.primaryofficeid=office.officeid AND EXISTS(SELECT agenttaxid
-FROM property WHERE selldate>CURRENT_DATE - INTERVAL '1 month') ORDER BY sum(property.listprice) ASC";
-
+String monthly_office(){
+"SELECT DISTINCT office.officeid, COUNT(DISTINCT property) AS total_sales FROM office,agent,property
+WHERE ((office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid) OR (office.managertaxid=property.agenttaxid))
+ AND (selldate>CURRENT_DATE - INTERVAL '1 month')
+ GROUP BY office.officeid ORDER BY COUNT(DISTINCT property) DESC";
 }
