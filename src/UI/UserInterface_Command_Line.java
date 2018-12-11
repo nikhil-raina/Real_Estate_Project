@@ -320,7 +320,7 @@ public class UserInterface_Command_Line {
                 count++;
                 String val = rs.getString("tablename");
                 list.add(val);
-                System.out.println("|     (" + count + ")\t" + val.toUpperCase());
+                System.out.println("      (" + count + ")\t" + val.toUpperCase());
             }
         } catch (SQLException e) {
             e.printStackTrace();
