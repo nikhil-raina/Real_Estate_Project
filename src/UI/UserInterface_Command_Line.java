@@ -430,9 +430,88 @@ public class UserInterface_Command_Line {
         }
     }
 
-    private static void currSaleData(Connection con, List<String> list){
+    private static void currSaleData(Connection con, List<String> list) throws SQLException {
 //        "generate the current properties on sale at a particualr area.";
+        System.out.println("|                                                                |");
+        System.out.println("|      (1) Properties that are Currently available               |");
+        System.out.println("|      (2) Properties that are Currently available               |" +
+                           "|           at a specified state                                 |");
+        System.out.println("|      (3) Properties that are Currently available               |" +
+                           "|           at a specified Zipcode                               |");
+        System.out.println("|      (4) Properties that are Currently available               |" +
+                           "|           at a specified Street Address                        |");
+        System.out.println("|      (5) Properties that are Currently available               |" +
+                           "|           at a specified State, Zipcode and Street Address     |");
+        System.out.println("|      (6) Properties that are Currently available above         |" +
+                           "|           a specified price                                    |");
+        System.out.println("|      (7) Properties that are Currently available above         |" +
+                           "|           at a specified are with a specified price            |");
+        agreement();
+        input = s.nextLine();
+        youSure();
+        input2 = s.nextLine();
 
+        if ( input.equalsIgnoreCase("1") && input2.equalsIgnoreCase("y")) {
+            rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, " +
+                    "Property.Description, Property.Area, Property.SellDate From " +
+                    "Property WHERE Property.Selldate IS NULL;");
+            resultItOut(rs, -1);
+
+        } else if (input.equalsIgnoreCase("2") && input2.equalsIgnoreCase("y")) {
+            System.out.println("|                                                                |");
+            System.out.println("|     Enter the State abbreviation                               |");
+            System.out.print("     ");
+            input = s.nextLine();
+            rs = Query_Execution.executeQuery(con,"SELECT DISTINCT Property.PropertyID,  Property.ListPrice, " +
+                    "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE" +
+                    "Address.state="+input+" AND Address.AddressID=Property.AddressID AND Property.Selldate IS NULL;");
+            resultItOut(rs, -1);
+
+        } else if (input.equalsIgnoreCase("3") && input2.equalsIgnoreCase("y")) {
+            System.out.println("|                                                                |");
+            System.out.println("|     Enter the Zipcode                                          |");
+            System.out.print("     ");
+            input = s.nextLine();
+            rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID, Property.ListPrice, " +
+                    "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE " +
+                    "Address.zipcode="+ input +" AND Address.AddressID=Property.AddressID IS NULL;");
+            resultItOut(rs,-1);
+
+        }else if (input.equalsIgnoreCase("4") && input2.equalsIgnoreCase("y")) {
+            System.out.println("|                                                                |");
+            System.out.println("|     Enter the Street Address                                   |");
+            System.out.print("     ");
+            input = s.nextLine();
+            rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID, Property.ListPrice, " +
+                    "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE" +
+                    " Address.StreetAddress="+input+" AND Address.AddressID=Property.AddressID IS NULL;");
+            resultItOut(rs,-1);
+
+        }else if (input.equalsIgnoreCase("5") && input2.equalsIgnoreCase("y")) {
+            System.out.println("|                                                                |");
+            System.out.println("|     Enter the State abbreviation                               |");
+            System.out.print("     ");
+            input = s.nextLine();
+            System.out.println("|                                                                |");
+            System.out.println("|     Enter the Zipcode                                          |");
+            System.out.print("     ");
+            input2 = s.nextLine();
+            System.out.println("|                                                                |");
+            System.out.println("|     Enter the Street Address                                   |");
+            System.out.print("     ");
+            String input3 = s.nextLine();
+
+            rs = Query_Execution.executeQuery(con, "SELECT DISTINCT Property.PropertyID, Property.ListPrice, " +
+                    "Property.Description, Property.Area, Property.SellDate From Property, Address WHERE" +
+                    "Address.zipcode="+input2+" AND Address.state="+input3+" AND Address.StreetAddress=\"+StreetAddress+\" AND Address.AddressID=Property.AddressID AND Property.Selldate is NULL;");
+            resultItOut(rs,-1);
+        }else if (input.equalsIgnoreCase("6") && input2.equalsIgnoreCase("y")) {
+            rs = Query_Execution.executeQuery(con, "");
+            resultItOut(rs,-1);
+        }else if (input.equalsIgnoreCase("7") && input2.equalsIgnoreCase("y")) {
+            rs = Query_Execution.executeQuery(con, "");
+            resultItOut(rs,-1);
+        }
     }
 
     private static void completeFilter(Connection con, List<String> list) throws IOException, InterruptedException, SQLException {
