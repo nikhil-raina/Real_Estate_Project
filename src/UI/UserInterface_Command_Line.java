@@ -280,9 +280,9 @@ public class UserInterface_Command_Line {
         int count = list.size();
         displayTable(list);
         count++;
-        System.out.println("\t(" + count + ")\t" + "staff menu".toUpperCase());
+        System.out.println("\t  (" + count + ")\t" + "staff menu".toUpperCase());
         count++;
-        System.out.println("\t(" + count + ")\t" + "customer menu".toUpperCase());
+        System.out.println("\t  (" + count + ")\t" + "customer menu".toUpperCase());
         System.out.println();
 //        System.out.println(" ________________________________________________________________ ");
         System.out.println("|   Choose the Table:                                            |");
@@ -295,8 +295,11 @@ public class UserInterface_Command_Line {
         result = list.get(Integer.parseInt(input) - 1);
         while(true){
             rs = Query_Execution.executeQuery(con, "SELECT * FROM " + result);
-            System.out.println();
-            System.out.println("Enter your specification, either as a list of numbers separated by commas or individually");
+            System.out.println("|                                                                |");
+//            System.out.println(" ________________________________________________________________ ");
+
+            System.out.println("|     Enter your specification, either as a list of numbers      |\n" +
+                               "|     separated by commas or individually                        |");
             ResultSetMetaData rsmd;
             try {
                 rsmd = rs.getMetaData();
@@ -304,7 +307,7 @@ public class UserInterface_Command_Line {
                 List<String> columnNames = new ArrayList<>();
                 for (int i = 1; i <= columnsNumber; i++) {
                     columnNames.add(rsmd.getColumnName(i));
-                    System.out.println("\t(" + i + ")\t" + columnNames.get(i-1).toUpperCase());
+                    System.out.println("\t  (" + i + ")\t" + columnNames.get(i-1).toUpperCase());
                 }
 //                    System.out.println(" ________________________________________________________________ ");
                 System.out.println("|   Selection:                                                   |");
@@ -335,14 +338,16 @@ public class UserInterface_Command_Line {
                         break;
                 }
                 while(true) {
-                    System.out.println("Continue with this table (y/n)\n" +
-                            "(1) Staff Menu\n" +
-                            "(2) Customer Menu" +
-                            "(3) Enter filters for this table\n");
+//                    System.out.println("|                                                                |");
+                    System.out.println("|     Continue with this table (y/n)                             |\n" +
+                                       "|     (1) Staff Menu                                             |\n" +
+                                       "|     (2) Customer Menu                                          |\n" +
+                                       "|     (3) Enter filters for this table                           |\n");
+                    System.out.print("     ");
                     agreement();
                     input = s.nextLine();
                     youSure();
-                    agreement();
+//                    agreement();
                     input2 = s.nextLine();
                     if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y")) {
                         break;
@@ -369,7 +374,10 @@ public class UserInterface_Command_Line {
     }
 
     private static int viewDataList(){
-        System.out.println("How much data would you like to view? (Ex. 5, 10, 100, 782, all) and so on...");
+        System.out.println("|                                                                |");
+        System.out.println("|     How much data would you like to view? (Ex. 5, 10,          |\n" +
+                           "|     100, 782, all) and so on...                                |");
+        System.out.print("     ");
         input = s.nextLine();
         int count = -1;
         if (!input.equalsIgnoreCase("all")) {
@@ -402,8 +410,12 @@ public class UserInterface_Command_Line {
                         table = list.get(result - 1);
                         rs = Query_Execution.executeQuery(con, "SELECT * FROM " + table);
                         break;
-                    } else
-                        System.out.println("Wrong Input.\nTry again\n");
+                    } else {
+//                        System.out.println("|                                                                |");
+                        System.out.println("|     Wrong Input.                                               |\n" +
+                                           "|     Try again                                                  |\n");
+                        System.out.print("     ");
+                    }
                 }
                 count = viewDataList();
                 ResultSetMetaData rsmd = rs.getMetaData();
@@ -430,10 +442,12 @@ public class UserInterface_Command_Line {
                     // relays all the columns with all the data
                     System.out.format(align + "\n", (Object[]) columnCount);
                 }
-
-                System.out.println("Do you wish to apply and filters to the results?");
+                System.out.println("|                                                                |");
+                System.out.println("|     Do you wish to apply and filters to the results?           |");
                 agreement();
+                System.out.print("     ");
                 input = s.nextLine();
+//                System.out.print("     ");
                 if(input.equalsIgnoreCase("y")){
                     System.out.println();
                     viewData_Specify(con, list);
@@ -450,12 +464,15 @@ public class UserInterface_Command_Line {
         int count = 0;
         while (true) {
             count++;
-            System.out.println();
-            System.out.println("Do you want to continue "+ str +" the data?");
+//            System.out.println();
+            System.out.println("|                                                                |");
+            System.out.println("|     Do you want to continue "+ str +" the data?                   |");
             agreement();
+            System.out.print("     ");
             input = s.nextLine();
             System.out.println();
             youSure();
+            System.out.print("     ");
 //            agreement();
             input2 = s.nextLine();
             if (input.equalsIgnoreCase("n") && input2.equalsIgnoreCase("y"))
@@ -481,10 +498,12 @@ public class UserInterface_Command_Line {
 //            System.out.println("|         --- Tables Present ---                             |");
             System.out.println("|  Do you want to return to the Staff Menu (y) or EXIT (n)?  |");
             agreement();
+            System.out.print("     ");
             input = s.nextLine();
             System.out.println();
             youSure();
-            agreement();
+            System.out.print("     ");
+//            agreement();
             input2 = s.nextLine();
             if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y")) {
                 staffMenu(con);
