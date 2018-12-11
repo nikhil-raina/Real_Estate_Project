@@ -573,6 +573,7 @@ public class UserInterface_Command_Line {
         }
         System.out.println("|                                                                |");
         System.out.println("|    Enter the table number to view:                             |");
+        System.out.print("     ");
         return list;
     }
 
@@ -580,7 +581,7 @@ public class UserInterface_Command_Line {
         int count;
         List<String> list = viewAvailableTable(con);
         while(true) {
-            count = 0;
+            count = list.size();
             try {
                 String table;
                 while (true) {
