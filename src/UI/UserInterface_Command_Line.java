@@ -140,12 +140,13 @@ public class UserInterface_Command_Line {
         desiredAction = s.nextLine();
         youSure();
         input = s.nextLine();
-        System.out.println();
+        System.out.println("|                                                                |");
 
         while(input.equalsIgnoreCase("n") || !(1 <= Integer.parseInt(desiredAction)) ||
                 !(Integer.parseInt(desiredAction) <= 6)) {
             System.out.println("|     Choose again:                                              |");
             printStaffMenu();
+
             desiredAction = s.nextLine();
             youSure();
             input = s.nextLine();
@@ -205,8 +206,8 @@ public class UserInterface_Command_Line {
         count++;
         System.out.println("\t  (" + count + ")\t" + "customer menu".toUpperCase());
         System.out.println();
-//        System.out.println(" ________________________________________________________________ ");
         System.out.println("|   Choose the Table:                                            |");
+
         input = s.nextLine();
         if(Integer.parseInt(input) == count - 1){
             staffMenu(con);
@@ -217,8 +218,6 @@ public class UserInterface_Command_Line {
         while(true){
             rs = Query_Execution.executeQuery(con, "SELECT * FROM " + result);
             System.out.println("|                                                                |");
-//            System.out.println(" ________________________________________________________________ ");
-
             System.out.println("|     Enter your specification, either as a list of numbers      |\n" +
                                "|     separated by commas or individually                        |");
             ResultSetMetaData rsmd;
@@ -230,7 +229,6 @@ public class UserInterface_Command_Line {
                     columnNames.add(rsmd.getColumnName(i));
                     System.out.println("\t  (" + i + ")\t" + columnNames.get(i-1).toUpperCase());
                 }
-//                    System.out.println(" ________________________________________________________________ ");
                 System.out.println("|   Selection:                                                   |");
                 System.out.print("     ");
                 input = s.nextLine();
@@ -238,7 +236,11 @@ public class UserInterface_Command_Line {
                 count = viewDataList();
                 int repeat = 0;
                 String query = columnNames.get(Integer.parseInt(selection[0])-1);
+                System.out.print("|\t\t");
+                String a;
                 for(int i = 2; i<=selection.length; i++){
+                    a = columnNames.get(Integer.parseInt(selection[i-1])-1);
+                    System.out.print(a+"\t\t|\t\t");
                     query = query + ", " + columnNames.get(Integer.parseInt(selection[i-1])-1);
                 }
                 query = "SELECT " + query + " FROM "+ result +";";
@@ -264,11 +266,9 @@ public class UserInterface_Command_Line {
                                        "|     (1) Staff Menu                                             |\n" +
                                        "|     (2) Customer Menu                                          |\n" +
                                        "|     (3) Enter filters for this table                           |\n");
-                    System.out.print("     ");
                     agreement();
                     input = s.nextLine();
                     youSure();
-//                    agreement();
                     input2 = s.nextLine();
                     if (input.equalsIgnoreCase("y") && input2.equalsIgnoreCase("y")) {
                         break;
@@ -283,8 +283,6 @@ public class UserInterface_Command_Line {
                     }
                     System.out.println("|                                                                |");
                     System.out.println("|     Wrong Formulation                                          |");
-//                    System.out.println("WrongFormulation");
-//                    System.out.println();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
