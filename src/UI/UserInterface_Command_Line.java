@@ -67,11 +67,7 @@ public class UserInterface_Command_Line {
                     if(input.equalsIgnoreCase("y")){
                         staffMenu(con);
                     } else {
-                        System.out.println("|  Thanks for using the Premium Real Estate Company database UI. |");
-                        System.out.println("|  Have a great day.                                             |");
-                        System.out.println("|----------------------------------------------------------------|");
-                        System.out.println(" ________________________________________________________________ ");
-                        System.exit(0);
+                        switchOFF();
                     }
                 }
                 count--;
@@ -83,7 +79,7 @@ public class UserInterface_Command_Line {
             System.out.println("|     UNAUTHORIZED ENTRY, REPORTING TO FRAUD DEPARTMENT!         |");
             System.out.println("|     Staff ID ::: "+ staffID +" ::: has been reported.     |");
             System.out.println("|                     System SHUT DOWN!                          |");
-            System.exit(0);
+            switchOFF();
 
         }
         else
