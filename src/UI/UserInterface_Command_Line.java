@@ -174,6 +174,7 @@ public class UserInterface_Command_Line {
             System.out.println("|     Where would you like to Delete the data:                   |");
             // View the different tables available in the database to Delete data.
             // Have a function call deleteData()
+            delete_data(con);
 
         } else if (desiredAction.equalsIgnoreCase("5")) {
             System.out.println("|     Are you absolutely certain that you would like to leave?   |");
