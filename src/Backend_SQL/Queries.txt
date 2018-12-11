@@ -1,4 +1,4 @@
-//The test queries
+//The test queries, nothing special to see here
 
 String find_person_fname(String firstname){
 return "SELECT FirstName, LastName, PhoneNumber FROM Person WHERE " ,firstname,"=FirstName";
@@ -19,20 +19,20 @@ Address.zipcode="+zipcode+" AND Address.state="+state+" AND Address.StreetAddres
 }
 
 String search_property_state(String state){
-return SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description,
+return "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description,
 Property.Area, Property.SellDate From Property, Address WHERE
-Address.state="+state+" AND Address.AddressID=Property.AddressID;
+Address.state="+state+" AND Address.AddressID=Property.AddressID AND Property.Selldate IS NULL";
 }
 
 String search_property_zipcode(String zipcode){
 return "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description, Property.Area,
-Property.SellDate From Property, Address WHERE Address.zipcode="+zipcode+" AND Address.AddressID=Property.AddressID";
+Property.SellDate From Property, Address WHERE Address.zipcode="+zipcode+" AND Address.AddressID=Property.AddressID IS NULL";
 }
 
 
 String search_property_streetaddress(String StreetAddress){
 return "SELECT DISTINCT Property.PropertyID,  Property.ListPrice, Property.Description, Property.Area,
-Property.SellDate From Property, Address WHERE Address.StreetAddress=",StreetAddress," AND Address.AddressID=Property.AddressID";
+Property.SellDate From Property, Address WHERE Address.StreetAddress="+StreetAddress+" AND Address.AddressID=Property.AddressID IS NULL";
 }
 
 
@@ -111,8 +111,8 @@ WHERE (office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid
 }
 
 String monthly_office_specific(Int OfficeID){
-"SELECT DISTINCT office.officeid, COUNT(DISTINCT property) AS total_sales FROM office,agent,property
-WHERE office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid
- AND (selldate>CURRENT_DATE - INTERVAL '1 month') AND office.officeID="+OfficeID"
- GROUP BY office.officeid ORDER BY COUNT(DISTINCT property) DESC";
-}
+ "SELECT DISTINCT office.officeid, COUNT(DISTINCT property) AS total_sales FROM office,agent,property
+ WHERE office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid
+  AND (selldate>CURRENT_DATE - INTERVAL '1 month') AND office.officeID="+OfficeID"
+  GROUP BY office.officeid ORDER BY COUNT(DISTINCT property) DESC";
+ }
