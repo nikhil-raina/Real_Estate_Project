@@ -971,6 +971,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 2: {
                         //update List Price
                         System.out.print("Enter the new List Price: ");
@@ -986,6 +987,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 3: {
                         //update Description
                         s.nextLine();
@@ -1002,6 +1004,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 4: {
                         //update Area
                         System.out.print("Enter the new area in sq. ft.: ");
@@ -1017,6 +1020,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 5: {
                         //update Address
                         s.nextLine();
@@ -1033,6 +1037,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 6: {
                         //update City
                         s.nextLine();
@@ -1049,6 +1054,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 7: {
                         //update State
                         s.nextLine();
@@ -1065,6 +1071,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 8: {
                         //update ZIP
                         s.nextLine();
@@ -1081,9 +1088,11 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     default:
                         //something's gone wrong...
                 }
+                break;
             case 2:
                 updateSubType = chooseUpdateClientList();
                 System.out.print("Enter the tax id of the client to be updated: ");
@@ -1104,6 +1113,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 2: {
                         //update last
                         System.out.print("Enter the new last name: ");
@@ -1119,6 +1129,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 3: {
                         //update phone
                         System.out.print("Enter the new phone number: ");
@@ -1134,6 +1145,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 4: {
                         //update agent
                         System.out.print("Enter the tax ID of the customer's new agent: ");
@@ -1149,6 +1161,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 5: {
                         //update address
                         System.out.print("Enter the client's new address: ");
@@ -1164,6 +1177,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 6: {
                         //update city
                         System.out.print("Enter the client's new city: ");
@@ -1179,6 +1193,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 7: {
                         //update state
                         System.out.print("Enter the client's new state: ");
@@ -1194,6 +1209,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 8: {
                         //update ZIP
                         System.out.print("Enter the client's new ZIP: ");
@@ -1209,9 +1225,11 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     default:
                         //something's gone wrong...
                 }
+                break;
             case 3:
                 updateSubType = chooseUpdateAgentList();
                 System.out.print("Enter the tax id of the agent to be updated: ");
@@ -1232,6 +1250,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 2: {
                         //last
                         System.out.print("Enter the new last name: ");
@@ -1247,6 +1266,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 3: {
                         //phone
                         System.out.print("Enter the new phone number: ");
@@ -1262,6 +1282,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 4: {
                         //manager
                         System.out.print("Enter the tax ID of the agent's new manager: ");
@@ -1277,6 +1298,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 5: {
                         //office
                         System.out.print("Enter the new primary office ID: ");
@@ -1293,6 +1315,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 6: {
                         //commission
                         System.out.print("Enter the agent's new commission value (e.g 0.14): ");
@@ -1309,6 +1332,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 7: {
                         //salary
                         System.out.print("Enter the agent's new salary: ");
@@ -1325,6 +1349,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 8: {
                         //address
                         System.out.print("Enter the agent's new address: ");
@@ -1340,6 +1365,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 9: {
                         //city
                         System.out.print("Enter the agent's new city: ");
@@ -1355,6 +1381,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 10: {
                         //state
                         System.out.print("Enter the agent's new state: ");
@@ -1370,6 +1397,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 11: {
                         //ZIP
                         System.out.print("Enter the agent's new ZIP: ");
@@ -1385,9 +1413,11 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     default:
                         //something's gone wrong...
                 }
+                break;
             case 4:
                 updateSubType = chooseUpdateOfferList();
                 System.out.print("Enter the offer id of the offer to be updated: ");
@@ -1408,6 +1438,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 2: {
                         //Amount
                         System.out.print("Enter the new offered amount: ");
@@ -1423,6 +1454,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 3: {
                         //accept
                         try {
@@ -1440,6 +1472,7 @@ public class UserInterface_Command_Line {
                         }
                         System.out.println("Offer " + offerID + " accepted!");
                     }
+                    break;
                     case 4: {
                         //decline
                         try {
@@ -1453,9 +1486,11 @@ public class UserInterface_Command_Line {
                         }
                         System.out.println("Offer " + offerID + " declined.");
                     }
+                    break;
                     default:
                         //something's gone wrong...
                 }
+                break;
             case 5:
                 updateSubType = chooseUpdateOfficeList();
                 System.out.print("Enter the office ID to be updated: ");
@@ -1477,6 +1512,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 2: {
                         //address
                         s.nextLine();
@@ -1493,6 +1529,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 3: {
                         //city
                         s.nextLine();
@@ -1509,6 +1546,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 4: {
                         //state
                         s.nextLine();
@@ -1525,6 +1563,7 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     case 5: {
                         //ZIP
                         s.nextLine();
@@ -1541,9 +1580,11 @@ public class UserInterface_Command_Line {
                             e.printStackTrace();
                         }
                     }
+                    break;
                     default:
                         //something's gone wrong
                 }
+                break;
             default:
                 //something's gone wrong...
         }
