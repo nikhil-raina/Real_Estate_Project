@@ -711,7 +711,180 @@ public class UserInterface_Command_Line {
             }
         }
     }
+    
+	private static void delete_data(Connection con) {
+		int temp_input = -1;
 
+		int table_select_prompt = -1;
+		String table_selected_as_string = "";
+		int count = 0;
+
+		ResultSetMetaData rsmd;
+
+		try {
+			rs = Query_Execution.executeQuery(con, "SELECT * FROM pg_tables WHERE schemaname='" + schema + "'");
+			System.out.println("|         --- Tables Present ---                             |");
+
+			System.out.println();
+
+			rsmd = rs.getMetaData();
+			int col_count = rsmd.getColumnCount();
+			List<String> col_names = new ArrayList<>();
+
+			while (rs.next()) {
+				count++;
+				String val = rs.getString("tablename");
+				col_names.add(val);
+				System.out.println("\t(" + count + ")\t" + val.toUpperCase());
+			}
+
+			System.out.println("");
+
+			while (table_select_prompt == -1) {
+				System.out.println(
+						"Which type of table would you like to delete a row from? Make sure you input a valid integer.");
+				temp_input = Integer.parseInt(s.nextLine());
+
+				if (temp_input > 0 && temp_input <= col_count) {
+					table_select_prompt = temp_input;
+					table_selected_as_string = col_names.get(temp_input - 1);
+				}
+			}
+
+			String primary_key_for_deletion = "";
+
+			if (table_selected_as_string.equalsIgnoreCase("manager")) {
+				System.out.println(
+						"| Warning, before removing this manager, you should ensure the manager's office is redelegated to a different manager.|");
+				System.out.println("| Using the update function will help you complete this.                    |");
+
+				System.out.println("| What is the tax id of the manager you'd like to remove?                   |");
+				System.out.println("| NOTE: If the tax id has a leading zero, do not include it in your input.  |");
+
+				primary_key_for_deletion = s.nextLine();
+
+				while (primary_key_for_deletion.length() > 9 || primary_key_for_deletion.length() < 8) {
+					System.out.println("Invalid tax ID format, try again.");
+					primary_key_for_deletion = s.nextLine();
+
+				}
+				System.out.println("Are you absolutely sure you want to delete the " + table_selected_as_string
+						+ " with the primary key " + primary_key_for_deletion + "?");
+				System.out.println(
+						"Please be aware, failing to indicate a new manager to control the office will result in the office having no manager.");
+
+				String temp_choice = s.nextLine();
+				while (!temp_choice.equalsIgnoreCase("y")) {
+
+					if (temp_choice.equalsIgnoreCase("n")) {
+						staffMenu(con); // behavior only needs to be defined for staff menu as per the fact customers
+										// can never get here.
+						return;
+					}
+
+					System.out
+							.println("Invalid input; type 'y' for yes, or 'n' for no (to go back to the action-menu.");
+
+				}
+
+				rs = Query_Execution.executeQuery(con,
+						"DELETE from manager where taxid =' " + primary_key_for_deletion + "'");
+				rs = Query_Execution.executeQuery(con,
+						"DELETE from person where taxid =' " + primary_key_for_deletion + "'");
+
+			}
+			if (table_selected_as_string.equalsIgnoreCase("agent")) {
+				System.out.println(
+						"|Warning, for reference purposes, all property listing attached to this agent will still retail this agent's taxid.|");
+
+				System.out.println("| What is the tax id of the agent you'd like to remove?                   |");
+				System.out.println("| NOTE: If the tax id has a leading zero, do not include it in your input.  |");
+
+				primary_key_for_deletion = s.nextLine();
+
+				while (primary_key_for_deletion.length() > 9 || primary_key_for_deletion.length() < 8) {
+					System.out.println("Invalid tax ID format, try again.");
+					primary_key_for_deletion = s.nextLine().trim();
+				}
+				System.out.println("Are you absolutely sure you want to delete the " + table_selected_as_string
+						+ " with the primary key " + primary_key_for_deletion + "?");
+				System.out.println(
+						"Please be aware, failing to indicate a new manager to control the office will result in the office having no manager.");
+
+				String temp_choice = s.nextLine();
+
+				while (!temp_choice.equalsIgnoreCase("y")) {
+
+					if (temp_choice.equalsIgnoreCase("n")) {
+						staffMenu(con); // behavior only needs to be defined for staff menu as per the fact customers
+										// can never get here.
+						return;
+					}
+
+					System.out
+							.println("Invalid input; type 'y' for yes, or 'n' for no (to go back to the action-menu.");
+
+				}
+
+				PreparedStatement delPS = con.prepareStatement("DELETE FROM agent WHERE taxid = (?)");
+
+				System.out.println(primary_key_for_deletion);
+				delPS.setString(1, primary_key_for_deletion);
+
+				delPS.execute();
+
+				delPS = con.prepareStatement("DELETE FROM PERSON WHERE taxid = (?)");
+
+				if (delPS.execute() == true) {
+					System.out.println("Agent: " + primary_key_for_deletion + " successfully deleted.");
+				} else {
+
+				}
+
+			}
+
+			if (table_selected_as_string.equalsIgnoreCase("client")) {
+				System.out.println("Are you absolutely sure you want to delete the " + table_selected_as_string
+						+ " with the primary key " + primary_key_for_deletion + "?");
+
+				rs = Query_Execution.executeQuery(con, "");
+			}
+
+			if (table_selected_as_string.equalsIgnoreCase("person")) {
+				System.out.println(
+						"Please rerun the delete function selecting the type of person you'd like to delete (agent/manager/client)!");
+				staffMenu(con);
+				return;
+			}
+			if (table_selected_as_string.equalsIgnoreCase("property")) {
+				System.out.println(
+						"Please use the update function to set the sell date of a property unsold to render it inactive.");
+				staffMenu(con); // behavior only needs to be defined for staff menu as per the fact customers
+								// can never get here.
+				return;
+			}
+			if (table_selected_as_string.equalsIgnoreCase("office")) {
+				System.out.println("Deleting an office must be done by the system administrator.");
+				staffMenu(con);
+				return;
+			}
+			if (table_selected_as_string.equalsIgnoreCase("address")) {
+				System.out.println(
+						"Our address table is immutable for stability and reliability reasons.\n Feel free to use our update function to modify any addresses you wish!");
+				staffMenu(con);
+				return;
+			}
+
+			/*
+			 * PROPERTY AGENT OFFER PERSON //taxid CLIENT MANAGER //taxid -delete from
+			 * manager, delete from person OFFICE officeid ADDRESS addressid
+			 */
+
+		} catch (SQLException | IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+
+	}
     private static void staffContinueQuestion(Connection con) throws InterruptedException, IOException {
         while(true) {
 //            System.out.println("|         --- Tables Present ---                             |");
