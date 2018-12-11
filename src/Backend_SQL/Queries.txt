@@ -105,7 +105,14 @@ WHERE (office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid
 
 String monthly_office(){
 "SELECT DISTINCT office.officeid, COUNT(DISTINCT property) AS total_sales FROM office,agent,property
-WHERE ((office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid) OR (office.managertaxid=property.agenttaxid))
+WHERE (office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid)
  AND (selldate>CURRENT_DATE - INTERVAL '1 month')
+ GROUP BY office.officeid ORDER BY COUNT(DISTINCT property) DESC";
+}
+
+String monthly_office_specific(Int OfficeID){
+"SELECT DISTINCT office.officeid, COUNT(DISTINCT property) AS total_sales FROM office,agent,property
+WHERE office.officeid=agent.primaryofficeid AND agent.taxid=property.agenttaxid
+ AND (selldate>CURRENT_DATE - INTERVAL '1 month') AND office.officeID="+OfficeID"
  GROUP BY office.officeid ORDER BY COUNT(DISTINCT property) DESC";
 }
